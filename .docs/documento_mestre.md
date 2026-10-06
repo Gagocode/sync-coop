@@ -1,265 +1,135 @@
-# DOCUMENTO MESTRE DO PRODUTO
+# Documento Mestre do Produto — Sync Disc
 
-## 1. Visão Geral
-A plataforma é um sistema de desenvolvimento profissional gamificado para universitários. Seu objetivo é transformar o currículo tradicional em uma jornada contínua de evolução profissional.
+## 1. Visão do produto
 
-Ao invés de possuir apenas um currículo estático em PDF, o usuário constrói um perfil vivo que evolui através de projetos, experiências, certificações, missões e atividades realizadas dentro da plataforma.
+O Sync Disc é um sistema gamificado de desenvolvimento e acompanhamento profissional de colaboradores dentro de organizações. A plataforma permite que colaboradores acompanhem sua própria evolução e que gestores visualizem o desenvolvimento, o engajamento, a participação, as missões e o crescimento profissional das equipes.
 
-O sistema utiliza conceitos do modelo DISC como base para a construção do perfil comportamental inicial do usuário, permitindo acompanhar sua evolução ao longo do tempo através de evidências práticas e comportamentos observados.
+A gamificação permanece no núcleo do produto. Perfil, DISC, missões, XP, níveis, conquistas e evolução dão visibilidade à jornada profissional ao longo do tempo.
 
-O resultado é um perfil público compartilhável que apresenta não apenas informações curriculares, mas também indicadores de desenvolvimento profissional e comportamental.
+O produto não substitui ERP, sistema de RH, folha de pagamento nem controle operacional. Seu foco é desenvolvimento profissional, acompanhamento da evolução e engajamento dos colaboradores.
 
-## 2. Problema
-Os currículos tradicionais possuem diversas limitações:
-* Tornam-se desatualizados rapidamente.
-* Não refletem a evolução contínua do candidato.
-* Não apresentam evidências comportamentais.
-* Não incentivam o desenvolvimento profissional.
-* Não mostram a jornada de crescimento do usuário.
+## 2. Problema e solução
 
-Além disso, avaliações DISC tradicionais costumam gerar apenas um resultado estático, sem acompanhar mudanças e evolução ao longo do tempo.
+Organizações precisam acompanhar o desenvolvimento profissional e o engajamento de seus colaboradores sem reduzir essa jornada a registros operacionais. O Sync Disc oferece perfis de evolução, missões e indicadores gamificados que ajudam gestores a visualizar o progresso e colaboradores a reconhecer sua própria trajetória.
 
-## 3. Solução
-Criar uma plataforma onde:
-* O usuário possui um currículo vivo.
-* O usuário realiza um quiz narrativo baseado em DISC.
-* O sistema gera um perfil comportamental inicial.
-* O sistema gera missões.
-* As missões incentivam desenvolvimento profissional.
-* O comportamento do usuário influencia atributos DISC observados.
-* O perfil evolui continuamente.
-* Recrutadores podem visualizar um perfil público completo.
+A plataforma reúne colaboradores em uma organização, organiza-os por setor e apresenta informações de evolução por meio de perfil, DISC, missões, XP, níveis, conquistas, certificações, participação e indicadores.
 
-## 4. Público-Alvo
-**Público Principal**
-Universitários.
-Exemplos:
-* Sistemas de Informação
-* Ciência da Computação
-* Engenharia
-* Administração
-* Arquitetura
-* Design
-* Demais cursos
+## 3. Público e contexto
 
-**Público Secundário**
-* Recrutadores
-* Empresas
-* Professores
-* Instituições de ensino
+- **Organização:** empresa que utiliza a plataforma e possui setores e colaboradores.
+- **Gestor:** acompanha colaboradores, cria setores e missões, analisa indicadores e rankings e gerencia a evolução profissional no contexto da plataforma.
+- **Colaborador:** possui perfil, DISC, XP e nível; recebe missões e evolui profissionalmente.
 
-## 5. Objetivo do Usuário
-O objetivo final do usuário é:
-* Desenvolver sua carreira.
-* Evoluir seu perfil profissional.
-* Construir evidências de experiência.
-* Obter maior empregabilidade.
-* Conseguir oportunidades profissionais.
+O contexto principal é corporativo. Os termos “aluno”, “curso” e “desenvolvimento acadêmico” deixam de definir o produto. Os conceitos correspondentes são “colaborador”, “setor” e “desenvolvimento profissional”.
 
-## 6. Fluxo Principal
-* **Etapa 1:** Cadastro.
-* **Etapa 2:** Quiz Narrativo DISC.
-* **Etapa 3:** Geração do Perfil Inicial.
-* **Etapa 4:** Recebimento de Missões.
-* **Etapa 5:** Execução de Atividades.
-* **Etapa 6:** Ganho de XP e Evolução.
-* **Etapa 7:** Atualização dos Atributos.
-* **Etapa 8:** Construção do Currículo Vivo.
-* **Etapa 9:** Compartilhamento do Perfil Público.
+## 4. Objetivos do produto
 
-## 7. Sistema DISC
-**Conceito**
-O DISC não será tratado como um teste estático.
-Será tratado como um sistema de atributos vivos.
+- Permitir que colaboradores acompanhem sua evolução profissional.
+- Permitir que gestores visualizem colaboradores, evolução, indicadores, rankings e missões em um dashboard gerencial.
+- Incentivar desenvolvimento profissional, participação e engajamento por meio de missões e gamificação.
+- Dar visibilidade a DISC, XP, níveis, conquistas, certificações e evolução.
+- Representar a relação entre organização, setores e colaboradores.
 
-**Dimensões**
-* **D:** Dominância
-* **I:** Influência
-* **S:** Estabilidade
-* **C:** Conformidade
+## 5. Atores e conceitos
 
-**DISC Inicial**
-Obtido através do Quiz Narrativo.
-Exemplo:
-* $D=65$
-* $I=40$
-* $S=35$
-* $C=70$
+### Organização
 
-**DISC Observado**
-Calculado continuamente. Baseado em:
-* Projetos
-* Certificações
-* Experiências
-* Missões
-* Comportamentos
+Empresa usuária da plataforma. Possui setores e colaboradores.
 
-**Perfil Final**
-O sistema exibe:
-* DISC Inicial
-* DISC Atual
-* Evolução Histórica
+### Setor
 
-## 8. Sistema de Classes
-Após o Quiz Narrativo o sistema gera uma classe inicial.
-Exemplos:
-* Executor Estratégico
-* Comunicador
-* Analista
-* Colaborador
-* Líder Técnico
+Unidade organizacional pertencente a uma organização. Exemplos: IA, Desenvolvimento, Design, Comercial e Marketing. Setores são criados pelo gestor; colaboradores pertencem a um setor.
 
-As classes servem para representação do perfil. Não substituem o DISC.
+### Colaborador
 
-## 9. Sistema de Atributos
-O usuário possui atributos derivados.
-Exemplos:
-* Liderança
-* Comunicação
-* Organização
-* Criatividade
-* Trabalho em Equipe
-* Capacidade Analítica
+Pessoa vinculada a um setor de uma organização. Possui perfil e DISC, acumula XP, progride por níveis, recebe missões e pode obter conquistas e certificações como parte de sua evolução profissional.
 
-Esses atributos evoluem conforme ações realizadas.
+### Gestor
 
-## 10. Sistema de XP
-Toda atividade relevante gera XP.
+Pessoa que acompanha colaboradores e sua evolução, cria setores e missões, analisa indicadores e rankings e gerencia a evolução no domínio do produto.
 
-**Exemplos:**
-* **Baixo Impacto:** Atualizar perfil, Adicionar foto, Completar informações.
-* **Médio Impacto:** Participar de evento, Completar missão.
-* **Alto Impacto:** Projeto, Certificação, Experiência profissional.
+## 6. Jornada principal
 
-## 11. Sistema de Missões
-**Missões Fixas**
-Geradas para todos os usuários.
-Exemplos: Completar perfil, Adicionar projeto, Adicionar certificado, Atualizar currículo.
+1. A organização utiliza a plataforma.
+2. O gestor cria setores.
+3. Colaboradores vinculam-se à organização e a um setor.
+4. O colaborador possui perfil e DISC.
+5. O colaborador recebe missões relacionadas ao desenvolvimento profissional.
+6. A participação e as atividades de desenvolvimento refletem-se em XP, níveis, conquistas e evolução segundo as regras existentes do produto.
+7. O gestor acompanha colaboradores, evolução, indicadores, rankings e missões no dashboard gerencial.
 
-**Missões Adaptativas**
-Baseadas nas menores dimensões do usuário.
-Exemplo: Baixa influência.
-Missão sugerida: Participar de evento.
+Esta jornada descreve o domínio e não estabelece fluxos de cadastro, permissões, automações ou regras adicionais.
 
-## 12. Estados da Missão
-* **Concluída:** Recompensa (XP, Evolução de atributos)
-* **Ignorada:** Consequência (Nenhuma alteração)
-* **Abandonada:** Consequência (Penalidade de XP)
+## 7. DISC e perfil
 
-## 13. Sistema de Conquistas
-As conquistas possuem função cosmética. Não afetam atributos.
-Exemplos:
-* Primeiro Projeto
-* Primeiro Certificado
-* Perfil Completo
-* Primeiro Evento
-* Primeiro Compartilhamento
+O DISC permanece como conceito do produto. Mantêm-se DISC Inicial e DISC Observado como referências da evolução, sem tratar o resultado como diagnóstico definitivo. As dimensões são:
 
-## 14. Currículo Vivo
-O currículo não será um formulário tradicional. Será construído a partir de:
-* Projetos
-* Experiências
-* Certificados
-* Conquistas
-* Indicadores
+- **D — Dominância:** iniciativa, decisão e ação.
+- **I — Influência:** comunicação e interação.
+- **S — Estabilidade:** consistência, colaboração e continuidade.
+- **C — Conformidade:** organização, planejamento, análise e documentação.
 
-O sistema gera automaticamente a visão curricular.
+O perfil do colaborador consolida sua identidade profissional e as informações de evolução definidas no produto. A classe associada ao perfil permanece representativa e não substitui o DISC.
 
-## 15. Perfil Público
-Cada usuário possui uma página pública (Ex: `usuario.plataforma.com/nome`).
+## 8. Missões
 
-**Informações Públicas:**
-* Nome
-* Foto
-* Curso
-* Classe
-* Projetos
-* Certificações
-* Experiências
-* Indicadores
-* Evolução
-* DISC
+O sistema de missões é mantido e passa ao contexto corporativo. Missões são objetivos de desenvolvimento profissional e podem incluir, por exemplo:
 
-## 16. Sistema Social
-Usuários poderão:
-* Compartilhar perfil
-* Visualizar perfis
-* Curtir perfis
+- Concluir treinamento.
+- Participar de capacitação.
+- Documentar processo.
+- Obter certificação.
+- Executar atividade definida pelo gestor.
 
-*Sem sistema de mensagens no MVP.*
+O gestor cria missões. A plataforma mantém a relação entre missões, participação e evolução conforme as regras vigentes. Os exemplos não definem catálogo, prazos, penalidades, fluxo de aceite ou automações novas.
 
-## 17. Indicadores de Evolução
-O sistema deve mostrar:
-* Evolução DISC
-* Evolução de atributos
-* Histórico de atividades
-* Missões concluídas
-* Projetos realizados
+## 9. Gamificação e evolução
 
-## 18. Requisitos Funcionais
-* **RF01:** Cadastro de usuário.
-* **RF02:** Login.
-* **RF03:** Realização do Quiz Narrativo.
-* **RF04:** Cálculo do DISC Inicial.
-* **RF05:** Geração da Classe Inicial.
-* **RF06:** Geração de Missões.
-* **RF07:** Conclusão de Missões.
-* **RF08:** Sistema de XP.
-* **RF09:** Sistema de Atributos.
-* **RF10:** Sistema de Conquistas.
-* **RF11:** Cadastro de Projetos.
-* **RF12:** Cadastro de Certificações.
-* **RF13:** Cadastro de Experiências.
-* **RF14:** Geração do Currículo Vivo.
-* **RF15:** Perfil Público.
-* **RF16:** Sistema de Curtidas.
-* **RF17:** Histórico de Evolução.
-* **RF18:** Atualização do DISC Observado.
+Permanecem no núcleo do produto:
 
-## 19. Requisitos Não Funcionais
-* **RNF01:** Interface responsiva.
-* **RNF02:** Navegação intuitiva.
-* **RNF03:** Tempo de resposta inferior a 3 segundos.
-* **RNF04:** Compatibilidade com dispositivos móveis.
-* **RNF05:** Segurança de autenticação.
-* **RNF06:** Escalabilidade para múltiplos cursos.
-* **RNF07:** Arquitetura modular.
-* **RNF08:** Facilidade de manutenção.
-* **RNF09:** Facilidade de expansão futura.
-* **RNF10:** Persistência dos dados dos usuários.
+- **XP:** representa progresso na plataforma.
+- **Níveis:** representam etapas de progressão gamificada, não cargo ou senioridade.
+- **Conquistas:** reconhecem marcos da jornada.
+- **Evolução:** apresenta o desenvolvimento profissional ao longo do tempo.
+- **DISC:** oferece referências comportamentais inicial e observada conforme as regras vigentes.
 
-## 20. MVP
-**Escopo mínimo para apresentação:**
-* Cadastro
-* Login / Logout
-* Quiz Narrativo
-* Resultado DISC
-* Perfil
-* Missões
-* XP
+As atividades e missões podem estar relacionadas à participação, ao desenvolvimento e às certificações. Não se definem neste documento fórmulas, recompensas ou critérios novos.
 
-**Sem:**
-* Projetos
-* Certificados
-* Perfil Público
-* Empresas
-* Busca avançada
-* Recomendação automática
-* IA
-* Chat
-* Integrações externas
+## 10. Dashboard gerencial
 
-## 21. Visão de Futuro
-Possíveis evoluções:
-* Empresas cadastradas
-* Portal de vagas
-* Match entre perfil e vaga
-* Recomendações por IA
-* Mentorias
-* Ranking universitário
-* Integração com LinkedIn
-* Exportação automática de currículo
-* Dashboard institucional para universidades
+O domínio do produto inclui um dashboard gerencial pelo qual gestores podem:
 
-## Definição Final do Produto
-Uma plataforma gamificada de desenvolvimento profissional para universitários, onde um quiz narrativo baseado em DISC gera um perfil inicial e um conjunto de atributos comportamentais. Através de missões, projetos, certificações e experiências, o usuário desenvolve continuamente seu perfil, construindo um currículo vivo e público que demonstra sua evolução profissional ao longo do tempo.
+- visualizar colaboradores;
+- visualizar evolução;
+- visualizar indicadores;
+- visualizar rankings;
+- visualizar missões.
+
+Este documento registra a finalidade do dashboard e não detalha sua implementação, composição visual, métricas, filtros ou regras de acesso.
+
+## 11. Escopo e limites
+
+O produto trata de desenvolvimento profissional, evolução e engajamento. Não tem como objetivo substituir ERP, RH, folha de pagamento ou controle operacional da empresa. Não se definem módulos de recrutamento, vagas, folha, administração de pessoal ou operação empresarial.
+
+Não estão sendo especificados nesta atualização inteligência artificial, integrações, automações, recomendações ou regras novas. Qualquer ampliação de escopo exige definição documental própria.
+
+## 12. Requisitos funcionais do domínio
+
+- **RF01:** representar organizações que utilizam a plataforma.
+- **RF02:** representar setores pertencentes a uma organização.
+- **RF03:** representar colaboradores pertencentes a um setor.
+- **RF04:** manter perfil e DISC do colaborador.
+- **RF05:** manter missões no contexto de desenvolvimento profissional, criadas pelo gestor.
+- **RF06:** manter XP, níveis, conquistas e evolução como elementos de gamificação.
+- **RF07:** permitir acompanhamento gerencial de colaboradores, evolução, indicadores, rankings e missões por meio de dashboard.
+- **RF08:** contemplar certificações como evidências de desenvolvimento profissional.
+
+Estes requisitos registram o domínio solicitado; não definem detalhes técnicos, regras de autorização nem comportamento além do descrito nas seções anteriores.
+
+## 13. Requisitos não funcionais
+
+Permanecem como diretrizes documentais da plataforma: interface responsiva, navegação clara, segurança de autenticação, arquitetura modular, manutenibilidade e persistência dos dados. Metas quantitativas ou critérios de validação não são ampliados nesta atualização.
+
+## Definição do produto
+
+O Sync Disc é um sistema gamificado de desenvolvimento e acompanhamento profissional de colaboradores em organizações. Organizações possuem setores e colaboradores; gestores acompanham a evolução por indicadores, rankings e missões; colaboradores desenvolvem seus perfis por DISC, missões, XP, níveis, conquistas e certificações. O foco é evolução profissional e engajamento, sem substituir sistemas de RH, ERP, folha de pagamento ou controle operacional.

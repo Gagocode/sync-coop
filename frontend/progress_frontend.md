@@ -1,3 +1,4 @@
+
 ## 2026-09-23
 
 ### Funcionalidade
@@ -248,3 +249,16 @@ Criados símbolos para projeto, certificado, missão, conquista, XP, nível, Cur
 
 ### Impacto
 As entidades e os marcos passam a ser reconhecíveis visualmente sem alterar layout principal, cores, tipografia, responsividade, fluxos ou regras de negócio.
+## 2026-10-06
+
+### Funcionalidade
+Reposicionamento documental do produto
+
+### Arquivos alterados
+Documentação do produto na raiz e em `.docs/`.
+
+### Resumo
+Atualizada a direção documental e visual para desenvolvimento profissional corporativo, incluindo colaboradores, gestores, setores e a finalidade do dashboard gerencial. Nenhuma tela, fluxo ou arquivo de frontend foi alterado.
+
+### Impacto
+As diretrizes documentais de interface refletem o novo contexto de aplicação. Este registro não indica que a experiência corporativa esteja implementada no frontend.

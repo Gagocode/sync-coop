@@ -1,170 +1,87 @@
-# DOCUMENTO DE DOMÍNIO E REGRAS DE NEGÓCIO
+# Documento de Domínio e Regras de Negócio — Sync Disc
 
 ## Objetivo
-Este documento define os conceitos centrais do sistema e as regras que governam seu funcionamento. Enquanto o Documento Mestre define o produto e o Documento Técnico define a arquitetura, este documento define o comportamento do sistema. Seu objetivo é servir como ponte entre a documentação e a implementação.
 
-## 1. Conceitos Fundamentais
-A plataforma possui cinco pilares principais:
-* Perfil
-* DISC
-* Missões
-* Evolução
-* Currículo Vivo
+Este documento registra os conceitos do Sync Disc como sistema gamificado de desenvolvimento e acompanhamento profissional de colaboradores em organizações. O Documento Mestre descreve visão e limites do produto; o Documento Técnico descreve diretrizes arquiteturais; este documento descreve o domínio conhecido, sem criar regras além das fornecidas.
 
-Todos os módulos do sistema devem contribuir para pelo menos um desses pilares.
+## 1. Organização
 
-## 2. Usuário
-O usuário representa um estudante cadastrado na plataforma. Cada usuário possui:
-* Perfil
-* Resultado DISC
-* Histórico de evolução
-* Missões
-* Projetos
-* Certificações
-* Experiências
-* Conquistas
+Organização é a empresa que utiliza a plataforma. Uma organização possui setores e colaboradores.
 
-## 3. Perfil
-O perfil é o elemento central da plataforma. Ele representa a evolução profissional do usuário. O perfil não é apenas um currículo. Ele é uma combinação de:
-* dados pessoais;
-* histórico profissional;
-* indicadores;
-* atributos;
-* conquistas;
-* evolução comportamental.
+## 2. Setor
 
-## 4. DISC
-**Conceito**
-O DISC será tratado como um conjunto de atributos dinâmicos. O sistema trabalha com dois estados:
-* **DISC Inicial:** Resultado gerado pelo Quiz Narrativo. Representa a percepção inicial do usuário.
-* **DISC Observado:** Resultado calculado continuamente. Representa o comportamento observado através das ações do usuário.
+Setor é uma unidade que pertence a uma organização. Exemplos incluem IA, Desenvolvimento, Design, Comercial e Marketing. Setores são criados pelo gestor. Colaboradores pertencem a um setor.
 
-## 5. Estrutura DISC
-O sistema utiliza quatro dimensões:
-* **D - Dominância:** Relacionada a liderança, tomada de decisão, iniciativa e ação.
-* **I - Influência:** Relacionada a comunicação, interação social, apresentações e networking.
-* **S - Estabilidade:** Relacionada a consistência, colaboração, comprometimento e continuidade.
-* **C - Conformidade:** Relacionada a organização, planejamento, análise e documentação.
+## 3. Colaborador
 
-## 6. Quiz Narrativo
-O Quiz Narrativo é a porta de entrada do sistema. O usuário responde cenários contextualizados. Cada resposta possui impacto nas dimensões DISC. O sistema calcula D, I, S, C e gera o perfil inicial.
+Colaborador é a pessoa cujo desenvolvimento profissional é acompanhado na plataforma. Possui perfil e DISC, acumula XP, progride em níveis, recebe missões e pode obter conquistas e certificações relacionadas à sua evolução.
 
-## 7. Classe Inicial
-Após o quiz, o sistema gera uma representação visual do perfil. Exemplos:
-* Executor Estratégico
-* Comunicador
-* Analista
-* Colaborador
+## 4. Gestor
 
-A classe possui caráter representativo. Não altera regras de negócio.
+Gestor acompanha colaboradores, cria setores e missões, analisa indicadores, visualiza rankings e gerencia evolução dentro do produto. Este papel não implica, por si só, regras de autorização, hierarquias ou permissões específicas.
 
-## 8. Atributos Secundários
-Além do DISC, o sistema mantém atributos complementares. Exemplos:
-* Liderança
-* Comunicação
-* Organização
-* Criatividade
-* Trabalho em Equipe
-* Capacidade Analítica
+## 5. Perfil profissional
 
-Esses atributos podem ser derivados do DISC ou calculados separadamente. A definição final será realizada durante a implementação.
+O perfil representa a trajetória e a evolução profissional do colaborador. Reúne os conceitos de perfil, DISC, missões, evolução, participação e certificações conforme dados disponíveis no produto. Não é definido aqui um currículo público nem um módulo de recrutamento.
 
-## 9. XP
-XP representa a evolução geral do usuário. Toda ação relevante gera XP. O XP é utilizado para:
-* acompanhar progresso;
-* medir atividade;
-* desbloquear níveis;
-* gerar indicadores.
+## 6. DISC
 
-## 10. Níveis
-O sistema poderá possuir níveis. Exemplo conceitual:
-Nível 1 ↓ Nível 2 ↓ Nível 3 ↓ Nível 4
-A curva de progressão será definida posteriormente.
+O DISC permanece como referência comportamental no domínio. As dimensões são:
 
-## 11. Missões
-Missões representam objetivos propostos pelo sistema. Toda missão possui:
-* descrição;
-* recompensa;
-* prazo;
-* estado.
+- **D — Dominância:** iniciativa, decisão e ação.
+- **I — Influência:** comunicação e interação.
+- **S — Estabilidade:** consistência, colaboração e continuidade.
+- **C — Conformidade:** organização, planejamento, análise e documentação.
 
-## 12. Estados das Missões
-* **Disponível:** Ainda não iniciada.
-* **Aceita:** Em andamento.
-* **Concluída:** Finalizada com sucesso.
-* **Ignorada:** Usuário optou por não realizar. Não gera punição.
-* **Abandonada:** Usuário iniciou e não concluiu. Pode gerar penalidade.
-* **Expirada:** Prazo encerrado. Pode gerar impacto reduzido.
+O **DISC Inicial** é o ponto de partida. O **DISC Observado** representa o conceito de acompanhamento pelas evidências e ações registradas conforme regras vigentes. Os conceitos não são diagnóstico definitivo. Esta atualização não altera fórmula, pesos, histórico, frequência ou critérios de cálculo.
 
-## 13. Tipos de Missão
-* **Missões Padrão:** Disponíveis para todos os usuários. Exemplos: completar perfil; cadastrar projeto; cadastrar certificado.
-* **Missões Adaptativas:** Geradas com base no perfil do usuário. Objetivo: estimular desenvolvimento equilibrado.
+## 7. Missões
 
-## 14. Geração de Missões Adaptativas
-Regra conceitual: O sistema identifica a menor dimensão DISC observada.
-Exemplo: D = 60, I = 20, S = 40, C = 70. A dimensão mais baixa é I.
-O sistema gera missões voltadas para comunicação e interação.
+Missões são objetivos relacionados ao desenvolvimento profissional. O gestor cria missões. Exemplos de contexto: concluir treinamento, participar de capacitação, documentar processo, obter certificação ou executar atividade definida pelo gestor.
 
-## 15. Ações do Usuário
-O sistema registra ações relevantes. Exemplos:
-* criação de projeto;
-* cadastro de certificado;
-* cadastro de experiência;
-* conclusão de missão;
-* atualização de perfil.
+As missões permanecem integradas à gamificação e à evolução conforme as regras já definidas pelo produto. Os exemplos não determinam catálogo, prazo, estados, aceite, penalidade, recompensa ou conclusão automática.
 
-## 16. Evidências
-Toda ação gera evidências. As evidências são utilizadas para:
-* atualizar atributos;
-* atualizar DISC observado;
-* gerar indicadores.
+## 8. XP, níveis e evolução
 
-## 17. Atualização do DISC Observado
-Cada ação possui pesos associados. Exemplo conceitual:
-* **Projeto técnico:** aumenta C e S
-* **Apresentação:** aumenta I e D
-* **Liderança de equipe:** aumenta D e I
+- **XP:** indicador de progresso gamificado.
+- **Níveis:** etapas de progressão dentro da plataforma; não equivalem a cargo, senioridade ou avaliação de desempenho.
+- **Evolução:** acompanhamento do desenvolvimento profissional por informações e indicadores existentes.
 
-Os pesos exatos serão definidos posteriormente.
+Nenhuma fórmula, curva, marco ou recompensa nova é definida neste documento.
 
-## 18. Penalidades
-Penalidades devem ser utilizadas com moderação. Objetivo: estimular comprometimento. Não gerar frustração.
-* **Ignorar missão:** Nenhuma alteração.
-* **Abandonar missão:** Penalidade reduzida.
-* **Expiração:** Penalidade mínima ou inexistente.
+## 9. Conquistas e certificações
 
-## 19. Conquistas
-Conquistas são elementos cosméticos. Funções: reconhecimento, motivação, histórico. Não alteram atributos. Não alteram DISC.
+Conquistas reconhecem marcos da jornada gamificada. Permanecem como elemento de reconhecimento segundo as regras existentes; esta atualização não altera seus critérios ou efeitos.
 
-## 20. Currículo Vivo
-O currículo é construído dinamicamente. Baseado em: projetos, experiências, certificações, indicadores, histórico. O sistema gera automaticamente sua representação.
+Certificações são evidências de desenvolvimento profissional e permanecem como conceito do produto. Não se inferem validação externa, emissão, integração ou gestão de treinamentos.
 
-## 21. Perfil Público
-O perfil público representa a vitrine profissional do usuário. Deve apresentar: trajetória, indicadores, projetos, experiências, certificações, evolução.
+## 10. Dashboard gerencial
 
-## 22. Curtidas
-Usuários e visitantes podem interagir com perfis. Curtidas possuem função social. Não alteram atributos. Não alteram DISC.
+O domínio contempla um dashboard gerencial pelo qual gestores visualizam:
 
-## 23. Histórico
-O sistema deve manter histórico de evolução. Objetivos: acompanhar progresso, visualizar crescimento, demonstrar desenvolvimento.
+- colaboradores;
+- evolução;
+- indicadores;
+- rankings;
+- missões.
 
-## 24. Indicadores
-O sistema poderá apresentar indicadores visuais. Exemplos: evolução DISC, evolução de atributos, atividades realizadas, conclusão de missões.
+Esta definição registra finalidade de visualização, sem detalhar implementação, indicadores específicos, cálculos, filtros ou regras de acesso.
 
-## 25. Regras que Ainda Precisam Ser Definidas
-Os itens abaixo permanecem em aberto e deverão ser definidos antes da implementação completa:
-* Fórmula de cálculo do DISC Observado.
-* Pesos de cada tipo de atividade.
-* Curva de XP.
-* Curva de níveis.
-* Catálogo inicial de missões.
-* Catálogo inicial de conquistas.
-* Critérios para geração automática de missões adaptativas.
-* Regras exatas de penalidade.
-* Fórmula dos indicadores.
-* Critérios de evolução de classes.
+## 11. Regras organizacionais conhecidas
 
-## Status do Documento
-* **Versão:** 0.1
-* **Status:** Em refinamento.
-* **Objetivo atual:** servir como base para modelagem de domínio e implementação futura.
+1. Uma organização possui setores e colaboradores.
+2. Um setor pertence a uma organização.
+3. Um colaborador pertence a um setor.
+4. Setores são criados pelo gestor.
+5. Missões são criadas pelo gestor.
+6. Gestores acompanham evolução por meio das informações previstas no produto.
+
+Não são assumidas regras sobre quantidade de setores, múltiplas organizações por colaborador, transferência, convites, cadastro, remoção ou permissões.
+
+## 12. Limites de domínio
+
+O domínio é desenvolvimento profissional, acompanhamento da evolução e engajamento de colaboradores. Não inclui substituição de ERP, RH, folha de pagamento ou controle operacional. Não se acrescentam IA, integrações, automações, funcionalidades adicionais de RH ou regras não descritas.
+
+## Status
+
+Documento alinhado ao posicionamento corporativo do produto. Regras quantitativas e detalhes de funcionamento continuam sujeitos às definições já existentes ou a decisões futuras documentadas.

@@ -1,170 +1,69 @@
 # Sync Disc
 
-Sync Disc e uma plataforma gamificada de desenvolvimento profissional para universitarios. O projeto transforma o curriculo tradicional em um perfil vivo, evolutivo e compartilhavel, combinando informacoes curriculares, missoes, XP, conquistas e indicadores comportamentais baseados no modelo DISC.
+Sync Disc é um sistema gamificado de desenvolvimento e acompanhamento profissional de colaboradores dentro de organizações. Gestores acompanham colaboradores, evolução, indicadores, rankings e missões; colaboradores desenvolvem seu perfil por meio de DISC, missões, XP, níveis, conquistas e certificações.
 
-## Visao geral
+O foco é desenvolvimento profissional, acompanhamento de evolução e engajamento. O produto não substitui ERP, sistemas de RH, folha de pagamento ou controle operacional.
 
-A proposta do sistema e permitir que estudantes construam uma jornada profissional continua. Em vez de manter apenas um curriculo estatico em PDF, o usuario evolui seu perfil por meio de atividades como quiz narrativo, conclusao de missoes, registro de projetos, certificacoes, experiencias e outras evidencias praticas.
+## Conceitos do produto
 
-O DISC e tratado como um conjunto de atributos dinamicos:
+- **Organização:** empresa que utiliza a plataforma e possui setores e colaboradores.
+- **Setor:** unidade da organização criada pelo gestor; colaboradores pertencem a um setor.
+- **Colaborador:** possui perfil e DISC, recebe missões e evolui profissionalmente.
+- **Gestor:** acompanha colaboradores, cria setores e missões e visualiza evolução, indicadores e rankings.
+- **Gamificação:** DISC, XP, níveis, conquistas, missões e evolução permanecem no núcleo do produto.
 
-- **D - Dominancia:** lideranca, iniciativa, decisao e acao.
-- **I - Influencia:** comunicacao, interacao social, apresentacoes e networking.
-- **S - Estabilidade:** consistencia, colaboracao, comprometimento e continuidade.
-- **C - Conformidade:** organizacao, planejamento, analise e documentacao.
+Missões são contextualizadas para desenvolvimento profissional. Exemplos incluem concluir treinamento, participar de capacitação, documentar processo, obter certificação e executar atividade definida pelo gestor. Esses exemplos não estabelecem regras ou automações novas.
 
-O sistema trabalha com um **DISC inicial**, obtido pelo quiz narrativo, e um **DISC observado**, atualizado ao longo do tempo a partir das acoes do usuario.
+## Dashboard gerencial
 
-## Objetivo do produto
+O domínio inclui um dashboard gerencial para visualizar colaboradores, evolução, indicadores, rankings e missões. A documentação registra sua finalidade sem especificar implementação.
 
-O objetivo do Sync Disc e ajudar universitarios a:
+## Limites
 
-- desenvolver sua carreira;
-- construir evidencias de experiencia;
-- acompanhar sua evolucao profissional;
-- visualizar atributos comportamentais e tecnicos;
-- aumentar empregabilidade;
-- compartilhar um perfil publico mais completo que um curriculo tradicional.
-
-## Publico-alvo
-
-O publico principal sao universitarios de diferentes cursos, como Sistemas de Informacao, Ciencia da Computacao, Engenharia, Administracao, Arquitetura, Design e areas relacionadas.
-
-Tambem fazem parte do publico secundario recrutadores, empresas, professores e instituicoes de ensino.
-
-## Fluxo principal
-
-1. Cadastro do usuario.
-2. Login.
-3. Quiz Narrativo DISC.
-4. Geracao do perfil inicial.
-5. Recebimento de missoes.
-6. Execucao de atividades.
-7. Ganho de XP e evolucao.
-8. Atualizacao de atributos e DISC observado.
-9. Construcao do curriculo vivo.
-10. Compartilhamento do perfil publico.
-
-## MVP
-
-O escopo minimo previsto para apresentacao inclui:
-
-- cadastro;
-- login e logout;
-- quiz narrativo;
-- resultado DISC;
-- perfil do usuario;
-- missoes;
-- XP.
-
-Ficam fora do MVP inicial:
-
-- projetos;
-- certificados;
-- perfil publico;
-- empresas;
-- busca avancada;
-- recomendacao automatica;
-- inteligencia artificial;
-- chat;
-- integracoes externas.
-
-## Pilares do dominio
-
-O sistema e orientado por cinco pilares:
-
-- **Perfil:** elemento central da plataforma e consolidacao da evolucao profissional.
-- **DISC:** atributos comportamentais iniciais e observados.
-- **Missoes:** objetivos propostos ao usuario para estimular desenvolvimento.
-- **Evolucao:** XP, niveis, historico, indicadores e progresso.
-- **Curriculo vivo:** representacao dinamica da trajetoria do usuario.
+Sync Disc não é um ERP, sistema de RH, folha de pagamento ou ferramenta de controle operacional. Esta direção de produto não adiciona inteligência artificial, integrações, automações nem funcionalidades de RH além das descritas.
 
 ## Arquitetura
 
-O projeto deve seguir arquitetura em camadas, separando responsabilidades entre interface, controladores, servicos, persistencia e banco de dados.
-
-Fluxo conceitual:
+O projeto segue arquitetura em camadas:
 
 ```text
-Interface -> Controladores -> Servicos -> Persistencia -> Banco de Dados
+Interface -> Controladores -> Serviços -> Repositórios -> Banco de Dados
 ```
 
-No backend, a diretriz principal e:
+Regras de negócio ficam nos serviços; controladores recebem requisições e delegam processamento; repositórios cuidam da persistência.
 
-```text
-Controllers
--> Services
--> Repositories
--> Database
-```
+## Documentação oficial
 
-Regras de negocio devem permanecer na camada de servicos. Controladores devem receber requisicoes, validar entradas basicas e delegar processamento. Repositories devem cuidar da persistencia sem conter regras de negocio.
+Leia estes documentos antes de implementar mudanças de produto ou domínio:
 
-## Estrutura do repositorio
+1. `.docs/documento_mestre.md` — visão, escopo e objetivos do produto.
+2. `.docs/documento_tecnico.md` — diretrizes de arquitetura.
+3. `.docs/documento_dominio.md` — conceitos e regras de domínio.
+4. `.docs/decisions.md` — decisões documentadas.
+5. `project.md` — resumo do posicionamento e dos atores.
+
+Em conflitos de escopo e produto, prevalece o Documento Mestre; diretrizes técnicas seguem o Documento Técnico; regras do domínio seguem o Documento de Domínio. Decisões registram justificativas e limites sem substituir esses documentos.
+
+## Registros de progresso
+
+`progress.md` registra alterações documentais gerais. Mudanças no backend e frontend devem continuar registradas, respectivamente, em `backend/progress_backend.md` e `frontend/progress_frontend.md`.
+
+## Estrutura do repositório
 
 ```text
 .
-+-- .docs/
-|   +-- agent.md
-|   +-- documento_dominio.md
-|   +-- documento_mestre.md
-|   +-- documento_tecnico.md
-+-- backend/
-|   +-- progress_backend.md
-+-- frontend/
-|   +-- progress_frontend.md
-+-- .editorconfig
-+-- .gitattributes
-+-- .gitignore
++-- .docs/       # Documentação de produto, domínio, arquitetura e interface
++-- backend/     # Aplicação e camadas de serviço e persistência
++-- frontend/    # Páginas e recursos da interface
++-- project.md   # Resumo do produto
++-- progress.md  # Histórico de atualização documental do produto
 +-- README.md
 ```
 
-## Documentacao oficial
+## Licença
 
-Antes de qualquer implementacao, alteracao, correcao ou refatoracao, leia obrigatoriamente:
+Licença ainda não definida. Antes de publicar ou distribuir o projeto, escolha uma licença e adicione `LICENSE` na raiz.
 
-1. `.docs/documento_mestre.md`
-2. `.docs/documento_tecnico.md`
-3. `.docs/documento_dominio.md`
+## Estado da implementação
 
-Esses documentos sao a fonte oficial de verdade do projeto.
-
-Em caso de conflito entre documentos, a prioridade e:
-
-1. Documento Mestre
-2. Documento Tecnico
-3. Documento de Dominio
-
-## Registro de progresso
-
-Toda alteracao em `backend/` deve ser registrada em:
-
-```text
-backend/progress_backend.md
-```
-
-Toda alteracao em `frontend/` deve ser registrada em:
-
-```text
-frontend/progress_frontend.md
-```
-
-O registro deve conter data, funcionalidade, resumo e impacto esperado.
-
-## Diretrizes de desenvolvimento
-
-- Manter simplicidade e clareza.
-- Evitar complexidade prematura.
-- Preservar baixo acoplamento e alta coesao.
-- Nao criar microservicos ou arquitetura distribuida no escopo atual.
-- Nao introduzir dependencias sem necessidade comprovada.
-- Nao alterar regras de negocio sem atualizar previamente a documentacao.
-- Manter a gamificacao, o DISC evolutivo e o curriculo vivo como elementos centrais.
-
-## Status
-
-Projeto em fase inicial de documentacao e estruturacao para implementacao futura.
-
-## Licenca
-
-Licenca ainda nao definida. Antes de publicar ou distribuir o projeto, escolha uma licenca adequada e adicione um arquivo `LICENSE` na raiz do repositorio.
+O código existente antecede o reposicionamento corporativo e ainda contém fluxos e linguagem do contexto universitário original. Esta atualização altera documentação; não afirma que os fluxos corporativos, setores, organizações ou dashboard gerencial já estejam implementados.
