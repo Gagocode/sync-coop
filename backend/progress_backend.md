@@ -211,6 +211,20 @@ O backend passa a ter uma base organizada para desenvolvimento futuro, preservan
 ## 2026-10-06
 
 ### Funcionalidade
+Base organizacional mínima
+
+### Arquivos alterados
+Modelos, repositórios, serviços, controllers, schema e inicialização do banco.
+
+### Resumo
+Adicionadas organização e setor, campos organizacionais opcionais em `users`, setup transacional explícito da primeira organização/gestor, CRUD de setores e atribuição de usuários a setores. A migração preserva registros legados sem atribuir contexto automaticamente.
+
+### Impacto
+O backend passa a oferecer o contexto organizacional mínimo. XP, DISC, conquistas e certificados permanecem inalterados.
+
+## 2026-10-06
+
+### Funcionalidade
 Reposicionamento documental do produto
 
 ### Arquivos alterados

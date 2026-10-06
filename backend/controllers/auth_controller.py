@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, redirect, request, session, url_for
 
 from services.auth_service import AuthError, authenticate_user, get_user_by_id, register_user
 from services.disc_service import get_initial_disc_result
+from services.organization_service import organization_setup_available
 
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
@@ -17,6 +18,19 @@ def login_required(view):
             if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
                 return jsonify({"error": "Autenticacao obrigatoria"}), 401
             return redirect(url_for("pages.login_page"))
+        return view(user, *args, **kwargs)
+
+    return wrapped_view
+
+
+def manager_required(view):
+    @wraps(view)
+    @login_required
+    def wrapped_view(user, *args, **kwargs):
+        if user.role != "manager" or user.organization_id is None:
+            if _wants_json():
+                return jsonify({"error": "Acesso restrito a gestores"}), 403
+            return "Acesso restrito a gestores", 403
         return view(user, *args, **kwargs)
 
     return wrapped_view
@@ -74,6 +88,8 @@ def _request_data():
 def _success_response(user, status_code=200):
     if _wants_json():
         return jsonify({"user": user.to_public_dict()}), status_code
+    if organization_setup_available():
+        return redirect(url_for("organization.setup_page"))
     if not get_initial_disc_result(user.id):
         return redirect(url_for("disc.quiz_page"))
     if not user.classe:

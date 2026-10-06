@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Usuários - Sync Disc</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="app-page-hero">
+        <div><p class="page-eyebrow">{{ user.organization_name }}</p><h1>Usuários</h1><p>Visualize a organização e o setor de cada usuário.</p></div>
+        <a class="page-action" href="/gestao/setores/">Gerenciar setores</a>
+      </div>
+      {% if error %}<p class="error-message" role="alert">{{ error }}</p>{% endif %}
+      {% if not sectors %}<article class="panel"><p>Crie um setor antes de associar usuários.</p></article>{% endif %}
+      <section class="workspace-record-list" aria-label="Usuários da organização e contas sem vínculo">
+        {% for managed_user in users %}
+          <article class="workspace-card">
+            <h2>{{ managed_user.nome }}</h2>
+            <p>{{ managed_user.email }}</p>
+            <p><strong>Organização:</strong> {{ managed_user.organization_name or "Sem vínculo" }}</p>
+            <p><strong>Setor:</strong> {{ managed_user.sector_name or "Não definido" }}</p>
+            <p><strong>Papel:</strong> {{ managed_user.role or "Não definido" }}</p>
+            {% if managed_user.role != "manager" and sectors %}
+              <form action="/gestao/usuarios/{{ managed_user.id }}/setor" method="post">
+                <label>Alterar setor
+                  <select name="sector_id" required>
+                    <option value="" disabled {% if not managed_user.sector_id %}selected{% endif %}>Selecione um setor</option>
+                    {% for sector in sectors %}
+                      <option value="{{ sector.id }}" {% if managed_user.sector_id == sector.id %}selected{% endif %}>{{ sector.name }}</option>
+                    {% endfor %}
+                  </select>
+                </label>
+                <button class="button button-soft" type="submit">Salvar setor</button>
+              </form>
+            {% endif %}
+          </article>
+        {% else %}
+          <article class="panel"><p>Nenhum usuário para exibir.</p></article>
+        {% endfor %}
+      </section>
+      <p><a href="/dashboard">Voltar ao painel</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

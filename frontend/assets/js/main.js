@@ -192,6 +192,12 @@ const loadDashboard = async () => {
   const missions = (await missionsResponse.json()).missions || [];
   window.dashboardProfile = profile;
   const { user, disc_result: disc, projects = [], certificates = [], achievements, evolution } = profile;
+  const profileSector = user.sector_name
+    ? `Setor: ${user.sector_name}`
+    : user.curso
+      ? `Curso (legado): ${user.curso}`
+      : "Setor não informado";
+  document.querySelector("#profile-course").textContent = profileSector;
   document.querySelector("#profile-email").textContent = user.email || "-";
   document.querySelector("#profile-created").textContent = formatDate(user.created_at);
   renderDisc(disc);

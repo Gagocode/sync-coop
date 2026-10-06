@@ -26,7 +26,7 @@
           <h1>{{ user.nome }}</h1>
           <div class="public-identity">
             {% if user.classe %}<span class="public-class">{{ user.classe }}</span>{% endif %}
-            {% if user.curso %}<span>{{ user.curso }}</span>{% endif %}
+            {% if user.sector_name %}<span>Setor: {{ user.sector_name }}</span>{% elif user.curso %}<span>Curso (legado): {{ user.curso }}</span>{% endif %}
           </div>
           <p class="public-summary">
             {% if projects or certificates %}

@@ -28,6 +28,12 @@
           </div>
           <div class="xp-pill"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#xp"></use></svg><span>XP atual</span><strong id="dashboard-xp">{{ user.xp }}</strong></div>
         </section>
+        {% if user.role == "manager" %}
+          <section class="section-block" aria-label="Gestão da organização">
+            <a class="button button-soft" href="/gestao/setores/">Gerenciar setores</a>
+            <a class="button button-soft" href="/gestao/usuarios/">Gerenciar usuários</a>
+          </section>
+        {% endif %}
 
         <nav class="workspace-tabs" role="tablist" aria-label="Areas do Sync Disc">
           <button class="workspace-tab is-active" id="tab-dashboard" type="button" role="tab" aria-selected="true" aria-controls="panel-dashboard" data-tab="dashboard">Dashboard</button>
@@ -45,7 +51,7 @@
             <div class="profile-avatar"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg></div>
             <div class="profile-summary">
               <div class="section-heading compact"><div><p class="eyebrow">PERFIL</p><h2 id="profile-heading">{{ user.nome }}</h2></div><span id="dashboard-level" class="level-badge"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#level"></use></svg>Nivel 1</span></div>
-              <p class="profile-meta">{{ user.curso or "Curso nao informado" }} <span>-</span> {{ user.classe or "Classe aguardando DISC" }}</p>
+              <p class="profile-meta">{% if user.sector_name %}Setor: {{ user.sector_name }}{% elif user.curso %}Curso (legado): {{ user.curso }}{% else %}Setor não informado{% endif %} <span>-</span> {{ user.classe or "Classe aguardando DISC" }}</p>
               <div class="progress-track" aria-label="Progresso de XP"><span id="dashboard-progress" style="width: 0%"></span></div>
               <p id="dashboard-progress-caption" class="progress-caption"><strong>{{ user.xp }} XP</strong> para continuar sua jornada</p>
             </div>
@@ -68,7 +74,7 @@
 
         <section class="workspace-panel" id="panel-profile" role="tabpanel" aria-labelledby="tab-profile" data-panel="profile" hidden>
           <div class="workspace-heading"><div><p class="eyebrow">SUA JORNADA</p><h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg>Perfil</h2><p class="muted">Uma visao reunida da sua identidade e do seu desenvolvimento.</p></div><a class="button button-soft" href="/perfil/{{ user.nome|urlencode }}" target="_blank" rel="noopener">Ver perfil publico</a></div>
-          <div class="profile-detail-grid"><article class="workspace-card"><div class="profile-avatar large"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg></div><div><h3 id="profile-name">{{ user.nome }}</h3><p id="profile-course" class="muted">{{ user.curso or "Curso nao informado" }}</p><p id="profile-class" class="profile-meta">{{ user.classe or "Classe aguardando DISC" }}</p></div><dl class="profile-facts"><div><dt>Email</dt><dd id="profile-email">Carregando...</dd></div><div><dt>Membro desde</dt><dd id="profile-created">Carregando...</dd></div><div><dt>XP acumulado</dt><dd id="profile-xp">{{ user.xp }}</dd></div></dl></article>
+          <div class="profile-detail-grid"><article class="workspace-card"><div class="profile-avatar large"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg></div><div><h3 id="profile-name">{{ user.nome }}</h3><p id="profile-course" class="muted">{% if user.sector_name %}Setor: {{ user.sector_name }}{% elif user.curso %}Curso (legado): {{ user.curso }}{% else %}Setor não informado{% endif %}</p><p id="profile-class" class="profile-meta">{{ user.classe or "Classe aguardando DISC" }}</p></div><dl class="profile-facts"><div><dt>Email</dt><dd id="profile-email">Carregando...</dd></div><div><dt>Membro desde</dt><dd id="profile-created">Carregando...</dd></div><div><dt>XP acumulado</dt><dd id="profile-xp">{{ user.xp }}</dd></div></dl></article>
             <article class="workspace-card"><div class="section-heading"><div><p class="eyebrow">COMPORTAMENTO</p><h3>DISC Inicial e observado</h3></div></div><div id="profile-disc" class="loading-state">Carregando DISC...</div></article></div>
           {% include "_professional_form.html" %}
         </section>
