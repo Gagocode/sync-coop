@@ -1,0 +1,53 @@
+<section class="professional-section" aria-labelledby="professional-title">
+  <div class="professional-section-heading">
+    <h2 id="professional-title">Informações Profissionais</h2>
+    <p>Complete os dados que ajudam recrutadores a conhecer sua atuação.</p>
+  </div>
+  {% if professional_error %}<p class="professional-message professional-error" role="alert">{{ professional_error }}</p>{% endif %}
+  {% if request.args.get('saved') %}<p class="professional-message professional-success" role="status">Informações profissionais salvas.</p>{% endif %}
+  <form id="dashboard-professional-form" class="professional-form" action="/perfil/profissional" method="post" enctype="multipart/form-data">
+    <div class="professional-card-grid">
+      <article class="professional-tile professional-tile--intro">
+        <div class="professional-tile-heading"><h3>Apresentação</h3><p>Conte quem você é e a carreira que busca.</p></div>
+        <label>Biografia<textarea name="biografia" rows="4" maxlength="600" placeholder="Uma breve apresentação profissional">{{ professional_profile.biografia or '' }}</textarea></label>
+        <label>Objetivo Profissional<input name="objetivo_profissional" type="text" maxlength="120" value="{{ professional_profile.objetivo_profissional or '' }}" placeholder="Ex.: Desenvolvedor Backend"></label>
+      </article>
+      <article class="professional-tile professional-tile--links">
+        <div class="professional-tile-heading"><h3>Links profissionais</h3><p>Onde conhecer seu trabalho.</p></div>
+        <label>GitHub<input name="github" type="url" maxlength="500" value="{{ professional_profile.github or '' }}" placeholder="https://github.com/usuario"></label>
+        <label>LinkedIn<input name="linkedin" type="url" maxlength="500" value="{{ professional_profile.linkedin or '' }}" placeholder="https://linkedin.com/in/usuario"></label>
+        <label>Portfólio/Site<input name="portfolio" type="url" maxlength="500" value="{{ professional_profile.portfolio or '' }}" placeholder="https://seusite.com"></label>
+      </article>
+      <article class="professional-tile professional-tile--skills">
+        <div class="professional-tile-heading"><h3>Tecnologias</h3><p>Liste as ferramentas com que gosta de trabalhar.</p></div>
+        <label>Tecnologias Favoritas<input name="tecnologias_favoritas" type="text" maxlength="250" value="{{ professional_profile.tecnologias_favoritas or '' }}" placeholder="Ex.: Python, Docker, Java"></label>
+      </article>
+      <article class="professional-tile professional-tile--location">
+        <div class="professional-tile-heading"><h3>Localização</h3><p>Informe sua cidade e região.</p></div>
+        <div class="professional-location-fields">
+          <label>Cidade<input name="cidade" type="text" maxlength="100" value="{{ professional_profile.cidade or '' }}"></label>
+          <label>Estado/Região<input name="estado_regiao" type="text" maxlength="100" value="{{ professional_profile.estado_regiao or '' }}"></label>
+        </div>
+      </article>
+      <article class="professional-tile professional-tile--availability">
+        <div class="professional-tile-heading"><h3>Estágio</h3><p>Sinalize sua disponibilidade para oportunidades.</p></div>
+        <label>Disponível para Estágio
+          <select name="disponivel_estagio">
+            <option value="" {% if professional_profile.disponivel_estagio is none or professional_profile.disponivel_estagio == '' %}selected{% endif %}>Não informado</option>
+            <option value="sim" {% if professional_profile.disponivel_estagio == 1 or professional_profile.disponivel_estagio == 'sim' %}selected{% endif %}>Sim</option>
+            <option value="nao" {% if professional_profile.disponivel_estagio == 0 or professional_profile.disponivel_estagio == 'nao' %}selected{% endif %}>Não</option>
+          </select>
+        </label>
+      </article>
+      <article class="professional-tile professional-tile--resume">
+        <div class="professional-tile-heading"><h3>Currículo PDF</h3><p>Envie seu currículo tradicional em PDF.</p></div>
+        <label>Arquivo PDF<input name="curriculo" type="file" accept=".pdf,application/pdf" aria-describedby="resume-help"><small id="resume-help">Até 5 MB. Um novo envio substitui o atual.</small></label>
+        <a id="dashboard-resume-link" href="/perfil/curriculo" {% if not professional_profile.curriculo_path %}hidden{% endif %}>Baixar currículo atual</a>
+      </article>
+    </div>
+    <div class="professional-form-footer">
+      <p id="dashboard-professional-status" class="professional-message" role="status" aria-live="polite" hidden></p>
+      <button type="submit">Salvar informações</button>
+    </div>
+  </form>
+</section>

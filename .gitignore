@@ -1,0 +1,91 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+coverage/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Java / JVM
+target/
+.gradle/
+*.class
+
+# .NET
+bin/
+obj/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local databases and generated storage
+*.sqlite
+*.sqlite3
+*.db
+storage/
+uploads/
+!backend/uploads/
+!backend/uploads/.gitkeep
+!backend/uploads/certificates/
+!backend/uploads/certificates/.gitkeep
+tmp/
+temp/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Package manager caches
+.npm/
+.yarn/
+.pnpm-store/
+
+# Generated archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+
+# Local-only notes
+*.local
+
+#local
+backend/upload  
+.docs/analise_escopo_e_futures.md

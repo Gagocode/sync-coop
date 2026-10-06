@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Missoes - Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="app-page-hero mission-page-hero"><div><p class="page-eyebrow">Sua próxima ação</p><h1><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#mission"></use></svg>Missões</h1><p>Objetivos que transformam atividade em evolução profissional.</p></div><div class="page-xp"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#xp"></use></svg><strong>{{ user.xp }}</strong><span>XP acumulado</span></div></div>
+      <section class="mission-list">
+        {% for mission in missions %}
+          <article class="mission-card {{ 'mission-done' if mission.status == 'Concluida' else '' }}">
+            <div>
+              <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#mission"></use></svg>{{ mission.nome }}</h2>
+              <p>{{ mission.descricao }}</p>
+              <p class="mission-state"><strong>Status:</strong> {{ mission.status }}</p>
+              <p class="mission-xp"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#xp"></use></svg><strong>Recompensa:</strong> {{ mission.xp_recompensa }} XP</p>
+              {% if mission.data_conclusao %}
+                <p><strong>Concluida em:</strong> {{ mission.data_conclusao }}</p>
+              {% endif %}
+            </div>
+          </article>
+        {% else %}
+          <div class="empty-state"><p>Nenhuma missão disponível no momento. Continue registrando suas atividades no Currículo Vivo.</p><a href="/dashboard">Voltar à jornada</a></div>
+        {% endfor %}
+      </section>
+      <p><a href="/dashboard">Voltar ao painel</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

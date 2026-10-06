@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ "Editar" if certificate else "Novo" }} Certificado - Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="app-page-hero"><div><p class="page-eyebrow"><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#resume"></use></svg>Currículo Vivo</p><h1><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg>{{ "Editar" if certificate else "Novo" }} certificado</h1><p>Adicione uma formação concluída à sua trajetória.</p></div></div>
+      {% if error %}
+        <p class="error-message">{{ error }}</p>
+      {% endif %}
+      <form class="form-panel" action="{{ '/certificados/' ~ certificate.id ~ '/editar' if certificate else '/certificados/' }}" method="post" enctype="multipart/form-data">
+        <label>
+          Nome
+          <input type="text" name="nome" value="{{ certificate.nome if certificate else '' }}" required>
+        </label>
+        <label>
+          Instituicao
+          <input type="text" name="instituicao" value="{{ certificate.instituicao if certificate else '' }}" required>
+        </label>
+        <label>
+          Carga horaria
+          <input type="number" name="carga_horaria" min="1" value="{{ certificate.carga_horaria if certificate else '' }}" required>
+        </label>
+        <label>
+          Data de conclusao
+          <input type="date" name="data_conclusao" value="{{ certificate.data_conclusao if certificate else '' }}" required>
+        </label>
+        <label>
+          Arquivo
+          <input type="file" name="arquivo">
+        </label>
+        <button type="submit">Salvar</button>
+      </form>
+      <p><a href="/certificados/">Voltar para certificados</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

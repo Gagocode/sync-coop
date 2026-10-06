@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar · Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body class="entry-page">
+    <main class="entry-layout">
+      <section class="entry-story" aria-labelledby="entry-title">
+        <a class="entry-brand" href="/login" aria-label="Sync Disc, início"><img class="brand-symbol" src="/assets/images/logo.png" alt="" width="40" height="40"> Sync Disc</a>
+        <div class="entry-copy">
+          <p class="entry-kicker">Sua trajetória profissional</p>
+          <h1 id="entry-title">Seu currículo não termina quando é enviado.</h1>
+          <p class="entry-lead">Construa uma trajetória profissional viva através de projetos, experiências e evolução contínua.</p>
+        </div>
+        <div class="journey-visual" aria-label="Uma trajetória que conecta perfil, DISC, missões e Currículo Vivo">
+          <div class="journey-line"><span></span></div>
+          <div class="journey-steps"><span><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg>Perfil</span><span><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#disc"></use></svg>DISC</span><span><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#mission"></use></svg>Missões</span><span><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#resume"></use></svg>Currículo Vivo</span></div>
+          <p>Uma história profissional em construção.</p>
+        </div>
+      </section>
+      <section class="entry-form-area" aria-labelledby="login-title">
+        <div class="entry-form-wrap">
+          <p class="entry-step">Continue sua jornada</p>
+          <h2 id="login-title">Que bom ter você de volta.</h2>
+          <p class="entry-form-intro">Entre para acompanhar seu perfil e suas próximas conquistas.</p>
+          <form class="entry-form" action="/auth/login" method="post">
+            <label>Email<input type="email" name="email" autocomplete="email" required></label>
+            <label>Senha<input type="password" name="senha" autocomplete="current-password" required></label>
+            <button type="submit">Entrar</button>
+          </form>
+          <p class="entry-switch">Ainda não começou? <a href="/cadastro">Criar minha conta</a></p>
+        </div>
+      </section>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

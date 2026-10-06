@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ certificate.nome }} - Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <article class="panel">
+        <p class="page-eyebrow"><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#resume"></use></svg>Certificado · Currículo Vivo</p>
+        <h1><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg>{{ certificate.nome }}</h1>
+        <p><strong>Instituicao:</strong> {{ certificate.instituicao }}</p>
+        <p><strong>Carga horaria:</strong> {{ certificate.carga_horaria }}h</p>
+        <p><strong>Data de conclusao:</strong> {{ certificate.data_conclusao }}</p>
+        <p><strong>Data de cadastro:</strong> {{ certificate.created_at }}</p>
+        {% if certificate.arquivo_path %}
+          <p><a href="/certificados/{{ certificate.id }}/arquivo">Abrir arquivo</a></p>
+        {% endif %}
+      </article>
+      <p><a href="/certificados/{{ certificate.id }}/editar">Editar certificado</a></p>
+      <form action="/certificados/{{ certificate.id }}/excluir" method="post">
+        <button type="submit">Excluir certificado</button>
+      </form>
+      <p><a href="/certificados/">Voltar para certificados</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seu DISC Inicial · Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body class="journey-page result-page">
+    {% set profiles = {
+      'D': {'class': 'Executor Estratégico', 'story': 'Você tende a avançar com iniciativa e transformar desafios em decisões. Na sua trajetória, essa energia pode ajudar equipes a sair da intenção e chegar à ação.', 'strengths': 'Iniciativa, decisão e foco em objetivos.', 'growth': 'Ouvir outras perspectivas e reservar tempo para avaliar caminhos antes de decidir.'},
+      'I': {'class': 'Comunicador', 'story': 'Você tende a criar conexão e dar vida às ideias em grupo. Na sua trajetória, essa facilidade pode aproximar pessoas e abrir espaço para novas possibilidades.', 'strengths': 'Comunicação, colaboração e capacidade de engajar.', 'growth': 'Organizar ideias em próximos passos e acompanhar os detalhes até a conclusão.'},
+      'S': {'class': 'Colaborador', 'story': 'Você tende a construir com consistência e atenção ao ritmo das pessoas. Na sua trajetória, essa presença ajuda equipes a manter confiança e continuidade.', 'strengths': 'Escuta, consistência e cooperação.', 'growth': 'Experimentar mudanças com mais iniciativa e tornar suas contribuições visíveis.'},
+      'C': {'class': 'Analista', 'story': 'Você tende a buscar clareza e compreender os detalhes antes de avançar. Na sua trajetória, esse cuidado ajuda a transformar informação em decisões bem fundamentadas.', 'strengths': 'Análise, organização e atenção à qualidade.', 'growth': 'Compartilhar ideias ainda em construção e equilibrar precisão com velocidade.'}
+    } %}
+    {% set profile = profiles.get(result.predominant_dimension, profiles['C']) %}
+    <main class="result-shell">
+      <header class="journey-header"><a class="entry-brand" href="/dashboard"><img class="brand-symbol" src="/assets/images/logo.png" alt="" width="40" height="40"> Sync Disc</a><span>Seu ponto de partida</span></header>
+      <section class="result-opening">
+        <div class="result-title-block"><p class="entry-kicker"><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#disc"></use></svg>Seu perfil começa a ganhar forma</p><p class="result-class-label">Classe inicial</p><h1>{{ profile.class }}</h1><p class="result-story">{{ profile.story }}</p></div>
+        <div class="result-initial-mark" aria-label="Dimensão predominante: {{ result.predominant_dimension }}"><span>{{ result.predominant_dimension }}</span><small>em destaque</small></div>
+      </section>
+      <section class="result-detail-grid">
+        <article class="result-note"><h2>Seus pontos fortes</h2><p>{{ profile.strengths }}</p></article>
+        <article class="result-note"><h2>Oportunidades de evolução</h2><p>{{ profile.growth }}</p></article>
+      </section>
+      <section class="initial-disc-section" aria-labelledby="initial-disc-title">
+        <div class="result-section-heading"><div><p class="entry-kicker">Uma referência para sua jornada</p><h2 id="initial-disc-title"><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#disc"></use></svg>DISC Inicial</h2></div><p>Este é seu ponto de partida. Suas experiências e missões ajudam a acompanhar sua evolução.</p></div>
+        <div class="disc-profile-list">
+          {% for dimension, percentage in result.percentages.items() %}
+            <div class="disc-profile-row"><span class="disc-code disc-code-{{ dimension|lower }}">{{ dimension }}</span><span class="disc-name">{{ {'D':'Dominância','I':'Influência','S':'Estabilidade','C':'Conformidade'}.get(dimension, dimension) }}</span><div class="disc-profile-track"><span class="disc-fill disc-fill-{{ dimension|lower }}" style="width: {{ percentage }}%"></span></div><strong>{{ percentage }}%</strong></div>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="next-chapter"><div><p class="entry-kicker">Próximo capítulo</p><h2>A jornada continua no seu perfil.</h2><p>Sua primeira missão é completar seu perfil e começar a reunir evidências para o seu Currículo Vivo.</p><p class="first-mission"><span>Primeira missão</span><strong>Completar Perfil</strong></p></div><div class="next-chapter-action"><span class="chapter-number"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#mission"></use></svg></span><a class="journey-cta" href="/dashboard">Iniciar Minha Jornada</a></div></section>
+      <footer class="journey-footer"><span>DISC Inicial</span><a href="/perfil/">Ver perfil inicial</a></footer>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

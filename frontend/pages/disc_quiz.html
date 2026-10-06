@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seu ponto de partida · Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body class="journey-page quiz-page">
+    <main class="journey-shell">
+      <header class="journey-header"><a class="entry-brand" href="/dashboard"><img class="brand-symbol" src="/assets/images/logo.png" alt="" width="40" height="40"> Sync Disc</a><span>Seu ponto de partida</span></header>
+      <section class="quiz-intro"><p class="entry-kicker"><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#disc"></use></svg>Uma jornada de descoberta</p><h1>As escolhas do seu caminho.</h1><p>Imagine cada situação e escolha a resposta que mais se aproxima de como você agiria.</p></section>
+      {% if error %}<p class="error-message" role="alert">{{ error }}</p>{% endif %}
+      <form class="journey-quiz" action="/disc/" method="post" data-journey-quiz>
+        <div class="quiz-progress-head"><span data-step-label>Etapa 1 de {{ questions|length }}</span><span data-step-percent>0%</span></div>
+        <div class="quiz-progress-track" role="progressbar" aria-label="Progresso do quiz" aria-valuemin="0" aria-valuemax="{{ questions|length }}" aria-valuenow="0"><span data-progress-fill></span></div>
+        {% for question in questions %}
+          <fieldset class="journey-question" data-question-index="{{ loop.index0 }}">
+            <legend>{{ question.text }}</legend>
+            <div class="scenario-options">
+              {% for option in question.options %}
+                <label class="scenario-option"><input type="radio" name="{{ question.id }}" value="{{ option.dimension }}" required><span>{{ option.text }}</span><span class="option-mark" aria-hidden="true"></span></label>
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endfor %}
+        <div class="quiz-controls"><button class="quiz-back" type="button" data-quiz-back hidden>Voltar</button><button type="button" data-quiz-next>Próxima etapa</button><button type="submit" data-quiz-submit hidden>Ver meu ponto de partida</button></div>
+      </form>
+      <footer class="journey-footer"><span>DISC Inicial</span><span>Seu resultado é o início de uma evolução contínua.</span></footer>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

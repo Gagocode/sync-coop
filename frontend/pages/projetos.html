@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Projetos - Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="app-page-hero"><div><p class="page-eyebrow"><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#resume"></use></svg>Currículo Vivo</p><h1><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#project"></use></svg>Projetos</h1><p>Trabalhos que tornam sua trajetória visível.</p></div><a class="page-action" href="/projetos/novo">Adicionar projeto</a></div>
+      <section class="project-list">
+        {% if projects %}
+          {% for project in projects %}
+            <article class="project-card">
+              <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#project"></use></svg>{{ project.titulo }}</h2>
+              <p>{{ project.descricao }}</p>
+              <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
+              <p><a href="/projetos/{{ project.id }}">Visualizar</a></p>
+            </article>
+          {% endfor %}
+        {% else %}
+          <article class="panel">
+            <p>Nenhum projeto cadastrado.</p>
+          </article>
+        {% endif %}
+      </section>
+      <p><a href="/dashboard">Voltar ao painel</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

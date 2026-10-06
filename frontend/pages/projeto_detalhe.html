@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ project.titulo }} - Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <article class="panel">
+        <p class="page-eyebrow"><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#resume"></use></svg>Projeto · Currículo Vivo</p>
+        <h1><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#project"></use></svg>{{ project.titulo }}</h1>
+        <p>{{ project.descricao }}</p>
+        <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
+        {% if project.link %}
+          <p><strong>Link:</strong> <a href="{{ project.link }}">{{ project.link }}</a></p>
+        {% endif %}
+        <p><strong>Data de criacao:</strong> {{ project.created_at }}</p>
+      </article>
+      <p><a href="/projetos/{{ project.id }}/editar">Editar projeto</a></p>
+      <form action="/projetos/{{ project.id }}/excluir" method="post">
+        <button type="submit">Excluir projeto</button>
+      </form>
+      <p><a href="/projetos/">Voltar para projetos</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

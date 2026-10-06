@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+    <link rel="stylesheet" href="/assets/css/professional-profile.css">
+  </head>
+  <body class="dashboard-page">
+    <div class="dashboard-shell">
+      <header class="topbar">
+        <a class="brand" href="/dashboard"><img class="brand-mark" src="/assets/images/logo.png" alt="" width="40" height="40"><span>Sync Disc</span></a>
+        <form action="/auth/logout" method="post"><button class="button button-ghost" type="submit">Sair</button></form>
+      </header>
+      <main>
+        <section class="welcome-row">
+          <div>
+            <p class="eyebrow">SEU CURRICULO VIVO</p>
+            <h1>Ola, {{ user.nome.split(' ')[0] }}</h1>
+            <p class="muted">Cada experiencia e uma nova evidencia da sua evolucao.</p>
+          </div>
+          <div class="xp-pill"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#xp"></use></svg><span>XP atual</span><strong id="dashboard-xp">{{ user.xp }}</strong></div>
+        </section>
+
+        <nav class="workspace-tabs" role="tablist" aria-label="Areas do Sync Disc">
+          <button class="workspace-tab is-active" id="tab-dashboard" type="button" role="tab" aria-selected="true" aria-controls="panel-dashboard" data-tab="dashboard">Dashboard</button>
+          <button class="workspace-tab" id="tab-profile" type="button" role="tab" aria-selected="false" aria-controls="panel-profile" data-tab="profile">Perfil</button>
+          <button class="workspace-tab" id="tab-projects" type="button" role="tab" aria-selected="false" aria-controls="panel-projects" data-tab="projects">Projetos</button>
+          <button class="workspace-tab" id="tab-certificates" type="button" role="tab" aria-selected="false" aria-controls="panel-certificates" data-tab="certificates">Certificados</button>
+          <button class="workspace-tab" id="tab-missions" type="button" role="tab" aria-selected="false" aria-controls="panel-missions" data-tab="missions">Missoes</button>
+          <button class="workspace-tab" id="tab-achievements" type="button" role="tab" aria-selected="false" aria-controls="panel-achievements" data-tab="achievements">Conquistas</button>
+          <button class="workspace-tab" id="tab-evolution" type="button" role="tab" aria-selected="false" aria-controls="panel-evolution" data-tab="evolution">Evolucao</button>
+        </nav>
+
+        <div id="dashboard-feedback" class="dashboard-feedback" role="status" aria-live="polite"></div>
+        <section class="workspace-panel is-active" id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard" data-panel="dashboard">
+          <section class="profile-hero card" aria-labelledby="profile-heading">
+            <div class="profile-avatar"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg></div>
+            <div class="profile-summary">
+              <div class="section-heading compact"><div><p class="eyebrow">PERFIL</p><h2 id="profile-heading">{{ user.nome }}</h2></div><span id="dashboard-level" class="level-badge"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#level"></use></svg>Nivel 1</span></div>
+              <p class="profile-meta">{{ user.curso or "Curso nao informado" }} <span>-</span> {{ user.classe or "Classe aguardando DISC" }}</p>
+              <div class="progress-track" aria-label="Progresso de XP"><span id="dashboard-progress" style="width: 0%"></span></div>
+              <p id="dashboard-progress-caption" class="progress-caption"><strong>{{ user.xp }} XP</strong> para continuar sua jornada</p>
+            </div>
+            <button class="button button-soft" type="button" data-open-tab="profile">Meu perfil</button>
+          </section>
+
+          <article class="mission-feature mission-persistent" id="mission-feature"><div class="section-heading"><div><p class="eyebrow light-eyebrow">PRÓXIMO PASSO</p><h2>Missão em destaque</h2></div></div><div id="active-mission" class="loading-state">Carregando missão...</div><button class="mission-more" type="button" data-open-tab="missions">Ver todas as missões <span aria-hidden="true">→</span></button></article>
+
+          <section class="top-grid"><article class="disc-card card" id="disc-card"><div class="section-heading"><div><p class="eyebrow">SEU PERFIL COMPORTAMENTAL</p><h2>DISC Inicial</h2></div><span class="icon-bubble purple"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#disc"></use></svg></span></div><div id="disc-content" class="loading-state">Carregando seu perfil...</div></article></section>
+
+          <section class="section-block" aria-labelledby="next-missions-heading"><div class="section-heading"><div><p class="eyebrow">CONTINUE AVANCANDO</p><h2 id="next-missions-heading">Proximas missoes</h2></div><button class="text-button" type="button" data-open-tab="missions">Todas as missoes</button></div><div id="next-missions" class="mission-row loading-state">Carregando missoes...</div></section>
+          <section class="section-block" aria-labelledby="curriculum-heading"><div class="section-heading"><div><p class="eyebrow">EVIDENCIAS DA SUA JORNADA</p><h2 id="curriculum-heading"><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#resume"></use></svg>Curriculo Vivo</h2></div></div><div class="dashboard-grid curriculum-grid">
+            <article class="collection-card card"><div class="collection-icon blue"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#project"></use></svg></div><div><h3>Projetos</h3><p id="project-count">0 projetos registrados</p></div><button class="text-button" type="button" data-open-tab="projects">Abrir</button><div id="project-preview" class="collection-preview"></div></article>
+            <article class="collection-card card"><div class="collection-icon orange"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg></div><div><h3>Certificados</h3><p id="certificate-count">0 certificados registrados</p></div><button class="text-button" type="button" data-open-tab="certificates">Abrir</button><div id="certificate-preview" class="collection-preview"></div></article>
+          </div></section>
+          <section class="section-block" aria-labelledby="dashboard-achievements-heading"><div class="section-heading"><div><p class="eyebrow">MARCOS ALCANCADOS</p><h2 id="dashboard-achievements-heading">Conquistas</h2></div><button class="text-button" type="button" data-open-tab="achievements">Ver todas</button></div><div id="dashboard-achievement-list" class="achievement-dashboard-grid loading-state">Carregando conquistas...</div></section>
+          <section class="section-block" aria-labelledby="dashboard-evolution-heading"><div class="section-heading"><div><p class="eyebrow">VISAO GERAL</p><h2 id="dashboard-evolution-heading">Sua evolucao</h2></div><button class="text-button" type="button" data-open-tab="evolution">Ver evolucao</button></div><div class="evolution-grid card"><div class="stat-item"><span class="stat-icon purple"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#project"></use></svg></span><strong id="evolution-projects">0</strong><span>Projetos cadastrados</span></div><div class="stat-item"><span class="stat-icon orange"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg></span><strong id="evolution-certificates">0</strong><span>Certificados cadastrados</span></div><div class="stat-item"><span class="stat-icon green"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#mission"></use></svg></span><strong id="evolution-missions">0</strong><span>Missoes concluidas</span></div><div class="stat-item"><span class="stat-icon blue"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#achievement"></use></svg></span><strong id="evolution-achievements">0</strong><span>Conquistas desbloqueadas</span></div><div class="stat-item"><span class="stat-icon blue"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#xp"></use></svg></span><strong id="evolution-xp">{{ user.xp }}</strong><span>XP acumulado</span></div></div></section>
+          <section class="section-block" aria-labelledby="history-heading"><div class="section-heading"><div><p class="eyebrow">REGISTROS RECENTES</p><h2 id="history-heading">Historico de atividades</h2></div></div><div id="history-list" class="activity-dashboard-list loading-state">Carregando historico...</div></section>
+        </section>
+
+        <section class="workspace-panel" id="panel-profile" role="tabpanel" aria-labelledby="tab-profile" data-panel="profile" hidden>
+          <div class="workspace-heading"><div><p class="eyebrow">SUA JORNADA</p><h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg>Perfil</h2><p class="muted">Uma visao reunida da sua identidade e do seu desenvolvimento.</p></div><a class="button button-soft" href="/perfil/{{ user.nome|urlencode }}" target="_blank" rel="noopener">Ver perfil publico</a></div>
+          <div class="profile-detail-grid"><article class="workspace-card"><div class="profile-avatar large"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg></div><div><h3 id="profile-name">{{ user.nome }}</h3><p id="profile-course" class="muted">{{ user.curso or "Curso nao informado" }}</p><p id="profile-class" class="profile-meta">{{ user.classe or "Classe aguardando DISC" }}</p></div><dl class="profile-facts"><div><dt>Email</dt><dd id="profile-email">Carregando...</dd></div><div><dt>Membro desde</dt><dd id="profile-created">Carregando...</dd></div><div><dt>XP acumulado</dt><dd id="profile-xp">{{ user.xp }}</dd></div></dl></article>
+            <article class="workspace-card"><div class="section-heading"><div><p class="eyebrow">COMPORTAMENTO</p><h3>DISC Inicial e observado</h3></div></div><div id="profile-disc" class="loading-state">Carregando DISC...</div></article></div>
+          {% include "_professional_form.html" %}
+        </section>
+
+        <section class="workspace-panel" id="panel-projects" role="tabpanel" aria-labelledby="tab-projects" data-panel="projects" hidden>
+          <div class="workspace-heading"><div><p class="eyebrow">CURRICULO VIVO</p><h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#project"></use></svg>Projetos</h2><p class="muted">Projetos e experiencias que mostram seu trabalho em pratica.</p></div><button class="button button-primary" type="button" data-open-dialog="project-dialog">+ Adicionar projeto</button></div>
+          <div id="project-list" class="workspace-record-list loading-state">Carregando projetos...</div>
+        </section>
+
+        <section class="workspace-panel" id="panel-certificates" role="tabpanel" aria-labelledby="tab-certificates" data-panel="certificates" hidden>
+          <div class="workspace-heading"><div><p class="eyebrow">CURRICULO VIVO</p><h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg>Certificados</h2><p class="muted">Formacoes e certificacoes concluidas ao longo da sua jornada.</p></div><button class="button button-primary" type="button" data-open-dialog="certificate-dialog">+ Adicionar certificado</button></div>
+          <div id="certificate-list" class="workspace-record-list loading-state">Carregando certificados...</div>
+        </section>
+
+        <section class="workspace-panel" id="panel-missions" role="tabpanel" aria-labelledby="tab-missions" data-panel="missions" hidden>
+          <div class="workspace-heading"><div><p class="eyebrow">PROXIMOS PASSOS</p><h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#mission"></use></svg>Missoes</h2><p class="muted">Acompanhe seus objetivos e o progresso da jornada.</p></div></div>
+          <div id="mission-list" class="workspace-record-list loading-state">Carregando missoes...</div>
+        </section>
+
+        <section class="workspace-panel" id="panel-achievements" role="tabpanel" aria-labelledby="tab-achievements" data-panel="achievements" hidden>
+          <div class="workspace-heading"><div><p class="eyebrow">MARCOS ALCANCADOS</p><h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#achievement"></use></svg>Conquistas</h2><p id="achievement-count" class="muted">Carregando conquistas...</p></div></div>
+          <div id="achievement-list" class="achievement-dashboard-grid loading-state">Carregando conquistas...</div>
+        </section>
+
+        <section class="workspace-panel" id="panel-evolution" role="tabpanel" aria-labelledby="tab-evolution" data-panel="evolution" hidden>
+          <div class="workspace-heading"><div><p class="eyebrow">PROGRESSO CONTINUO</p><h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#evolution"></use></svg>Evolucao</h2><p class="muted">Indicadores e historico reunidos em um so lugar.</p></div></div>
+          <div class="evolution-detail-grid"><article class="workspace-card"><p class="eyebrow">PROGRESSAO</p><h3 id="evolution-level-title">Nivel atual</h3><p id="evolution-level-copy" class="muted">Carregando...</p><div class="progress-track"><span id="evolution-progress" style="width:0%"></span></div><p id="evolution-progress-caption" class="progress-caption"></p></article><article class="workspace-card"><p class="eyebrow">INDICADORES</p><h3>Atividade na plataforma</h3><div class="evolution-grid compact-stats"><div class="stat-item"><strong id="detail-projects">0</strong><span>Projetos</span></div><div class="stat-item"><strong id="detail-certificates">0</strong><span>Certificados</span></div><div class="stat-item"><strong id="detail-missions">0</strong><span>Missoes concluidas</span></div><div class="stat-item"><strong id="detail-achievements">0</strong><span>Conquistas</span></div><div class="stat-item"><strong id="detail-xp">0</strong><span>XP</span></div></div></article></div>
+          <div class="section-heading history-heading"><div><p class="eyebrow">SUA TRAJETORIA</p><h3>Historico de atividades</h3></div></div><div id="evolution-history" class="activity-dashboard-list loading-state">Carregando historico...</div>
+        </section>
+      </main>
+      <footer class="dashboard-footer">Sync Disc - seu desenvolvimento, em movimento.</footer>
+    </div>
+
+    <dialog class="workspace-dialog" id="project-dialog"><form id="project-form" class="dialog-form"><div class="section-heading"><div><p class="eyebrow">CURRICULO VIVO</p><h2 id="project-dialog-title">Adicionar projeto</h2></div><button class="icon-button" type="button" data-close-dialog aria-label="Fechar">&times;</button></div><label>Titulo<input name="titulo" required></label><label>Descricao<textarea name="descricao" rows="4" required></textarea></label><label>Tecnologias<input name="tecnologias" required></label><label>Link (opcional)<input name="link" type="url"></label><p class="dialog-error" role="alert"></p><div class="dialog-actions"><button class="button button-ghost" type="button" data-close-dialog>Cancelar</button><button class="button button-primary" type="submit">Salvar projeto</button></div></form></dialog>
+    <dialog class="workspace-dialog" id="certificate-dialog"><form id="certificate-form" class="dialog-form"><div class="section-heading"><div><p class="eyebrow">CURRICULO VIVO</p><h2 id="certificate-dialog-title">Adicionar certificado</h2></div><button class="icon-button" type="button" data-close-dialog aria-label="Fechar">&times;</button></div><label>Nome<input name="nome" required></label><label>Instituicao<input name="instituicao" required></label><label>Carga horaria<input name="carga_horaria" type="number" min="1" required></label><label>Data de conclusao<input name="data_conclusao" type="date" required></label><label>Arquivo (opcional)<input name="arquivo" type="file"></label><p class="dialog-error" role="alert"></p><div class="dialog-actions"><button class="button button-ghost" type="button" data-close-dialog>Cancelar</button><button class="button button-primary" type="submit">Salvar certificado</button></div></form></dialog>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/professional-profile.js"></script>
+  </body>
+</html>

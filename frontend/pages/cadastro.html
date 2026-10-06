@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Criar conta · Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body class="entry-page">
+    <main class="entry-layout signup-layout">
+      <section class="entry-story" aria-labelledby="entry-title">
+        <a class="entry-brand" href="/login" aria-label="Sync Disc, início"><img class="brand-symbol" src="/assets/images/logo.png" alt="" width="40" height="40"> Sync Disc</a>
+        <div class="entry-copy">
+          <p class="entry-kicker">O próximo capítulo começa aqui</p>
+          <h1 id="entry-title">Sua identidade profissional está sempre em movimento.</h1>
+          <p class="entry-lead">Reúna experiências, descubra seu perfil e transforme cada passo em parte da sua trajetória.</p>
+        </div>
+        <ul class="benefit-list" aria-label="O que você vai construir">
+          <li><span><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg></span><div><strong>Perfil Público</strong><p>Apresente sua trajetória profissional.</p></div></li>
+          <li><span><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#disc"></use></svg></span><div><strong>DISC Evolutivo</strong><p>Acompanhe seu perfil comportamental ao longo do tempo.</p></div></li>
+          <li><span><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#mission"></use></svg></span><div><strong>Missões</strong><p>Encontre próximos passos para desenvolver sua carreira.</p></div></li>
+          <li><span><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#resume"></use></svg></span><div><strong>Currículo Vivo</strong><p>Reúna projetos, experiências e conquistas.</p></div></li>
+        </ul>
+      </section>
+      <section class="entry-form-area" aria-labelledby="signup-title">
+        <div class="entry-form-wrap">
+          <p class="entry-step"><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg>01 <span>·</span> Sua identidade</p>
+          <h2 id="signup-title">Vamos começar por você.</h2>
+          <p class="entry-form-intro">Crie sua conta para iniciar sua jornada profissional.</p>
+          <form class="entry-form" action="/auth/register" method="post">
+            <label>Nome<input type="text" name="nome" autocomplete="name" required></label>
+            <label>Email<input type="email" name="email" autocomplete="email" required></label>
+            <label>Senha<input type="password" name="senha" autocomplete="new-password" required></label>
+            <label>Curso <span class="optional-label">Opcional</span><input type="text" name="curso" autocomplete="off"></label>
+            <button type="submit">Criar conta</button>
+          </form>
+          <p class="entry-switch">Já tem uma conta? <a href="/login">Entrar</a></p>
+        </div>
+      </section>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

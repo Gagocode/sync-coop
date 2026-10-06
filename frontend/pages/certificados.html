@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Certificados - Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="app-page-hero"><div><p class="page-eyebrow"><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#resume"></use></svg>Currículo Vivo</p><h1><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg>Certificados</h1><p>Formações e aprendizados registrados na sua trajetória.</p></div><a class="page-action" href="/certificados/novo">Adicionar certificado</a></div>
+      <section class="certificate-list">
+        {% if certificates %}
+          {% for certificate in certificates %}
+            <article class="certificate-card">
+              <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg>{{ certificate.nome }}</h2>
+              <p><strong>Instituicao:</strong> {{ certificate.instituicao }}</p>
+              <p><strong>Carga horaria:</strong> {{ certificate.carga_horaria }}h</p>
+              <p><a href="/certificados/{{ certificate.id }}">Visualizar</a></p>
+            </article>
+          {% endfor %}
+        {% else %}
+          <article class="panel">
+            <p>Nenhum certificado cadastrado.</p>
+          </article>
+        {% endif %}
+      </section>
+      <p><a href="/dashboard">Voltar ao painel</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

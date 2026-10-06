@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Perfil - Sync Disc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+    <link rel="stylesheet" href="/assets/css/symbols.css">
+    <link rel="stylesheet" href="/assets/css/professional-profile.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <h1><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg>Sua trajetória</h1>
+      <p>Perfil, evolução e evidências reunidos em um só lugar.</p>
+      <section class="profile-grid">
+        <article class="panel">
+          <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg>Dados do usuario</h2>
+          <p><strong>Nome:</strong> {{ user.nome }}</p>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Curso:</strong> {{ user.curso or "Nao informado" }}</p>
+          <p><strong>Data de cadastro:</strong> {{ user.created_at }}</p>
+          <p><strong>Classe:</strong> {{ user.classe or "Aguardando DISC Inicial" }}</p>
+          <p><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#xp"></use></svg><strong>XP:</strong> {{ user.xp }}</p>
+        </article>
+
+        <article class="panel">
+          <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#disc"></use></svg>DISC</h2>
+          {% if disc_result %}
+            <p><strong>Inicial:</strong> {{ disc_result.predominant_dimension }} predominante</p>
+            {% if observed_disc_result.predominant_dimension %}
+              <p><strong>Observado:</strong> {{ observed_disc_result.predominant_dimension }} em destaque pelas atividades</p>
+            {% else %}
+              <p><strong>Observado:</strong> aguardando atividades no Curriculo Vivo.</p>
+            {% endif %}
+          {% else %}
+            <p>Resultado DISC Inicial ainda nao realizado.</p>
+            <p><a href="/disc/">Realizar Quiz DISC Inicial</a></p>
+          {% endif %}
+        </article>
+      </section>
+      {% include "_professional_form.html" %}
+      <section>
+        <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#disc"></use></svg>DISC Inicial x DISC Observado</h2>
+        <div class="disc-comparison-grid">
+          <article class="panel disc-comparison-card">
+            <h3>DISC Inicial</h3>
+            <p>Resultado do quiz narrativo. Ele continua intacto e nao e sobrescrito.</p>
+            {% if disc_result %}
+              <div class="disc-score-grid">
+                {% for dimension, score in disc_result.scores.items() %}
+                  <div><strong>{{ dimension }}</strong><span>{{ score }} pts</span></div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p>DISC Inicial ainda nao realizado.</p>
+            {% endif %}
+          </article>
+          <article class="panel disc-comparison-card">
+            <h3>DISC Observado</h3>
+            <p>Calculado automaticamente a partir de projetos, certificados, missoes e conquistas.</p>
+            <div class="disc-score-grid">
+              {% for dimension, score in observed_disc_result.scores.items() %}
+                <div><strong>{{ dimension }}</strong><span>{{ score }} pts</span></div>
+              {% endfor %}
+            </div>
+            <p><strong>Atualizado em:</strong> {{ observed_disc_result.updated_at }}</p>
+          </article>
+        </div>
+      </section>
+      <section>
+        <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#evolution"></use></svg>Evolucao</h2>
+        <div class="evolution-profile-grid">
+          <article class="panel">
+            <h3><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#level"></use></svg>Nivel atual</h3>
+            <p><strong>Nivel {{ evolution.level.current }}</strong></p>
+            <p><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#xp"></use></svg><strong>XP atual:</strong> {{ evolution.indicators.xp_current }}</p>
+            {% if evolution.level.next %}
+              <p><strong>Proximo nivel:</strong> Nivel {{ evolution.level.next }}</p>
+              <p><strong>XP para o proximo nivel:</strong> {{ evolution.level.xp_to_next }}</p>
+            {% else %}
+              <p><strong>Proximo nivel:</strong> Nivel maximo alcancado</p>
+            {% endif %}
+            <div class="progress-track" aria-label="Progresso para o proximo nivel">
+              <span style="width: {{ evolution.level.progress_percent }}%"></span>
+            </div>
+            <p>{{ evolution.level.progress_percent }}% de progresso</p>
+          </article>
+          <article class="panel">
+            <h3>Indicadores</h3>
+            <p><strong>Missoes concluidas:</strong> {{ evolution.indicators.missions_completed }}</p>
+            <p><strong>Projetos criados:</strong> {{ evolution.indicators.projects_created }}</p>
+            <p><strong>Certificados adicionados:</strong> {{ evolution.indicators.certificates_added }}</p>
+            <p><strong>Conquistas desbloqueadas:</strong> {{ evolution.indicators.achievements_unlocked }}</p>
+          </article>
+        </div>
+      </section>
+      <section>
+        <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#evolution"></use></svg>Historico recente</h2>
+        {% if evolution.history %}
+          <div class="activity-list">
+            {% for event in evolution.history %}
+              <article class="activity-card">
+                <h3><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#evolution"></use></svg>{{ event.titulo }}</h3>
+                <p>{{ event.descricao }}</p>
+                <p><strong>Data:</strong> {{ event.created_at }}</p>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>Nenhuma atividade registrada ainda.</p>
+        {% endif %}
+      </section>
+      <section>
+        <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#project"></use></svg>Projetos</h2>
+        {% if projects %}
+          <div class="project-list">
+            {% for project in projects %}
+              <article class="project-card">
+                <h3><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#project"></use></svg>{{ project.titulo }}</h3>
+                <p>{{ project.descricao }}</p>
+                <p><strong>Tecnologias:</strong> {{ project.tecnologias }}</p>
+                <p><a href="/projetos/{{ project.id }}">Visualizar projeto</a></p>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>Nenhum projeto cadastrado.</p>
+        {% endif %}
+      </section>
+      <section>
+        <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg>Certificados</h2>
+        {% if certificates %}
+          <div class="certificate-list">
+            {% for certificate in certificates %}
+              <article class="certificate-card">
+                <h3><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#certificate"></use></svg>{{ certificate.nome }}</h3>
+                <p><strong>Instituicao:</strong> {{ certificate.instituicao }}</p>
+                <p><strong>Carga horaria:</strong> {{ certificate.carga_horaria }}h</p>
+                <p><a href="/certificados/{{ certificate.id }}">Visualizar certificado</a></p>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>Nenhum certificado cadastrado.</p>
+        {% endif %}
+      </section>
+      <section>
+        <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#achievement"></use></svg>Conquistas</h2>
+        <p>{{ achievements.unlocked_count }} de {{ achievements.total_count }} conquistas desbloqueadas.</p>
+        {% if achievements.unlocked %}
+          <div class="achievement-list">
+            {% for achievement in achievements.unlocked %}
+              <article class="achievement-card">
+                <h3><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#{{ {'primeiro_passo':'disc', 'construtor':'project', 'desenvolvendo_habilidades':'certificate', 'explorador':'mission', 'curriculo_vivo':'resume'}.get(achievement.achievement_key, 'achievement') }}"></use></svg>{{ achievement.nome }}</h3>
+                <p>{{ achievement.descricao }}</p>
+                <p><strong>Desbloqueada em:</strong> {{ achievement.data_desbloqueio }}</p>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>Nenhuma conquista desbloqueada ainda.</p>
+        {% endif %}
+      </section>
+      <p><a href="/missoes/">Ver missoes</a></p>
+      <p><a href="/projetos/">Gerenciar projetos</a></p>
+      <p><a href="/certificados/">Gerenciar certificados</a></p>
+      <p><a href="/perfil/{{ user.nome|urlencode }}">Ver perfil publico</a></p>
+      <p><a href="/dashboard">Voltar ao painel</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

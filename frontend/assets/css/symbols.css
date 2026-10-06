@@ -1,0 +1,23 @@
+/* Símbolos vetoriais: conservam as caixas e as cores existentes. */
+.sd-icon { display:inline-block; width:1em; height:1em; flex:none; overflow:visible; vertical-align:-.15em; fill:none; stroke:currentColor; }
+.collection-icon .sd-icon,.stat-icon .sd-icon,.icon-bubble .sd-icon,.disc-empty-icon .sd-icon { width:24px; height:24px; }
+.stat-icon .sd-icon { width:18px; height:18px; }
+.dashboard-page .achievement-icon { display:grid; place-items:center; color:#9b4b18; }
+.dashboard-page .achievement-icon .sd-icon { width:25px; height:25px; }
+.dashboard-page .achievement-icon::before,.dashboard-page .achievement-icon::after { content:none; }
+.achievement-mark .sd-icon { width:25px; height:25px; }
+.project-index .sd-icon,.certificate-stamp .sd-icon { width:22px; height:22px; }
+.mission-number .sd-icon { width:22px; height:22px; }
+.xp-pill > .sd-icon { position:absolute; top:13px; right:13px; width:18px; height:18px; color:inherit; }
+.page-xp > .sd-icon { position:absolute; top:12px; left:calc(50% - 11px); width:22px; height:22px; color:inherit; }
+.page-xp { position:relative; }
+.level-badge .sd-icon,.public-level-label .sd-icon,.public-xp-value .sd-icon { width:14px; height:14px; margin-right:4px; }
+.mission-reward .sd-icon,.record-reward .sd-icon,.mission-xp .sd-icon { width:16px; height:16px; margin-right:3px; }
+.growth-stat { position:relative; }
+.growth-stat > .sd-icon { position:absolute; top:16px; right:16px; width:20px; height:20px; }
+.sd-inline-icon { width:18px; height:18px; margin-right:5px; }
+.sd-heading-icon { width:22px; height:22px; margin-right:7px; }
+.sd-record-icon { width:17px; height:17px; margin-right:4px; }
+.dashboard-page .profile-avatar .sd-icon { width:29px; height:29px; }
+.benefit-list li > span .sd-icon { width:18px; height:18px; }
+.chapter-number .sd-icon { width:48px; height:48px; }
