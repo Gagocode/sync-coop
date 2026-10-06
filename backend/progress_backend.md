@@ -1,3 +1,4 @@
+
 ## 2026-09-23
 
 ### Funcionalidade
@@ -207,3 +208,16 @@ Criada a organizacao base em camadas com controllers, services, repositories, mo
 
 ### Impacto
 O backend passa a ter uma base organizada para desenvolvimento futuro, preservando separacao de responsabilidades e sem implementar regras de negocio.
+## 2026-10-06
+
+### Funcionalidade
+Reposicionamento documental do produto
+
+### Arquivos alterados
+Documentação do produto na raiz e em `.docs/`.
+
+### Resumo
+Registrada a nova direção corporativa do Sync Disc na documentação. Nenhum arquivo ou comportamento do backend foi alterado.
+
+### Impacto
+As referências futuras de produto passam a descrever desenvolvimento e acompanhamento profissional de colaboradores. Este registro não indica que o domínio corporativo esteja implementado no backend.

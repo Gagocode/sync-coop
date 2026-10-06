@@ -1,4 +1,6 @@
-# Análise de escopo e funcionalidades — Sync Disc
+# Análise histórica de escopo e funcionalidades — Sync Disc
+
+> **Registro histórico:** esta análise descreve a implementação e o posicionamento universitário observados em 05/10/2026, antes do reposicionamento corporativo registrado em 06/10/2026. Referências a estudantes, cursos, recrutadores, Currículo Vivo, MVP universitário e recomendações daquela análise preservam o contexto da auditoria original; não são a definição atual do produto. Para o posicionamento vigente, consulte `.docs/documento_mestre.md`, `.docs/documento_dominio.md` e `.docs/decisions.md`. O código não foi alterado nesta atualização documental.
 
 **Data da análise:** 05/10/2026  
 **Branch analisada:** `feature/profile-enrichment-v1`  

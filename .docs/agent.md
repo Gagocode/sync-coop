@@ -1,157 +1,34 @@
-# AGENT.md
+# AGENT.md — Sync Disc
 
-## Papel do Agente
+## Papel
 
-Você atua como desenvolvedor dentro do projeto Sync Disc.
+Você atua no projeto Sync Disc. A direção do produto é um sistema gamificado de desenvolvimento e acompanhamento profissional de colaboradores em organizações.
 
-Antes de realizar qualquer implementação, alteração, correção ou refatoração, siga obrigatoriamente este processo.
+## Leitura obrigatória
 
----
+Antes de implementar, alterar, corrigir ou refatorar:
 
-# ORDEM DE LEITURA OBRIGATÓRIA
+1. Leia `.docs/documento_mestre.md`.
+2. Leia `.docs/documento_tecnico.md`.
+3. Leia `.docs/documento_dominio.md`.
+4. Consulte `.docs/decisions.md` para decisões registradas.
 
-Antes de iniciar qualquer tarefa:
+Os documentos oficiais definem o produto, arquitetura e domínio. Se houver conflito, prevalece o Documento Mestre para visão e escopo, o Documento Técnico para diretrizes arquiteturais e o Documento de Domínio para regras do domínio. Registre decisões novas em `.docs/decisions.md`.
 
-1. Ler `.docs/documento_mestre.md`
-2. Ler `.docs/documento_tecnico.md`
-3. Ler `.docs/documento_dominio.md`
+## Análise antes de implementar
 
-Esses documentos são a fonte oficial de verdade (SSOT).
+- Identifique o requisito atendido e verifique aderência aos documentos oficiais.
+- Avalie impactos nas funcionalidades existentes.
+- Priorize simplicidade, clareza, baixo acoplamento, coesão e manutenção.
+- O código atual pode ainda refletir o contexto universitário anterior; não trate essa implementação como alteração automática dos documentos de produto.
 
----
+## Limites do produto
 
-# HIERARQUIA DOS DOCUMENTOS
+O foco é desenvolvimento profissional, acompanhamento de evolução e engajamento. Organização possui setores e colaboradores; gestores acompanham colaboradores e criam setores e missões; colaboradores possuem perfil e DISC, recebem missões e evoluem por XP, níveis, conquistas e evolução.
 
-Em caso de conflito entre documentos:
+Não invente requisitos, módulos, automações, fórmulas, permissões ou integrações. Não acrescente IA nem funcionalidades de RH além das documentadas. O produto não substitui ERP, RH, folha de pagamento ou controle operacional.
 
-1. Documento Mestre
-2. Documento Técnico
-3. Documento de Domínio
-
-Nenhuma implementação deve contradizer os documentos sem justificativa explícita.
-
----
-
-# ANÁLISE OBRIGATÓRIA ANTES DE CODIFICAR
-
-Antes de implementar qualquer alteração:
-
-* Identificar qual requisito está sendo atendido.
-* Verificar aderência ao Documento Mestre.
-* Verificar aderência à Arquitetura Técnica.
-* Verificar aderência às Regras de Negócio.
-* Avaliar impactos em funcionalidades existentes.
-* Evitar complexidade desnecessária.
-
-Sempre priorizar:
-
-* Simplicidade
-* Clareza
-* Baixo acoplamento
-* Alta coesão
-* Facilidade de manutenção
-* Velocidade de implementação
-
----
-
-# REGRA DE DOCUMENTAÇÃO DE PROGRESSO
-
-Toda alteração realizada deve ser registrada.
-
-## Alterações Backend
-
-Sempre que houver qualquer modificação dentro da pasta:
-
-```text
-/backend
-```
-
-Atualizar obrigatoriamente:
-
-```text
-/backend/progress_backend.md
-```
-
-Registrar:
-
-* Data
-* Funcionalidade
-* Arquivos alterados
-* Resumo da alteração
-* Impacto esperado
-
-Formato:
-
-```markdown
-## YYYY-MM-DD
-
-### Funcionalidade
-Nome da funcionalidade
-
-### Resumo
-Descrição objetiva da alteração.
-
-### Impacto
-Resultado esperado para o sistema.
-```
-
----
-
-## Alterações Frontend
-
-Sempre que houver qualquer modificação dentro da pasta:
-
-```text
-/frontend
-```
-
-Atualizar obrigatoriamente:
-
-```text
-/frontend/progress_frontend.md
-```
-
-Registrar:
-
-* Data
-* Funcionalidade
-* Arquivos alterados
-* Resumo da alteração
-* Impacto esperado
-
-Formato:
-
-```markdown
-## YYYY-MM-DD
-
-### Funcionalidade
-Nome da funcionalidade
-
-### Resumo
-Descrição objetiva da alteração.
-
-### Impacto
-Resultado esperado para o sistema.
-```
-
----
-
-# PROIBIÇÕES
-
-Não:
-
-* Criar microserviços.
-* Criar arquitetura distribuída.
-* Adicionar mensageria.
-* Adicionar complexidade prematura.
-* Introduzir dependências sem necessidade comprovada.
-* Alterar regras de negócio sem validação documental.
-
----
-
-# DIRETRIZES ARQUITETURAIS
-
-Backend:
+## Arquitetura
 
 ```text
 Controllers
@@ -163,25 +40,12 @@ Repositories
 Database
 ```
 
-Regras de negócio devem permanecer na camada de Services.
+Regras de negócio ficam em Services. Repositories cuidam de persistência. Controllers recebem requisições, validam entradas básicas e delegam processamento.
 
-Repositories não devem conter regras de negócio.
+## Registros de progresso
 
-Controllers devem apenas receber requisições, validar entradas básicas e delegar processamento.
+Mudanças em `/backend` devem ser registradas em `/backend/progress_backend.md`; mudanças em `/frontend`, em `/frontend/progress_frontend.md`. Registros incluem data, funcionalidade, arquivos, resumo e impacto. Alterações gerais de documentação do produto são registradas em `/progress.md`.
 
----
+## Ao concluir
 
-# RESPONSABILIDADE DO AGENTE
-
-Ao concluir qualquer tarefa:
-
-1. Garantir aderência aos documentos oficiais.
-2. Garantir aderência à arquitetura.
-3. Atualizar o arquivo de progresso correspondente.
-4. Informar claramente o que foi alterado.
-5. Evitar gerar débito técnico desnecessário.
-
-```
-
-Eu faria apenas um ajuste adicional: criar também um `.docs/decisions.md` (ou `architecture_decisions.md`) para registrar decisões arquiteturais importantes. Isso evita que agentes futuros tomem decisões diferentes sobre DISC, XP, Missões e Currículo Vivo. Hoje esse é o principal ponto de risco de consistência do projeto.
-```
+Informe claramente os documentos ou arquivos alterados e qualquer inconsistência relevante encontrada. Não declare como implementado aquilo que está somente especificado na documentação.
