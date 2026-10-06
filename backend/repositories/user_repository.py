@@ -4,7 +4,7 @@ from models.user import User
 
 _USER_SELECT = """
     SELECT u.id, u.nome, u.email, u.senha_hash, u.curso, u.classe, u.xp,
-           u.created_at, u.organization_id, u.sector_id, u.role,
+           u.created_at, u.organization_id, u.sector_id, u.role, u.last_activity_at,
            o.name AS organization_name, s.name AS sector_name
     FROM users u
     LEFT JOIN organizations o ON o.id = u.organization_id
@@ -141,3 +141,32 @@ def assign_sector(user_id, organization_id, sector_id):
         )
         connection.commit()
         return cursor.rowcount == 1
+
+
+def update_last_activity(user_id, activity_at, connection=None):
+    if connection is None:
+        with get_connection() as connection:
+            return update_last_activity(user_id, activity_at, connection)
+    connection.execute(
+        """
+        UPDATE users SET last_activity_at = ?
+        WHERE id = ? AND (last_activity_at IS NULL OR last_activity_at < ?)
+        """,
+        (activity_at, user_id, activity_at),
+    )
+
+
+def list_collaborators_for_organization(organization_id):
+    with get_connection() as connection:
+        rows = connection.execute(
+            """
+            SELECT u.id, u.nome, s.name AS sector_name, u.last_activity_at
+            FROM users u
+            LEFT JOIN sectors s ON s.id = u.sector_id
+                               AND s.organization_id = u.organization_id
+            WHERE u.organization_id = ? AND u.role = 'collaborator'
+            ORDER BY u.nome COLLATE NOCASE, u.id
+            """,
+            (organization_id,),
+        ).fetchall()
+        return [dict(row) for row in rows]

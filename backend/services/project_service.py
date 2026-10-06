@@ -1,4 +1,5 @@
 from repositories import project_repository
+from services.activity_service import record_activity
 from services.achievement_service import evaluate_user_achievements
 from services.evolution_service import record_project_created
 from services.mission_service import complete_user_mission_by_key
@@ -23,6 +24,7 @@ def create_project(user_id, data):
         tecnologias=tecnologias,
         link=link,
     )
+    record_activity(user_id)
     record_project_created(user_id, project)
 
     if current_project_count == 0:
@@ -49,12 +51,16 @@ def get_project(user_id, project_id):
 
 
 def update_project(user_id, project_id, data):
-    get_project(user_id, project_id)
+    current = get_project(user_id, project_id)
     titulo = _require_text(data.get("titulo"), "Titulo obrigatorio")
     descricao = _require_text(data.get("descricao"), "Descricao obrigatoria")
     tecnologias = _require_text(data.get("tecnologias"), "Tecnologias obrigatorias")
     link = _optional_text(data.get("link"))
-    return project_repository.update_project(
+    if (current.titulo, current.descricao, current.tecnologias, current.link) == (
+        titulo, descricao, tecnologias, link
+    ):
+        return current
+    project = project_repository.update_project(
         project_id=project_id,
         user_id=user_id,
         titulo=titulo,
@@ -62,12 +68,16 @@ def update_project(user_id, project_id, data):
         tecnologias=tecnologias,
         link=link,
     )
+    if project:
+        record_activity(user_id)
+    return project
 
 
 def delete_project(user_id, project_id):
     deleted = project_repository.delete_project(project_id, user_id)
     if not deleted:
         raise ProjectError("Projeto nao encontrado")
+    record_activity(user_id)
     return True
 
 

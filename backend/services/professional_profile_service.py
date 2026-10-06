@@ -4,6 +4,7 @@ from urllib.parse import urlsplit
 from uuid import uuid4
 
 from repositories import professional_profile_repository as repository
+from services.activity_service import record_activity
 
 
 RESUME_DIR = Path(__file__).resolve().parent.parent / "uploads" / "resumes"
@@ -76,7 +77,12 @@ def update_professional_profile(user_id, data, resume=None):
         finally:
             temporary.unlink(missing_ok=True)
         cleaned["curriculo_path"] = path.name
-    return repository.save(user_id, cleaned)
+    changed = any(current.get(field) != value for field, value in cleaned.items())
+    if not changed and not (resume and resume.filename):
+        return current
+    saved = repository.save(user_id, cleaned)
+    record_activity(user_id)
+    return saved
 
 
 def get_resume_path(user_id):

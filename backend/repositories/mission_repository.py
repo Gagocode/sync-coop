@@ -1,5 +1,6 @@
 from database.connection import get_connection
 from models.mission import Mission, MissionCatalogItem
+from repositories.user_repository import update_last_activity
 
 
 def sync_catalog(catalog):
@@ -105,7 +106,7 @@ def find_by_key_for_user(mission_key, user_id):
         return Mission.from_row(row) if row else None
 
 
-def complete_mission(mission_id, user_id):
+def complete_mission(mission_id, user_id, activity_at=None):
     with get_connection() as connection:
         row = connection.execute(
             """
@@ -138,6 +139,8 @@ def complete_mission(mission_id, user_id):
                 "UPDATE users SET xp = xp + ? WHERE id = ?",
                 (mission.xp_recompensa, user_id),
             )
+            if activity_at is not None:
+                update_last_activity(user_id, activity_at, connection)
         connection.commit()
 
     return find_by_id_for_user(mission_id, user_id)

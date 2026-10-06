@@ -1,0 +1,36 @@
+<section class="section-block" aria-labelledby="corporate-dashboard-heading">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">{{ user.organization_name }}</p>
+      <h2 id="corporate-dashboard-heading">Engajamento dos colaboradores</h2>
+      <p class="muted">Ativo: até 7 dias. Atenção: acima de 7 até 15 dias. Inativo: acima de 15 dias ou sem atividade registrada.</p>
+    </div>
+  </div>
+  <div class="dashboard-grid">
+    {% for key, label in [("total", "Total de colaboradores"), ("active", "Colaboradores ativos"), ("attention", "Colaboradores em atenção"), ("inactive", "Colaboradores inativos")] %}
+      <article class="workspace-card">
+        <h3>{{ label }}</h3>
+        <strong>{{ corporate_dashboard.metrics[key] }}</strong>
+      </article>
+    {% endfor %}
+  </div>
+  <div class="section-heading"><h3>Colaboradores</h3></div>
+  <div class="workspace-record-list" aria-label="Colaboradores da organização">
+    {% for collaborator in corporate_dashboard.collaborators %}
+      <article class="workspace-card">
+        <h4>{{ collaborator.nome }}</h4>
+        <p><strong>Setor:</strong> {{ collaborator.sector_name or "Setor não informado" }}</p>
+        <p><strong>Engajamento:</strong> {{ collaborator.engagement_label }}</p>
+        <p><strong>Última atividade:</strong>
+          {% if collaborator.last_activity_at %}
+            <time datetime="{{ collaborator.last_activity_at|replace(' ', 'T') }}Z">{{ collaborator.activity_label }}</time>
+          {% else %}
+            {{ collaborator.activity_label }}
+          {% endif %}
+        </p>
+      </article>
+    {% else %}
+      <p class="empty-state">Nenhum colaborador vinculado à organização.</p>
+    {% endfor %}
+  </div>
+</section>

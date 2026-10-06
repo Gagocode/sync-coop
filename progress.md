@@ -1,5 +1,19 @@
 # Progresso da documentação do produto
 
+## 2026-10-06 — Primeiro dashboard corporativo
+
+**Funcionalidade:** acompanhamento de engajamento dos colaboradores da organização no painel atual do gestor.
+
+**Arquivos criados:** `backend/services/activity_service.py`, `backend/services/corporate_dashboard_service.py`, `frontend/pages/_corporate_dashboard.html`, `backend/tests/test_corporate_dashboard.py`.
+
+**Arquivos alterados:** schema e inicialização do banco; modelo e repositório de usuários; repositório de missões; serviços de autenticação, perfil profissional, projetos, certificados, DISC e missões; controlador de páginas; template principal; `.docs/decisions.md`; registros de progresso geral, backend e frontend.
+
+**Resumo:** última atividade persistida em UTC, cálculo centralizado por tempo decorrido, quatro indicadores e listagem somente de leitura. Uma única consulta fornece colaboradores e setores para lista e totais. Dados legados sem atividade permanecem nulos e são classificados como inativos.
+
+**Validação:** oito testes automatizados aprovados em banco temporário, cobrindo limites de 7/15 dias, migração idempotente, isolamento organizacional, consulta única, eventos, edições idênticas, leituras, XP idempotente e renderização/visibilidade do painel. Executar em `backend`: `python -m unittest discover -s tests -v`. Conferência visual em navegador desktop/celular ainda pendente.
+
+**Impacto:** gestores visualizam engajamento da própria organização sem alterações em CSS, navegação global ou regras de gamificação. Missões corporativas, ranking, permissões novas, IA e notificações continuam fora desta entrega.
+
 ## 2026-10-06
 
 ### Atualização do posicionamento para desenvolvimento profissional corporativo

@@ -4,6 +4,7 @@ from uuid import uuid4
 from werkzeug.utils import secure_filename
 
 from repositories import certificate_repository
+from services.activity_service import record_activity
 from services.achievement_service import evaluate_user_achievements
 from services.evolution_service import record_certificate_created
 from services.mission_service import complete_user_mission_by_key
@@ -34,6 +35,7 @@ def create_certificate(user_id, data, file_storage=None):
         data_conclusao=data_conclusao,
         arquivo_path=arquivo_path,
     )
+    record_activity(user_id)
     record_certificate_created(user_id, certificate)
 
     if current_certificate_count == 0:
@@ -67,7 +69,12 @@ def update_certificate(user_id, certificate_id, data, file_storage=None):
     data_conclusao = _require_text(data.get("data_conclusao"), "Data de conclusao obrigatoria")
     arquivo_path = _save_file(file_storage) or certificate.arquivo_path
 
-    return certificate_repository.update_certificate(
+    if (certificate.nome, certificate.instituicao, certificate.carga_horaria,
+        certificate.data_conclusao, certificate.arquivo_path) == (
+        nome, instituicao, carga_horaria, data_conclusao, arquivo_path
+    ):
+        return certificate
+    updated = certificate_repository.update_certificate(
         certificate_id=certificate_id,
         user_id=user_id,
         nome=nome,
@@ -76,12 +83,16 @@ def update_certificate(user_id, certificate_id, data, file_storage=None):
         data_conclusao=data_conclusao,
         arquivo_path=arquivo_path,
     )
+    if updated:
+        record_activity(user_id)
+    return updated
 
 
 def delete_certificate(user_id, certificate_id):
     deleted = certificate_repository.delete_certificate(certificate_id, user_id)
     if not deleted:
         raise CertificateError("Certificado nao encontrado")
+    record_activity(user_id)
     return True
 
 

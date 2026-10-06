@@ -35,6 +35,10 @@
           </section>
         {% endif %}
 
+        {% if corporate_dashboard %}
+          {% include "_corporate_dashboard.html" %}
+        {% endif %}
+
         <nav class="workspace-tabs" role="tablist" aria-label="Areas do Sync Disc">
           <button class="workspace-tab is-active" id="tab-dashboard" type="button" role="tab" aria-selected="true" aria-controls="panel-dashboard" data-tab="dashboard">Dashboard</button>
           <button class="workspace-tab" id="tab-profile" type="button" role="tab" aria-selected="false" aria-controls="panel-profile" data-tab="profile">Perfil</button>

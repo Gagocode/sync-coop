@@ -16,6 +16,7 @@ class User:
     role: str | None
     organization_name: str | None
     sector_name: str | None
+    last_activity_at: str | None = None
 
     @classmethod
     def from_row(cls, row):
@@ -33,6 +34,7 @@ class User:
             role=row["role"],
             organization_name=row["organization_name"],
             sector_name=row["sector_name"],
+            last_activity_at=row["last_activity_at"],
         )
 
     def to_public_dict(self):

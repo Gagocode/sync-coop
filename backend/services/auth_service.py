@@ -2,6 +2,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from repositories import user_repository
 from services.mission_service import create_initial_missions_for_user
+from services.activity_service import record_activity
 
 
 class AuthError(Exception):
@@ -20,6 +21,7 @@ def register_user(nome, email, senha, curso=None):
     senha_hash = generate_password_hash(senha)
     user = user_repository.create_user(nome, email, senha_hash, curso)
     create_initial_missions_for_user(user.id)
+    record_activity(user.id)
     return user
 
 
@@ -31,6 +33,7 @@ def authenticate_user(email, senha):
     if not user or not check_password_hash(user.senha_hash, senha):
         raise AuthError("Email ou senha invalidos")
 
+    record_activity(user.id)
     return user
 
 

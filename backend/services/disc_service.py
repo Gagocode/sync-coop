@@ -1,4 +1,5 @@
 from repositories import disc_repository
+from services.activity_service import record_activity
 from services.achievement_service import evaluate_user_achievements
 from services.evolution_service import record_disc_completed
 from services.mission_service import complete_user_mission_by_key
@@ -146,6 +147,7 @@ def submit_initial_disc(user_id, answers):
 
     scores = calculate_scores(answers)
     result = disc_repository.save_initial_result(user_id, scores)
+    record_activity(user_id)
     record_disc_completed(user_id, result.created_at)
     complete_user_mission_by_key(user_id, "complete_disc_quiz")
     evaluate_user_achievements(user_id)

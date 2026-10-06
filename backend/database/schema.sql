@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS users (
   xp INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   organization_id INTEGER REFERENCES organizations (id) ON DELETE RESTRICT,
+  last_activity_at TEXT,
   sector_id INTEGER REFERENCES sectors (id) ON DELETE RESTRICT,
   role TEXT CHECK (role IS NULL OR role IN ('manager', 'collaborator'))
 );

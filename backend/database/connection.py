@@ -19,7 +19,14 @@ def init_database(database_path=DATABASE_PATH):
         connection.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
         _ensure_users_profile_columns(connection)
         _ensure_users_organization_columns(connection)
+        _ensure_users_activity_column(connection)
         connection.commit()
+
+
+def _ensure_users_activity_column(connection):
+    columns = {row["name"] for row in connection.execute("PRAGMA table_info(users)")}
+    if "last_activity_at" not in columns:
+        connection.execute("ALTER TABLE users ADD COLUMN last_activity_at TEXT")
 
 
 def _ensure_users_profile_columns(connection):

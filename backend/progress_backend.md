@@ -235,3 +235,14 @@ Registrada a nova direção corporativa do Sync Disc na documentação. Nenhum a
 
 ### Impacto
 As referências futuras de produto passam a descrever desenvolvimento e acompanhamento profissional de colaboradores. Este registro não indica que o domínio corporativo esteja implementado no backend.
+## 2026-10-06 — Última atividade e dashboard corporativo
+
+**Arquivos criados:** `services/activity_service.py`, `services/corporate_dashboard_service.py`, `tests/test_corporate_dashboard.py`.
+
+**Arquivos alterados:** `database/schema.sql`, `database/connection.py`, `models/user.py`, `repositories/user_repository.py`, `repositories/mission_repository.py`, `services/auth_service.py`, `services/professional_profile_service.py`, `services/project_service.py`, `services/certificate_service.py`, `services/disc_service.py`, `services/mission_service.py`, `controllers/page_controller.py`.
+
+**Resumo:** migração idempotente de `last_activity_at`, registro de ações relevantes e cálculo centralizado de engajamento. A conclusão efetiva de missão persiste atividade junto ao XP. O dashboard consulta somente colaboradores da organização do gestor, obtendo lista e métricas da mesma consulta.
+
+**Impacto:** dados legados preservados; sem reconstrução artificial de atividade. Consultas e edições idênticas não renovam a data. Nenhum endpoint público ou sistema de permissões adicionado.
+
+**Validação:** oito testes aprovados com SQLite temporário. Comando em `backend`: `python -m unittest discover -s tests -v`.

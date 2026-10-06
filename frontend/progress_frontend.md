@@ -276,3 +276,12 @@ Atualizada a direção documental e visual para desenvolvimento profissional cor
 
 ### Impacto
 As diretrizes documentais de interface refletem o novo contexto de aplicação. Este registro não indica que a experiência corporativa esteja implementada no frontend.
+## 2026-10-06 — Visão corporativa no painel do gestor
+
+**Arquivos:** criado `pages/_corporate_dashboard.html`; alterado `pages/index.html`.
+
+**Resumo:** seção gerencial renderizada no servidor antes das abas, com total de colaboradores, ativos, atenção, inativos e listagem de nome, setor, engajamento e última atividade em UTC. Incluídos estados sem setor, sem atividade e organização vazia.
+
+**Impacto:** reaproveitamento de cards e listas existentes, sem alteração em CSS, JavaScript, identidade visual, navegação global ou ações administrativas. A seção é exclusiva de gestores com organização e atualiza ao recarregar o painel.
+
+**Validação:** renderização e visibilidade por papel verificadas via cliente Flask. Conferência visual em navegador desktop/celular ainda pendente.
