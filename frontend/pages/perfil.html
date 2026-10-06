@@ -22,7 +22,7 @@
           <h2><svg class="sd-icon sd-heading-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg>Dados do usuario</h2>
           <p><strong>Nome:</strong> {{ user.nome }}</p>
           <p><strong>Email:</strong> {{ user.email }}</p>
-          <p><strong>Curso:</strong> {{ user.curso or "Nao informado" }}</p>
+          <p><strong>{% if user.sector_name %}Setor{% elif user.curso %}Curso (legado){% else %}Setor{% endif %}:</strong> {{ user.sector_name or user.curso or "Nao informado" }}</p>
           <p><strong>Data de cadastro:</strong> {{ user.created_at }}</p>
           <p><strong>Classe:</strong> {{ user.classe or "Aguardando DISC Inicial" }}</p>
           <p><svg class="sd-icon sd-inline-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#xp"></use></svg><strong>XP:</strong> {{ user.xp }}</p>

@@ -68,6 +68,7 @@ def public_profile_json(user_id):
                 "id": user.id,
                 "nome": user.nome,
                 "curso": user.curso,
+                "sector_name": user.sector_name,
                 "classe": user.classe,
                 "xp": user.xp,
             },

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Setores - Sync Disc</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="app-page-hero">
+        <div><p class="page-eyebrow">{{ user.organization_name }}</p><h1>Setores</h1><p>Gerencie os setores da organização.</p></div>
+        <a class="page-action" href="/gestao/usuarios/">Ver usuários</a>
+      </div>
+      {% if error %}<p class="error-message" role="alert">{{ error }}</p>{% endif %}
+      <form class="form-panel" action="/gestao/setores/" method="post">
+        <label>Novo setor<input type="text" name="name" required></label>
+        <button class="button button-primary" type="submit">Criar setor</button>
+      </form>
+      <section class="workspace-record-list" aria-label="Setores da organização">
+        {% for sector in sectors %}
+          <article class="workspace-card">
+            <form action="/gestao/setores/{{ sector.id }}/editar" method="post">
+              <label>Nome do setor<input type="text" name="name" value="{{ sector.name }}" required></label>
+              <button class="button button-soft" type="submit">Salvar alteração</button>
+            </form>
+            <form action="/gestao/setores/{{ sector.id }}/excluir" method="post" onsubmit="return confirm('Excluir este setor?')">
+              <button class="button button-ghost" type="submit">Excluir setor</button>
+            </form>
+          </article>
+        {% else %}
+          <article class="panel"><p>Nenhum setor cadastrado.</p></article>
+        {% endfor %}
+      </section>
+      <p><a href="/dashboard">Voltar ao painel</a></p>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

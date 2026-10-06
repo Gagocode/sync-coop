@@ -11,6 +11,11 @@ class User:
     classe: str | None
     xp: int
     created_at: str
+    organization_id: int | None
+    sector_id: int | None
+    role: str | None
+    organization_name: str | None
+    sector_name: str | None
 
     @classmethod
     def from_row(cls, row):
@@ -23,6 +28,11 @@ class User:
             classe=row["classe"],
             xp=row["xp"],
             created_at=row["created_at"],
+            organization_id=row["organization_id"],
+            sector_id=row["sector_id"],
+            role=row["role"],
+            organization_name=row["organization_name"],
+            sector_name=row["sector_name"],
         )
 
     def to_public_dict(self):
@@ -34,4 +44,9 @@ class User:
             "classe": self.classe,
             "xp": self.xp,
             "created_at": self.created_at,
+            "organization_id": self.organization_id,
+            "sector_id": self.sector_id,
+            "role": self.role,
+            "organization_name": self.organization_name,
+            "sector_name": self.sector_name,
         }

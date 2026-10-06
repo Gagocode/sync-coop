@@ -252,6 +252,20 @@ As entidades e os marcos passam a ser reconhecíveis visualmente sem alterar lay
 ## 2026-10-06
 
 ### Funcionalidade
+Gestão organizacional mínima
+
+### Arquivos alterados
+Páginas de setup, setores e usuários; dashboard, cadastro e perfil; JavaScript da área autenticada.
+
+### Resumo
+Criadas telas simples para setup da primeira organização, CRUD de setores e visualização/atribuição de usuários. Links de gestão são exibidos ao gestor. Perfil e dashboard mostram setor quando disponível e preservam curso como legado.
+
+### Impacto
+Gestores conseguem iniciar a organização e organizar usuários por setor sem alterar CSS global, identidade visual ou navegação existente.
+
+## 2026-10-06
+
+### Funcionalidade
 Reposicionamento documental do produto
 
 ### Arquivos alterados

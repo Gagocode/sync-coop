@@ -7,6 +7,7 @@ from controllers.auth_controller import auth_bp
 from controllers.certificate_controller import certificate_bp
 from controllers.disc_controller import disc_bp
 from controllers.mission_controller import mission_bp
+from controllers.organization_controller import organization_bp
 from controllers.page_controller import page_bp
 from controllers.profile_controller import profile_bp
 from controllers.project_controller import project_bp
@@ -38,6 +39,7 @@ def create_app():
     app.register_blueprint(certificate_bp)
     app.register_blueprint(disc_bp)
     app.register_blueprint(mission_bp)
+    app.register_blueprint(organization_bp)
     app.register_blueprint(page_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(project_bp)

@@ -4,6 +4,7 @@ from repositories import certificate_repository
 from repositories import disc_repository
 from repositories import project_repository
 from repositories import user_repository
+from database.connection import init_database
 from services.achievement_service import evaluate_user_achievements
 from services.auth_service import register_user
 from services.certificate_service import create_certificate
@@ -109,6 +110,7 @@ DEMO_USERS = [
 
 
 def seed_demo_data():
+    init_database()
     seeded_users = []
     for demo_user in DEMO_USERS:
         user = _get_or_create_user(demo_user)

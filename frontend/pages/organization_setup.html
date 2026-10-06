@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configurar organização - Sync Disc</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/journey.css">
+    <link rel="stylesheet" href="/assets/css/identity.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel">
+        <p class="page-eyebrow">Configuração inicial</p>
+        <h1>Criar a primeira organização</h1>
+        <p>Ao confirmar, sua conta será definida como gestora desta organização.</p>
+        {% if error %}<p class="error-message" role="alert">{{ error }}</p>{% endif %}
+        <form class="form-panel" action="/organizacao/configurar" method="post">
+          <label>Nome da organização<input type="text" name="name" required></label>
+          <button class="button button-primary" type="submit">Criar organização</button>
+        </form>
+      </section>
+    </main>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>
