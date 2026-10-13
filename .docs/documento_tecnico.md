@@ -1,196 +1,68 @@
-# DOCUMENTO DE ARQUITETURA TÉCNICA
+# Sync-Coop — Documento Técnico e de Arquitetura
 
-## 1. Objetivo
-Este documento define as diretrizes técnicas do projeto.
-Seu objetivo é estabelecer padrões de desenvolvimento, organização do código, responsabilidades das camadas e princípios arquiteturais que deverão ser seguidos durante a implementação.
+**Status:** arquitetura existente verificada no repositório em 2026-10-13 e requisitos técnicos para evolução. Nenhum componente corporativo descrito como futuro foi implementado nesta migração documental. Requisitos de produto: documento_mestre.md; regras: documento_dominio.md; pendências: decisions.md.
 
-Este documento não define detalhes de implementação específicos, nomes definitivos de entidades, tabelas, classes ou estruturas internas de código. Essas definições serão realizadas durante a fase de desenvolvimento.
+## 1. Linha de base implementada: Sync-Disc
 
-## 2. Escopo Técnico
-O sistema será desenvolvido inicialmente como um protótipo funcional para validação acadêmica do conceito.
+O aplicativo atual é Flask em backend/app.py, templates Jinja, HTML/CSS e JavaScript convencional em frontend/, SQLite em backend/database/ e uploads locais. Usa sessão Flask, controllers, services, repositories e models. Há um único tipo de usuário em users; a coluna curso e o formulário profissional preservam o domínio acadêmico. Não existem tabelas de organização, setor, equipe, associação corporativa, papel, prazo de missão, auditoria administrativa ou acompanhamento de riscos.
 
-O foco inicial é:
-* Demonstrar o fluxo principal da aplicação.
-* Validar a proposta de gamificação.
-* Validar a utilização do DISC como sistema de atributos evolutivos.
-* Demonstrar a construção do currículo vivo.
-* Permitir futuras expansões sem necessidade de reescrita completa.
+O fluxo executável é cadastro/login, questionário DISC inicial, resultado, dashboard individual e operações de perfil, projetos, certificados, missões, conquistas e evolução. O dashboard /dashboard possui abas dashboard, profile, projects, certificates, missions, achievements e evolution. Páginas de login, cadastro, quiz e resultado permanecem independentes; perfil público e downloads também. Rotas HTML antigas de perfil/missões/projetos/certificados redirecionam ao dashboard; POSTs e JSON foram mantidos. Templates HTML legados ainda respondem a erros de alguns POSTs. O perfil público legado expõe dados por identificador/nome e currículo, o que exige revisão antes de uso corporativo.
 
-## 3. Princípios Arquiteturais
-A arquitetura deverá seguir os seguintes princípios:
+| Contrato existente | Uso atual |
+|---|---|
+| /auth/register, /auth/login, /auth/logout, /auth/me | Identidade individual e sessão |
+| /disc/ e /disc/resultado(.json) | DISC inicial e consulta |
+| /dashboard, /perfil/json, /perfil/profissional, /perfil/curriculo | Dashboard e perfil individual |
+| /missoes/json | Lista individual de missões |
+| /projetos/ e /certificados/ (CRUD, JSON e downloads quando aplicável) | Projetos/certificados individuais |
+| /profile/<id> e rotas públicas associadas | Perfil público legado |
 
-* **Separação de Responsabilidades:** Cada camada deve possuir apenas uma responsabilidade principal. As regras de negócio não devem ficar misturadas com: rotas, persistência, interface ou consultas ao banco.
-* **Baixo Acoplamento:** Os módulos devem depender o mínimo possível uns dos outros. Mudanças em uma funcionalidade não devem gerar impacto excessivo nas demais.
-* **Alta Coesão:** Cada módulo deve possuir uma finalidade clara e bem definida.
-* **Evolução Gradual:** O sistema deve permitir crescimento incremental. Novas funcionalidades deverão poder ser adicionadas sem necessidade de reestruturações profundas.
-* **Facilidade de Refatoração:** A estrutura deve favorecer manutenção contínua.
+O contrato completo de métodos e rotas deve ser conferido nos controllers antes de alterá-los; a tabela é um mapa técnico, não nova especificação de API. O frontend chama JSON e POSTs legados. Não há API corporativa, de relatórios ou de NR-1.
 
-## 4. Estrutura Geral do Projeto
-O projeto será dividido em dois grandes blocos:
+## 2. Persistência e responsabilidades existentes
 
-**Backend**
-Responsável por:
-* regras de negócio;
-* autenticação;
-* persistência;
-* cálculos;
-* gamificação;
-* DISC;
-* geração de perfil.
+O esquema contém users, professional_profiles, initial_disc_results, missions, user_missions, projects, certificates, achievement, user_achievement, evolution_events e observed_disc_results. A missão de catálogo usa tipo_evento; a missão do usuário guarda estado e data de conclusão. Não há organização proprietária no esquema. O diretório de uploads guarda currículo e documentos de certificado.
 
-**Frontend**
-Responsável por:
-* interface;
-* exibição de dados;
-* formulários;
-* navegação;
-* experiência do usuário.
+Consultas de perfil, dashboard e evolução são de leitura; o registro DISC, projeto e certificado aciona comandos de negócio. Missões, XP, classe, conquistas, histórico e DISC observado são coordenados nos serviços e persistidos em transação SQLite. O repositório de missões usa transição condicional e impede recompensa repetida pela mesma conclusão. A reconciliação de dados legados roda na inicialização, de forma idempotente, e não em GETs. A criação repetida de projetos ou certificados continua criando novo registro; o contrato não tem chave de idempotência de requisição. O comportamento foi coberto pelos testes existentes em backend/tests, mas não equivale a isolamento corporativo.
 
-## 5. Organização de Arquivos
-O projeto deverá possuir separação clara entre:
-* código-fonte;
-* banco de dados;
-* arquivos enviados pelos usuários;
-* documentação;
-* recursos visuais.
+## 3. Arquitetura alvo, sem reescrita tecnológica presumida
 
-Arquivos gerados pelos usuários não devem ficar misturados ao código-fonte.
+Preservar a separação controller → service → repository → banco, templates Jinja e JavaScript convencional enquanto forem adequados. A evolução corporativa deve acrescentar, conforme projeto posterior aprovado:
 
-## 6. Persistência de Dados
-O sistema utilizará banco relacional.
+- **Identidade e contexto de organização:** organização ativa, vínculo válido com colaborador/equipe/setor e papel, estabelecidos no servidor. A sessão sozinha não autoriza acesso a dados de outra organização.
+- **Autorização por recurso:** toda consulta, comando, relatório, arquivo e exportação deve exigir organização, escopo e permissão. IDs fornecidos pelo cliente não são prova de vínculo. Administrador da organização não recebe dados sensíveis por padrão.
+- **Persistência isolada:** todos os registros corporativos devem possuir pertencimento inequívoco a organização e, quando relevante, a pessoa/equipe. Estratégia de banco, chaves, migração e isolamento físico/lógico permanecem pendentes; o esquema atual não satisfaz o requisito.
+- **Eventos auditáveis:** registrar ator, organização, ação, objeto, instante, mudança e justificativa quando necessária, principalmente administração, mudança de atribuição, acesso excepcional e acompanhamento preventivo. Definir retenção e acesso aos logs antes de implementar.
+- **Serviços de domínio:** comandos explícitos para atribuição/transição de missões, geração de efeitos de XP e registro de ações. Consultas e agregações não concedem recompensas. Uma ação de negócio com múltiplas escritas usa uma única transação; efeitos externos exigem política de compensação.
+- **Indicadores:** derivar de eventos de acesso, atividade relevante, missão e acompanhamento com período, escopo e versão de regra. Evitar métricas irreproduzíveis e não materializar inferências como fatos. Política de atualização e anonimização ainda pendente.
+- **Arquivos e dados pessoais:** download e exportação com a mesma verificação de escopo; armazenamento, retenção, exclusão e migração dos arquivos locais dependem de decisão.
 
-Inicialmente:
-* ambiente local;
-* persistência simples;
-* foco em desenvolvimento rápido.
+Esses são requisitos de arquitetura, não uma proposta de novos módulos ou tabelas definitivas. O desenho físico deve ser decidido antes da implementação e migrar dados existentes sem perda.
 
-A camada de acesso a dados deverá ser construída de forma que permita substituição futura do mecanismo de armazenamento sem alterar regras de negócio.
+## 4. Fluxos pretendidos e fronteiras
 
-## 7. Armazenamento de Arquivos
-O sistema deverá suportar armazenamento local de arquivos.
-Exemplos: imagens de perfil, certificados, anexos, documentos.
+1. **Acesso:** autenticar; resolver organização/vínculo/papel; autorizar recurso no servidor; registrar eventos de acesso segundo política. Acesso não conta como atividade de desenvolvimento.
+2. **Missão:** criador autorizado define objetivo, critério, escopo, responsável, período e recompensa; atribuição produz vínculos; ação do colaborador apresenta evidência; validação autorizada muda estado; comando transacional aplica recompensa uma vez e registra histórico. Critérios de aceite/rejeição, abandono e expiração ainda dependem de decisão de domínio.
+3. **Dashboard pessoal:** consultas reúnem dados próprios de fontes autorizadas, sem mutação e com distinção entre resultado DISC, fatos de atividade e indicadores calculados.
+4. **Visão gerencial:** consulta filtra pelo vínculo de equipe vigente; apresenta indicadores permitidos e explicações; não revela dados DISC ou sensíveis sem política aprovada.
+5. **Apoio preventivo:** sinais agregados motivam revisão humana das condições de trabalho; profissional autorizado registra providências no escopo concedido; não há inferência clínica automática.
 
-Os arquivos deverão ser armazenados em estrutura separada do código-fonte. A aplicação nunca deverá depender de caminhos absolutos.
+## 5. Segurança, privacidade e operação
 
-## 8. Modelo Arquitetural
-A aplicação deverá utilizar arquitetura em camadas.
+O protótipo tem autenticação por sessão e validação de posse de registros individuais, mas não tem autorização baseada em organização/papel. Antes de oferecer SaaS corporativo é necessário definir isolamento por organização em todas as camadas, política de mínimo privilégio, testes de acesso cruzado, proteção de dados DISC, segregação de dados de acompanhamento, logs de auditoria, backups, retenção e exclusão. O desenho também deve especificar como grupos pequenos são agregados sem reidentificar pessoas.
 
-**Fluxo conceitual:**
-`Interface -> Controladores -> Serviços -> Persistência -> Banco de Dados`
+SQLite e uploads locais descrevem a implementação atual. Escala, concorrência, recuperação, hospedagem e estratégia de armazenamento para SaaS são decisões técnicas futuras; não há decisão de trocar a stack nesta tarefa. Não foi executada migração de banco. As regras regulatórias devem ser verificadas na [NR-1 do MTE](https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/nr-1) com profissionais competentes; a aplicação não substitui o processo da organização.
 
-* **Interface:** Responsável pela interação com o usuário. Não deve conter regras de negócio.
-* **Controladores:** Responsáveis por receber requisições, validar entrada básica e delegar processamento.
-* **Serviços:** Responsáveis por regras de negócio, cálculos, gamificação, evolução de atributos, geração de missões e atualização de perfis. Toda lógica principal deverá estar concentrada nesta camada.
-* **Persistência:** Responsável por leitura, gravação, atualização e remoção de dados. Não deve conter regras de negócio.
+## 6. Lacunas verificadas
 
-## 9. Estratégia de Desenvolvimento
-O projeto será desenvolvido de forma incremental. Cada funcionalidade deverá ser implementada em ciclos independentes.
+| Necessidade Sync-Coop | Situação atual |
+|---|---|
+| Organizações, equipes, vínculos, papéis, acesso por escopo | Ausente |
+| Dashboard gerencial/administrativo/profissional autorizado | Ausente |
+| Missões por organização/equipe/pessoa, prazos e evidências formais | Ausente; há catálogo individual fixo |
+| Indicadores de acesso, atividade, inatividade e relatórios agregados | Ausente |
+| Registro de ações preventivas e auditoria corporativa | Ausente |
+| DISC inicial, observado, XP, conquistas, evolução e histórico individuais | Presentes em forma legada; sem política de uso corporativo |
+| Perfil público/currículo | Presentes em forma legada; risco de exposição para o novo produto |
 
-**Fluxo recomendado:**
-1. Planejamento.
-2. Implementação.
-3. Teste.
-4. Ajuste.
-5. Integração.
-
-## 10. Desenvolvimento Orientado por Contexto
-Todo desenvolvimento deverá considerar como fonte principal:
-
-* **Documento Mestre:** Define produto, objetivos, regras gerais e requisitos.
-* **Documento Técnico:** Define arquitetura, organização e diretrizes.
-
-Nenhuma implementação deverá contradizer esses documentos sem atualização prévia da documentação.
-
-## 11. Sistema de Gamificação
-A gamificação é considerada parte central do sistema. Toda implementação futura deverá respeitar os seguintes conceitos: evolução contínua, progressão profissional, recompensas, missões, atributos e histórico de evolução.
-
-A gamificação não deverá ser tratada como módulo separado do produto. Ela faz parte do núcleo da aplicação.
-
-## 12. Sistema DISC
-O DISC deverá ser tratado como um conjunto de atributos dinâmicos.
-O sistema deverá suportar:
-* resultado inicial;
-* evolução ao longo do tempo;
-* histórico;
-* atualização baseada em ações.
-
-O DISC não deve ser tratado como resultado estático.
-
-## 13. Sistema de Missões
-O sistema deverá permitir: missões gerais, missões adaptativas, conclusão, abandono e acompanhamento.
-As missões deverão influenciar diretamente a evolução do usuário.
-
-## 14. Sistema de Perfil
-O perfil será o elemento central da plataforma. Todo o restante do sistema deverá existir para enriquecer o perfil do usuário.
-O perfil deverá consolidar:
-* informações pessoais;
-* currículo;
-* evolução;
-* indicadores;
-* conquistas;
-* atributos;
-* histórico.
-
-## 15. Currículo Vivo
-O currículo deverá ser derivado das informações registradas pelo usuário. A plataforma não deve depender exclusivamente de um currículo estático enviado manualmente. O objetivo é construir uma representação dinâmica da trajetória profissional.
-
-## 16. Perfil Público
-O sistema deverá disponibilizar visualização pública dos perfis. Essa visualização deverá apresentar:
-* trajetória;
-* evolução;
-* projetos;
-* experiências;
-* certificações;
-* indicadores.
-
-Sem necessidade de autenticação do visitante.
-
-## 17. Segurança
-Mesmo sendo um protótipo acadêmico, deverão ser considerados:
-* autenticação;
-* autorização;
-* validação de entradas;
-* proteção contra manipulação indevida de dados.
-
-## 18. Escalabilidade Conceitual
-Embora o projeto seja inicialmente local e acadêmico, sua estrutura deverá permitir expansão futura para:
-* múltiplos cursos;
-* múltiplas instituições;
-* empresas;
-* recrutadores;
-* integração com plataformas externas.
-
-Sem necessidade de reescrever o núcleo da aplicação.
-
-## 19. Testabilidade
-As regras de negócio deverão ser desenvolvidas de forma independente da interface.
-Isso permitirá: testes unitários, validação de cálculos, validação da gamificação e validação do DISC.
-
-## 20. Manutenibilidade
-O código deverá priorizar:
-* legibilidade;
-* simplicidade;
-* organização;
-* previsibilidade.
-
-O projeto será tratado como produto em evolução e não apenas como entrega acadêmica.
-
-## 21. Diretriz Final
-Toda decisão técnica futura deverá responder às seguintes perguntas:
-1. Esta implementação respeita o Documento Mestre?
-2. Esta implementação mantém a separação de responsabilidades?
-3. Esta implementação facilita futuras expansões?
-4. Esta implementação mantém a gamificação como elemento central?
-5. Esta implementação contribui para a construção do currículo vivo?
-
-Caso a resposta para alguma dessas perguntas seja negativa, a solução deverá ser reavaliada antes de sua implementação.
-
-## 22. Implementação atual da interface autenticada (2026-10-13)
-
-O Sync Disc usa Flask, templates Jinja, CSS e JavaScript convencional. `/dashboard` é o caminho canônico para perfil privado, missões, projetos, certificados, conquistas e evolução, organizados em abas. Fragmentos de URL identificam a aba e, quando aplicável, a abertura dos modais existentes. URLs HTML antigas dessas áreas redirecionam ao dashboard; os endpoints JSON e POSTs existentes permanecem como contratos de dados. Autenticação, quiz e resultado DISC, downloads e perfil público conservam rotas próprias. A tabela de decisões e o mapa detalhado estão em `.docs/decisions.md`.
-
-## 23. Persistência e comandos do MVP (2026-10-13)
-
-As consultas de perfil, dashboard, missões, conquistas, evolução e DISC Observado apenas leem dados. Cadastro, envio do DISC, criação de projeto ou certificado, conclusão de missão e reconciliação de dados anteriores são comandos explícitos. Os serviços coordenam as regras de negócio; os repositórios executam SQL sem decidir recompensas. A conexão SQLite é compartilhada dentro do comando por `database.connection.transaction()`, com commit ou rollback na fronteira externa. Os repositórios não fazem commit independente.
-
-O serviço de missões seleciona a regra pelo `tipo_evento` do catálogo e verifica a evidência persistida antes de conceder XP. A reconciliação idempotente de dados legados roda na inicialização da aplicação, antes de atender requisições, e não durante consultas. Não houve alteração de esquema ou dos contratos HTTP/JSON.
+Detalhes de migração e decisões pendentes ficam em analise_escopo_e_features.md e decisions.md. Referências ao legado são descritivas; não constituem aprovação para expor seus dados no Sync-Coop.

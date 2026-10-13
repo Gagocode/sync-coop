@@ -1,184 +1,29 @@
-# AGENT.md
+# Instruções para agentes — Sync-Coop
 
-## Papel do Agente
+**Status:** ativo desde 2026-10-13. Este arquivo orienta trabalho futuro; não concede autorização para implementar requisitos ainda pendentes.
 
-Você atua como desenvolvedor dentro do projeto Sync Disc.
+## Fonte de verdade
 
-Antes de realizar qualquer implementação, alteração, correção ou refatoração, siga obrigatoriamente este processo.
+Antes de alterar código ou documentação, leia README.md, documento_mestre.md, documento_dominio.md, documento_tecnico.md, decisions.md e o registro de progresso da área afetada. Use caminhos reais do repositório. Os documentos originais do Sync-Disc e as entradas antigas de progresso/decisões são históricos; estão recuperáveis no commit 746a6ddff3e415b1132892dae4e733b6752f01ec.
 
----
+Em conflito, o Documento Mestre define finalidade e escopo; o Documento de Domínio define regras aprovadas e limites; o Documento Técnico descreve o implementado e restrições técnicas. decisions.md registra decisões em aberto e substituições. O código é evidência do comportamento efetivamente implementado, não autorização para transformar um comportamento legado em regra do Sync-Coop. Registre divergências e peça decisão de produto antes de inventar regra.
 
-# ORDEM DE LEITURA OBRIGATÓRIA
+## Classifique toda afirmação relevante
 
-Antes de iniciar qualquer tarefa:
+- **Requisito confirmado:** direção definida para o Sync-Coop, mesmo sem código.
+- **Comportamento implementado:** verificado na aplicação atual; frequentemente legado Sync-Disc.
+- **Proposta:** desenho sugerido ainda sem aprovação.
+- **Decisão pendente:** regra ou política necessária para fechar o domínio.
+- **Fora do escopo:** item que esta etapa não entrega ou que foi retirado da direção do produto.
 
-1. Ler `.docs/documento_mestre.md`
-2. Ler `.docs/documento_tecnico.md`
-3. Ler `.docs/documento_dominio.md`
+Não use “implementado” para organizações, permissões corporativas, dashboards gerenciais, prazos, inatividade, relatórios ou apoio à NR-1 enquanto não houver código e testes. Não trate o perfil público e o currículo acadêmico como requisitos corporativos aprovados.
 
-Esses documentos são a fonte oficial de verdade (SSOT).
+## Princípios de desenvolvimento
 
----
+Preserve Flask, Jinja, CSS/JavaScript convencional, serviços, repositórios e contratos atuais até haver motivo e decisão para mudar. Mudanças de produto exigem análise de dados existentes e migração segura. Verifique autorização por organização/vínculo/papel no servidor; não confie no frontend. Consultas não produzem XP nem alteram dados. Comandos que envolvem missão, recompensa e histórico devem ser atômicos e idempotentes quanto ao evento de negócio. Não exponha dados DISC, relatórios individuais ou informações de acompanhamento apenas porque o usuário é gestor ou administrador.
 
-# HIERARQUIA DOS DOCUMENTOS
+Não implemente limiares de inatividade, fórmula de indicadores, penalidade, ranking, política de DISC, retenção ou transições de missão que estejam marcados como pendentes. Apoio à NR-1 exige validação com fontes oficiais atuais e profissionais competentes; a plataforma não é diagnóstico nem garantia de conformidade.
 
-Em caso de conflito entre documentos:
+## Registros
 
-1. Documento Mestre
-2. Documento Técnico
-3. Documento de Domínio
-
-Nenhuma implementação deve contradizer os documentos sem justificativa explícita.
-
----
-
-# ANÁLISE OBRIGATÓRIA ANTES DE CODIFICAR
-
-Antes de implementar qualquer alteração:
-
-* Identificar qual requisito está sendo atendido.
-* Verificar aderência ao Documento Mestre.
-* Verificar aderência à Arquitetura Técnica.
-* Verificar aderência às Regras de Negócio.
-* Avaliar impactos em funcionalidades existentes.
-* Evitar complexidade desnecessária.
-
-Sempre priorizar:
-
-* Simplicidade
-* Clareza
-* Baixo acoplamento
-* Alta coesão
-* Facilidade de manutenção
-* Velocidade de implementação
-
----
-
-# REGRA DE DOCUMENTAÇÃO DE PROGRESSO
-
-Toda alteração realizada deve ser registrada.
-
-## Alterações Backend
-
-Sempre que houver qualquer modificação dentro da pasta:
-
-```text
-/backend
-```
-
-Atualizar obrigatoriamente:
-
-```text
-/backend/progress_backend.md
-```
-
-Registrar:
-
-* Data
-* Funcionalidade
-* Arquivos alterados
-* Resumo da alteração
-* Impacto esperado
-
-Formato:
-
-```markdown
-## YYYY-MM-DD
-
-### Funcionalidade
-Nome da funcionalidade
-
-### Resumo
-Descrição objetiva da alteração.
-
-### Impacto
-Resultado esperado para o sistema.
-```
-
----
-
-## Alterações Frontend
-
-Sempre que houver qualquer modificação dentro da pasta:
-
-```text
-/frontend
-```
-
-Atualizar obrigatoriamente:
-
-```text
-/frontend/progress_frontend.md
-```
-
-Registrar:
-
-* Data
-* Funcionalidade
-* Arquivos alterados
-* Resumo da alteração
-* Impacto esperado
-
-Formato:
-
-```markdown
-## YYYY-MM-DD
-
-### Funcionalidade
-Nome da funcionalidade
-
-### Resumo
-Descrição objetiva da alteração.
-
-### Impacto
-Resultado esperado para o sistema.
-```
-
----
-
-# PROIBIÇÕES
-
-Não:
-
-* Criar microserviços.
-* Criar arquitetura distribuída.
-* Adicionar mensageria.
-* Adicionar complexidade prematura.
-* Introduzir dependências sem necessidade comprovada.
-* Alterar regras de negócio sem validação documental.
-
----
-
-# DIRETRIZES ARQUITETURAIS
-
-Backend:
-
-```text
-Controllers
-↓
-Services
-↓
-Repositories
-↓
-Database
-```
-
-Regras de negócio devem permanecer na camada de Services.
-
-Repositories não devem conter regras de negócio.
-
-Controllers devem apenas receber requisições, validar entradas básicas e delegar processamento.
-
-No backend do MVP, consultas não devem gravar estado nem conceder recompensas. Comandos que alteram vários registros devem usar uma transação de serviço; repositórios não devem confirmar transações separadamente. A conclusão de missões segue `tipo_evento` e evidências persistidas. Critérios ainda não definidos nos documentos oficiais devem ser registrados como pendência, sem recompensa presumida.
-
----
-
-# RESPONSABILIDADE DO AGENTE
-
-Ao concluir qualquer tarefa:
-
-1. Garantir aderência aos documentos oficiais.
-2. Garantir aderência à arquitetura.
-3. Atualizar o arquivo de progresso correspondente.
-4. Informar claramente o que foi alterado.
-5. Evitar gerar débito técnico desnecessário.
+Atualize decisions.md quando uma definição for aprovada ou uma divergência for descoberta. Registre alterações de backend em backend/progress_backend.md e de frontend em frontend/progress_frontend.md, distinguindo código de documentação. Não reescreva os logs históricos para fazê-los parecer entregas Sync-Coop. Em tarefas exclusivamente documentais, não modifique código, configuração, migração ou banco.

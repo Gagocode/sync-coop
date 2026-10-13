@@ -1,3 +1,7 @@
+# Registro histórico de frontend — Sync-Disc
+
+**Aviso em 2026-10-13:** as entradas abaixo descrevem a interface do protótipo Sync-Disc e não são a especificação visual ou funcional do Sync-Coop. A documentação ativa está em .docs/documento_mestre.md, .docs/documento_dominio.md, .docs/documento_tecnico.md e .docs/design-system.md. A migração documental não alterou templates, CSS ou JavaScript. O dashboard gerencial e as permissões corporativas ainda não existem.
+
 ## 2026-09-23
 
 ### Funcionalidade

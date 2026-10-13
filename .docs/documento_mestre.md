@@ -1,265 +1,76 @@
-# DOCUMENTO MESTRE DO PRODUTO
+# Sync-Coop — Documento Mestre
 
-## 1. Visão Geral
-A plataforma é um sistema de desenvolvimento profissional gamificado para universitários. Seu objetivo é transformar o currículo tradicional em uma jornada contínua de evolução profissional.
+**Status:** especificação ativa de produto, 2026-10-13. O código atual ainda implementa o protótipo Sync-Disc. “Confirmado” neste documento significa objetivo aprovado para o Sync-Coop, não funcionalidade entregue. Regras detalhadas e questões em aberto estão no Documento de Domínio e em decisions.md.
 
-Ao invés de possuir apenas um currículo estático em PDF, o usuário constrói um perfil vivo que evolui através de projetos, experiências, certificações, missões e atividades realizadas dentro da plataforma.
+## 1. Produto e problema
 
-O sistema utiliza conceitos do modelo DISC como base para a construção do perfil comportamental inicial do usuário, permitindo acompanhar sua evolução ao longo do tempo através de evidências práticas e comportamentos observados.
+O Sync-Coop é uma plataforma corporativa SaaS para desenvolvimento de colaboradores, participação em atividades orientadas por missões, acompanhamento de equipes e produção de indicadores para gestores e profissionais autorizados. Seu propósito é tornar o desenvolvimento visível para a própria pessoa e apoiar acompanhamento humano e preventivo. Indicadores de participação também poderão apoiar a análise organizacional de fatores de risco psicossociais relacionados ao trabalho, com os limites da seção 8.
 
-O resultado é um perfil público compartilhável que apresenta não apenas informações curriculares, mas também indicadores de desenvolvimento profissional e comportamental.
+O produto anterior, Sync-Disc, concentrava-se em estudantes, currículo vivo, perfil público de contratação e ações individuais. Essa finalidade foi substituída. A stack e os mecanismos úteis de DISC, missões, XP, evolução e conquistas são candidatos à adaptação, sujeitos às decisões de domínio e privacidade. O código legado continua funcionando para o domínio anterior e não deve ser descrito como produto corporativo pronto.
 
-## 2. Problema
-Os currículos tradicionais possuem diversas limitações:
-* Tornam-se desatualizados rapidamente.
-* Não refletem a evolução contínua do candidato.
-* Não apresentam evidências comportamentais.
-* Não incentivam o desenvolvimento profissional.
-* Não mostram a jornada de crescimento do usuário.
+## 2. Públicos e atores
 
-Além disso, avaliações DISC tradicionais costumam gerar apenas um resultado estático, sem acompanhar mudanças e evolução ao longo do tempo.
+| Ator | Responsabilidade pretendida | Limite fundamental |
+|---|---|---|
+| Colaborador | Consultar seu desenvolvimento, executar missões e acompanhar resultados pessoais | Acessa seus dados e conteúdos a ele destinados |
+| Gestor de equipe | Acompanhar participação e pendências das pessoas sob sua responsabilidade; registrar acompanhamento autorizado | Apenas equipe sob vínculo vigente; dados sensíveis dependem de política específica |
+| Administrador da organização | Gerir estrutura, vínculos, perfis e configuração autorizada de sua organização | Não recebe acesso irrestrito a dados DISC ou registros sensíveis por ser administrador |
+| Profissional autorizado | Consultar indicadores agregados e, quando houver finalidade e permissão explícitas, casos de acompanhamento | Acesso limitado por finalidade, escopo e registro de auditoria |
+| Operador da plataforma | Manter o serviço SaaS | Acesso operacional excepcional, controlado e auditado; política ainda pendente |
 
-## 3. Solução
-Criar uma plataforma onde:
-* O usuário possui um currículo vivo.
-* O usuário realiza um quiz narrativo baseado em DISC.
-* O sistema gera um perfil comportamental inicial.
-* O sistema gera missões.
-* As missões incentivam desenvolvimento profissional.
-* O comportamento do usuário influencia atributos DISC observados.
-* O perfil evolui continuamente.
-* Recrutadores podem visualizar um perfil público completo.
+Uma pessoa poderá ter mais de um vínculo ou papel, mas as regras para múltiplas organizações, substituições e delegação estão pendentes. Nenhum papel implica visibilidade global por padrão.
 
-## 4. Público-Alvo
-**Público Principal**
-Universitários.
-Exemplos:
-* Sistemas de Informação
-* Ciência da Computação
-* Engenharia
-* Administração
-* Arquitetura
-* Design
-* Demais cursos
+## 3. Objetivos e requisitos confirmados
 
-**Público Secundário**
-* Recrutadores
-* Empresas
-* Professores
-* Instituições de ensino
+| ID | Requisito de produto confirmado | Estado no código atual |
+|---|---|---|
+| SC-01 | Isolar dados por organização e vincular colaboradores a setores, departamentos ou equipes | Não implementado |
+| SC-02 | Oferecer dashboard integrado do colaborador com perfil, DISC, missões, prazos, XP, nível, atributos, conquistas, evolução, histórico e indicadores pessoais | Parcial: dashboard individual sem estrutura corporativa, prazos e indicadores de participação |
+| SC-03 | Oferecer visões próprias a gestores, administradores e profissionais autorizados, com permissão por papel, vínculo, escopo e finalidade | Não implementado |
+| SC-04 | Permitir missões organizacionais, setoriais/de equipe e individuais, com objetivo, critério, período, responsável, evidências, estado e histórico | Parcial: catálogo individual fixo, sem escopo ou prazo corporativo |
+| SC-05 | Distinguir acesso de atividade relevante e sinalizar inatividade, atraso e queda de participação por critérios explicáveis | Não implementado |
+| SC-06 | Disponibilizar indicadores e relatórios pessoais e agregados por equipe, setor e organização, respeitando privacidade | Não implementado; há apenas dados individuais de progresso |
+| SC-07 | Manter o DISC inicial e distinguir resultado do questionário de indicadores observados e inferências, para desenvolvimento pessoal | Parcial: DISC inicial e observado legados; uso corporativo e visibilidade pendentes |
+| SC-08 | Manter gamificação determinística, com XP, níveis, atributos, missões, conquistas e histórico, sem recompensa duplicada | Parcial: mecanismo legado individual implementado; parâmetros corporativos pendentes |
+| SC-09 | Apoiar acompanhamento humano de fatores organizacionais relacionados a riscos psicossociais e ações preventivas | Não implementado |
+| SC-10 | Proteger dados pessoais, registrar operações relevantes e impedir acesso entre organizações | Não implementado no nível corporativo; autenticação individual legada existente |
 
-## 5. Objetivo do Usuário
-O objetivo final do usuário é:
-* Desenvolver sua carreira.
-* Evoluir seu perfil profissional.
-* Construir evidências de experiência.
-* Obter maior empregabilidade.
-* Conseguir oportunidades profissionais.
+## 4. Experiência pretendida
 
-## 6. Fluxo Principal
-* **Etapa 1:** Cadastro.
-* **Etapa 2:** Quiz Narrativo DISC.
-* **Etapa 3:** Geração do Perfil Inicial.
-* **Etapa 4:** Recebimento de Missões.
-* **Etapa 5:** Execução de Atividades.
-* **Etapa 6:** Ganho de XP e Evolução.
-* **Etapa 7:** Atualização dos Atributos.
-* **Etapa 8:** Construção do Currículo Vivo.
-* **Etapa 9:** Compartilhamento do Perfil Público.
+O colaborador encontra suas informações num ambiente central, com seções ou telas conectadas conforme a complexidade: perfil profissional, DISC com contexto e limites, missões disponíveis/aceitas/pendentes/concluídas, prazos e atrasos, XP e nível, atributos, conquistas, evolução, atividades relevantes e indicadores pessoais. Uma autenticação não equivale a participação. A experiência deve explicar a origem de cada dado e permitir distinguir eventos confirmados de interpretações.
 
-## 7. Sistema DISC
-**Conceito**
-O DISC não será tratado como um teste estático.
-Será tratado como um sistema de atributos vivos.
+O gestor vê dados operacionais das equipes sob sua responsabilidade, evolução temporal, participação, missões pendentes ou vencidas e pessoas que podem precisar de contato. Profissionais autorizados consultam relatórios agregados e acompanham ações preventivas no escopo concedido. O administrador configura vínculos e acessos de sua organização. Visões gerenciais e administrativas são distintas do dashboard pessoal; os detalhes permitidos estão no Documento de Domínio.
 
-**Dimensões**
-* **D:** Dominância
-* **I:** Influência
-* **S:** Estabilidade
-* **C:** Conformidade
+## 5. Módulos de negócio
 
-**DISC Inicial**
-Obtido através do Quiz Narrativo.
-Exemplo:
-* $D=65$
-* $I=40$
-* $S=35$
-* $C=70$
+1. **Identidade corporativa:** organizações, vínculos, equipes e papéis.
+2. **Desenvolvimento individual:** perfil, DISC, evolução, atributos e histórico.
+3. **Missões:** catálogo e atribuições por escopo, evidências, prazos, transições e recompensas.
+4. **Gamificação:** XP, nível e conquistas vinculados a eventos de negócio.
+5. **Acompanhamento:** atividade e inatividade com razões transparentes e análise humana.
+6. **Indicadores e relatórios:** medidas individuais e agregadas com controle de acesso.
+7. **Apoio preventivo relacionado à NR-1:** sinais organizacionais, providências e histórico para profissionais competentes.
+8. **Segurança e auditoria:** isolamento, autorização, finalidade, rastreabilidade e retenção definida.
 
-**DISC Observado**
-Calculado continuamente. Baseado em:
-* Projetos
-* Certificações
-* Experiências
-* Missões
-* Comportamentos
+## 6. Requisitos transversais
 
-**Perfil Final**
-O sistema exibe:
-* DISC Inicial
-* DISC Atual
-* Evolução Histórica
+- Cada leitura e escrita deve respeitar organização, vínculo, papel e finalidade; a autorização precisa ocorrer no servidor. Exportações e downloads seguem as mesmas regras.
+- Dados de DISC e indicadores comportamentais exigem proteção reforçada, minimização e política explícita de visibilidade. Indicadores agregados não podem permitir reidentificação por grupos pequenos; limiar e técnica ainda precisam de decisão.
+- Eventos de negócio que concedam recompensa devem ser idempotentes e transacionais. Consultas não alteram progresso.
+- Indicadores precisam de definição de fonte, período, escopo, atraso de atualização e permissão; não se deve comparar pessoas sem regra e finalidade aprovadas.
+- Configurações de inatividade, retenção, descarte, notificações, exportação e auditoria devem ser especificadas antes da implementação.
+- A mudança de produto não exige por si só trocar Flask, Jinja, JavaScript convencional ou SQLite no protótipo; a adequação de persistência para SaaS multiempresa depende de avaliação técnica.
 
-## 8. Sistema de Classes
-Após o Quiz Narrativo o sistema gera uma classe inicial.
-Exemplos:
-* Executor Estratégico
-* Comunicador
-* Analista
-* Colaborador
-* Líder Técnico
+## 7. Limites e fora do escopo desta migração documental
 
-As classes servem para representação do perfil. Não substituem o DISC.
+Esta migração não entrega funcionalidade, não altera código, esquema, dados ou identidade visual. Experiências acadêmicas, disponibilidade para estágio, perfil público de contratação, recrutadores e currículo vivo público deixam de ser objetivos ativos do Sync-Coop. A retirada ou conversão dos fluxos legados é trabalho futuro e depende de política de dados e compatibilidade; nada foi removido agora.
 
-## 9. Sistema de Atributos
-O usuário possui atributos derivados.
-Exemplos:
-* Liderança
-* Comunicação
-* Organização
-* Criatividade
-* Trabalho em Equipe
-* Capacidade Analítica
+Rankings, penalidades de XP, comparações individuais expostas, inteligência artificial, diagnóstico psicológico automático e decisões laborais automáticas não estão aprovados. Não são pressupostos do produto. Possíveis necessidades futuras exigem decisão de finalidade, proporcionalidade e privacidade.
 
-Esses atributos evoluem conforme ações realizadas.
+## 8. NR-1 e limites de interpretação
 
-## 10. Sistema de XP
-Toda atividade relevante gera XP.
+O Sync-Coop pretende apoiar a **gestão humana** de informações organizacionais sobre condições de trabalho, participação e ações preventivas. Sinais da plataforma justificam revisão contextual, não diagnóstico, prova de adoecimento, avaliação legal completa ou medida disciplinar. Inatividade, baixo XP ou DISC isolado não demonstram risco psicossocial. O trabalho de identificar e avaliar fatores de risco psicossociais relacionados ao trabalho pertence ao processo da organização e a profissionais competentes. Requisitos regulatórios específicos serão validados contra a [NR-1 vigente do MTE](https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/nr-1) e o [guia oficial do MTE](https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/guia-nr-01-revisado.pdf). A plataforma, por si só, não garante conformidade.
 
-**Exemplos:**
-* **Baixo Impacto:** Atualizar perfil, Adicionar foto, Completar informações.
-* **Médio Impacto:** Participar de evento, Completar missão.
-* **Alto Impacto:** Projeto, Certificação, Experiência profissional.
+## 9. Fonte de verdade e situação atual
 
-## 11. Sistema de Missões
-**Missões Fixas**
-Geradas para todos os usuários.
-Exemplos: Completar perfil, Adicionar projeto, Adicionar certificado, Atualizar currículo.
-
-**Missões Adaptativas**
-Baseadas nas menores dimensões do usuário.
-Exemplo: Baixa influência.
-Missão sugerida: Participar de evento.
-
-## 12. Estados da Missão
-* **Concluída:** Recompensa (XP, Evolução de atributos)
-* **Ignorada:** Consequência (Nenhuma alteração)
-* **Abandonada:** Consequência (Penalidade de XP)
-
-## 13. Sistema de Conquistas
-As conquistas possuem função cosmética. Não afetam atributos.
-Exemplos:
-* Primeiro Projeto
-* Primeiro Certificado
-* Perfil Completo
-* Primeiro Evento
-* Primeiro Compartilhamento
-
-## 14. Currículo Vivo
-O currículo não será um formulário tradicional. Será construído a partir de:
-* Projetos
-* Experiências
-* Certificados
-* Conquistas
-* Indicadores
-
-O sistema gera automaticamente a visão curricular.
-
-## 15. Perfil Público
-Cada usuário possui uma página pública (Ex: `usuario.plataforma.com/nome`).
-
-**Informações Públicas:**
-* Nome
-* Foto
-* Curso
-* Classe
-* Projetos
-* Certificações
-* Experiências
-* Indicadores
-* Evolução
-* DISC
-
-## 16. Sistema Social
-Usuários poderão:
-* Compartilhar perfil
-* Visualizar perfis
-* Curtir perfis
-
-*Sem sistema de mensagens no MVP.*
-
-## 17. Indicadores de Evolução
-O sistema deve mostrar:
-* Evolução DISC
-* Evolução de atributos
-* Histórico de atividades
-* Missões concluídas
-* Projetos realizados
-
-## 18. Requisitos Funcionais
-* **RF01:** Cadastro de usuário.
-* **RF02:** Login.
-* **RF03:** Realização do Quiz Narrativo.
-* **RF04:** Cálculo do DISC Inicial.
-* **RF05:** Geração da Classe Inicial.
-* **RF06:** Geração de Missões.
-* **RF07:** Conclusão de Missões.
-* **RF08:** Sistema de XP.
-* **RF09:** Sistema de Atributos.
-* **RF10:** Sistema de Conquistas.
-* **RF11:** Cadastro de Projetos.
-* **RF12:** Cadastro de Certificações.
-* **RF13:** Cadastro de Experiências.
-* **RF14:** Geração do Currículo Vivo.
-* **RF15:** Perfil Público.
-* **RF16:** Sistema de Curtidas.
-* **RF17:** Histórico de Evolução.
-* **RF18:** Atualização do DISC Observado.
-
-## 19. Requisitos Não Funcionais
-* **RNF01:** Interface responsiva.
-* **RNF02:** Navegação intuitiva.
-* **RNF03:** Tempo de resposta inferior a 3 segundos.
-* **RNF04:** Compatibilidade com dispositivos móveis.
-* **RNF05:** Segurança de autenticação.
-* **RNF06:** Escalabilidade para múltiplos cursos.
-* **RNF07:** Arquitetura modular.
-* **RNF08:** Facilidade de manutenção.
-* **RNF09:** Facilidade de expansão futura.
-* **RNF10:** Persistência dos dados dos usuários.
-
-## 20. MVP
-**Escopo mínimo para apresentação:**
-* Cadastro
-* Login / Logout
-* Quiz Narrativo
-* Resultado DISC
-* Perfil
-* Missões
-* XP
-
-**Sem:**
-* Projetos
-* Certificados
-* Perfil Público
-* Empresas
-* Busca avançada
-* Recomendação automática
-* IA
-* Chat
-* Integrações externas
-
-## 21. Visão de Futuro
-Possíveis evoluções:
-* Empresas cadastradas
-* Portal de vagas
-* Match entre perfil e vaga
-* Recomendações por IA
-* Mentorias
-* Ranking universitário
-* Integração com LinkedIn
-* Exportação automática de currículo
-* Dashboard institucional para universidades
-
-## Definição Final do Produto
-Uma plataforma gamificada de desenvolvimento profissional para universitários, onde um quiz narrativo baseado em DISC gera um perfil inicial e um conjunto de atributos comportamentais. Através de missões, projetos, certificações e experiências, o usuário desenvolve continuamente seu perfil, construindo um currículo vivo e público que demonstra sua evolução profissional ao longo do tempo.
+Este documento define finalidade e requisitos de produto. O Documento de Domínio define conceitos e regras, distinguindo regras aprovadas de propostas; o Documento Técnico registra o sistema existente e a arquitetura alvo conceitual. decisions.md concentra decisões pendentes. README resume o estado executável. Os documentos originais do Sync-Disc permanecem recuperáveis no Git no commit 746a6ddff3e415b1132892dae4e733b6752f01ec e não são especificação ativa.

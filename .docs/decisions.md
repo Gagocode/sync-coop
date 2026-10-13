@@ -1,3 +1,48 @@
+# Decisões e pendências — Sync-Coop
+
+**Status:** registro ativo desde 2026-10-13. As seções “Histórico Sync-Disc” abaixo registram a consolidação dos Prompts 1–3; não aprovam regras corporativas. Os originais integrais também estão no Git no commit 746a6ddff3e415b1132892dae4e733b6752f01ec.
+
+## 2026-10-13 — Migração documental do produto
+
+**Decisão vigente:** Sync-Coop passa a ser o produto documentado. A aplicação permanece como protótipo Sync-Disc até implementação própria. Preservam-se arquitetura em camadas, DISC, missões, gamificação e evolução como base a adaptar. O isolamento entre organizações, autorização por escopo e proteção de dados individuais são requisitos do novo produto. Perfil público de contratação, estágio, currículo vivo acadêmico e recrutadores deixam de ser objetivos ativos. Não houve alteração de código, banco ou dependências nesta decisão.
+
+**Critério de status:** “confirmado” indica direção de produto; “implementado” exige evidência no código; “proposta” exige aprovação; “pendente” não pode ser inventado pelo implementador. O Documento de Domínio detalha regras; o Documento Técnico descreve o estado executável. Este registro concentra as questões sem definição suficiente.
+
+### Decisões pendentes centralizadas
+
+| ID | Questão e impacto | Definição necessária |
+|---|---|---|
+| DC-01 | Como modelar organizações, setores/equipes, múltiplos vínculos, troca e desligamento? Sem isso não há autorização ou migração segura. | Estrutura, temporalidade, transferência e destino dos dados legados |
+| DC-02 | Qual a matriz final de permissões por papel, vínculo e finalidade? Sem ela dados pessoais podem ser expostos. | Quem lê/escreve perfil, missão, relatório, exportação e acompanhamento; acesso excepcional |
+| DC-03 | Quem pode ver DISC inicial, observado e inferências, e com qual finalidade? Risco de uso indevido em RH. | Política de acesso, informação ao titular, reaplicação, retenção e revisão metodológica |
+| DC-04 | Qual destino de perfil público, currículo e links externos legados? Tensão com isolamento corporativo. | Desativação, migração, consentimentos/autorizações aplicáveis, compatibilidade de URLs e arquivos |
+| DC-05 | Como se criam e atribuem missões por organização/equipe/pessoa, inclusive mudança de equipe? | Criadores, destinatários, sobreposição de escopos, elegibilidade e vigência |
+| DC-06 | Quais estados e transições de missão são aprovados? Sem isso aceite, rejeição, abandono e expiração são ambíguos. | Fluxo, atores, evidências, prazo/fuso, reabertura e efeito sobre recompensa |
+| DC-07 | O que conclui CONTINUE_EVOLUTION e “perfil completo” no novo contexto? Há desvio entre nome e gatilho legado. | Critérios verificáveis e decisão de manter, renomear ou retirar cada missão |
+| DC-08 | Quais eventos corporativos concedem/revertem XP e alteram atributos? Não transportar valores acadêmicos automaticamente. | Catálogo versionado, valores, reversão, idempotência de criação repetida e níveis |
+| DC-09 | Conquistas são cosméticas ou alteram DISC observado? O domínio antigo diz cosméticas, o código aplica +5 I. | Escolher regra validada e plano de correção/migração dos dados |
+| DC-10 | Quais eventos qualificam atividade, janelas e limiares de inatividade? Sem isso sinalizações são arbitrárias. | Taxonomia, período, exceções, configuração e explicação |
+| DC-11 | Quais fórmulas e públicos dos relatórios? Agregados pequenos podem reidentificar pessoas. | Denominadores, período, atualização, supressão e exportação |
+| DC-12 | Como registrar e usar ações preventivas relacionadas ao trabalho sem diagnóstico automatizado? | Responsáveis, revisão humana, metodologia, dados mínimos, validação jurídica e de SST |
+| DC-13 | Quais regras de retenção, exclusão, auditoria e acesso a logs/arquivos se aplicam? | Política por categoria de dado e finalidade, inclusive uploads legados |
+| DC-14 | SQLite/uploads locais atendem ao SaaS pretendido? A implementação atual não tem isolamento multiempresa. | Estratégia de persistência, escala, backup, migração e testes de isolamento |
+| DC-15 | Rankings, penalidades e comparações individuais existirão? Podem gerar exposição e incentivos indevidos. | Decisão de escopo, finalidade, visibilidade e privacidade; até lá não aprovados |
+| DC-16 | Qual identidade visual corporativa e linguagem de indicadores? O design existente é do protótipo. | Decisão de marca e validação de usabilidade/acessibilidade |
+| DC-17 | Missões adaptativas por DISC e atributos secundários do domínio antigo são pertinentes? Podem rotular pessoas sem base suficiente. | Decidir finalidade, regra verificável, revisão metodológica e visibilidade; até lá não aprovados |
+
+### Divergências de fonte identificadas
+
+- O documento antigo chamava conquistas de cosméticas; o serviço atual de DISC observado soma +5 I por conquista. Não foi escolhida uma nova regra nesta migração.
+- A missão “perfil completo” legada é acionada no envio do DISC/classe, sem verificar todos os campos profissionais.
+- O currículo público permanece acessível no código, embora o objetivo corporativo exija política de privacidade e escopo.
+- Os logs dos Prompts 1–3 provam apenas fluxos individuais do Sync-Disc; não validam o Sync-Coop.
+
+### Verificação desta migração documental
+
+Em 2026-10-13, foram conferidos os 12 arquivos Markdown alterados, os links locais do README, a presença de DISC, missões por organização/equipe/pessoa, prazo, inatividade, dashboards distintos, relatórios, permissões, isolamento e limites de apoio relacionados à NR-1. A busca por referências acadêmicas restantes encontrou somente contexto comparativo e registros históricos, identificados como tais. git diff --check passou; git diff --name-only mostrou apenas Markdown. Não foram executados testes da aplicação nesta tarefa exclusivamente documental; não há validação funcional do Sync-Coop. As fontes originais permanecem recuperáveis no commit informado acima.
+
+## Histórico Sync-Disc — decisões dos Prompts 1–3
+
 # Decisões arquiteturais — Sync Disc
 
 ## 2026-10-13 — Dashboard como caminho canônico da área autenticada
