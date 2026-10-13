@@ -207,3 +207,47 @@ Criada a organizacao base em camadas com controllers, services, repositories, mo
 
 ### Impacto
 O backend passa a ter uma base organizada para desenvolvimento futuro, preservando separacao de responsabilidades e sem implementar regras de negocio.
+## 2026-10-13
+
+### Funcionalidade
+Rotas canônicas do dashboard
+
+### Arquivos alterados
+`backend/controllers/auth_controller.py`, `backend/controllers/certificate_controller.py`, `backend/controllers/mission_controller.py`, `backend/controllers/page_controller.py`, `backend/controllers/profile_controller.py`, `backend/controllers/project_controller.py`, `backend/tests/test_dashboard_consolidation.py`, `backend/progress_backend.md`
+
+### Resumo
+As rotas HTML antigas de perfil privado, missões, projetos e certificados redirecionam para a aba adequada do dashboard. As rotas de criação e edição abrem os modais por fragmento de URL. Os POSTs HTML válidos redirecionam ao dashboard; os contratos JSON, downloads e respostas de erro HTML foram preservados. Adicionada validação de contratos HTTP e persistência com SQLite temporário.
+
+### Impacto
+O dashboard passa a ser a entrada canônica dos fluxos autenticados sem mudar services, regras de negócio ou dados existentes.
+
+## 2026-10-13
+
+### Funcionalidade
+Consistência das regras de negócio e transações do Sync Disc
+
+### Arquivos alterados
+`backend/app.py`, `backend/database/connection.py`, repositórios de usuário, DISC, missão, projeto, certificado, conquista, evolução e perfil profissional; serviços de cadastro, DISC, perfil, perfil público, missão, projeto, certificado, conquista, evolução, DISC Observado e perfil profissional; novo `backend/services/progress_reconciliation_service.py`; `backend/seed_demo.py`; `backend/tests/test_dashboard_consolidation.py`; novo `backend/tests/test_business_rules.py`.
+
+### Resumo
+Consultas deixaram de completar missões, conceder XP, persistir classe, criar conquistas ou sincronizar dados. Os comandos do cadastro, DISC, projeto, certificado e missão concentram os efeitos relacionados em transações SQLite. A conclusão usa `tipo_evento` e evidência persistida; status/XP só mudam uma vez. O DISC Observado é recalculado nos comandos, inclusive exclusões. Dados legados são reconciliados explicitamente na inicialização, de modo idempotente. Falhas de upload e substituição de currículo têm compensação para arquivos locais. Sem mudança de esquema, contratos HTTP/JSON ou stack.
+
+### Impacto
+Abrir perfil ou dashboard repetidamente não gera recompensas. Falhas intermediárias desfazem as alterações relacionadas. Projetos e certificados continuam produzindo missão, XP, histórico, conquista e DISC Observado. Os testes existentes e novos passaram: `python -m unittest discover -s backend/tests -v` (11 testes). A missão `CONTINUE_EVOLUTION` segue sem critério formal de conclusão; regras de penalidade e atributos secundários continuam pendentes de definição oficial. Arquivos antigos de certificados substituídos ou excluídos continuam armazenados.
+
+### Pendente para próxima etapa
+O contrato de criação não inclui chave de idempotência: um retry de POST de projeto/certificado é interpretado como nova criação. Decidir a semântica do retry antes de alterar esse contrato.
+
+## 2026-10-13
+
+### Funcionalidade
+Limpeza conservadora e validação integrada final
+
+### Arquivos alterados
+`backend/controllers/auth_controller.py`, `backend/controllers/project_controller.py`, `backend/controllers/certificate_controller.py`, `backend/controllers/disc_controller.py`, `backend/controllers/profile_controller.py`; `backend/services/auth_service.py`, `backend/services/project_service.py`, `backend/services/certificate_service.py`, `backend/services/disc_service.py`, `backend/services/professional_profile_service.py`; `backend/repositories/user_repository.py`, `backend/repositories/achievement_repository.py`, `backend/repositories/mission_repository.py`, `backend/models/mission.py`; `backend/tests/test_business_rules.py`, novo `backend/tests/browser_smoke.py`.
+
+### Resumo
+Entradas JSON com tipos inesperados deixaram de gerar erro 500 e retornam erro 400 sem escrita. Testada a ordem de ativação das missões. Removidos três helpers internos sem referências e o modelo usado apenas por um deles; rotas, templates de erro e estilos foram preservados após verificar seus consumidores ou a falta de prova para remoção. Criado roteiro opcional de navegador com SQLite e uploads temporários. README, decisões e orientações do agente foram alinhados ao estado implementado.
+
+### Impacto
+Suíte de 13 testes passou; `compileall` e `git diff --check` passaram. Smoke test Chromium passou em desktop e mobile para cadastro, DISC, dashboard, projetos, certificados, perfil, perfil público e autenticação, sem erro HTTP local ou JavaScript. O carregamento externo de Google Fonts foi bloqueado pelo ambiente de rede, usando fontes de reserva. Permanecem as pendências de domínio e operação registradas em `.docs/decisions.md`.

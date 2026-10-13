@@ -1,5 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from database.connection import transaction
 from repositories import user_repository
 from services.mission_service import create_initial_missions_for_user
 
@@ -12,15 +13,18 @@ def register_user(nome, email, senha, curso=None):
     nome = _require_text(nome, "Nome obrigatorio")
     email = _normalize_email(email)
     senha = _require_text(senha, "Senha obrigatoria")
+    if curso is not None and not isinstance(curso, str):
+        raise AuthError("Curso invalido")
     curso = curso.strip() if curso else None
 
     if user_repository.find_by_email(email):
         raise AuthError("Email ja cadastrado")
 
     senha_hash = generate_password_hash(senha)
-    user = user_repository.create_user(nome, email, senha_hash, curso)
-    create_initial_missions_for_user(user.id)
-    return user
+    with transaction():
+        user = user_repository.create_user(nome, email, senha_hash, curso)
+        create_initial_missions_for_user(user.id)
+        return user
 
 
 def authenticate_user(email, senha):
@@ -48,7 +52,7 @@ def _normalize_email(email):
 
 
 def _require_text(value, message):
-    value = value.strip() if value else ""
+    value = value.strip() if isinstance(value, str) else ""
     if not value:
         raise AuthError(message)
     return value

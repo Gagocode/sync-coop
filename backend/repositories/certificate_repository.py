@@ -12,8 +12,8 @@ def create_certificate(user_id, nome, instituicao, carga_horaria, data_conclusao
             """,
             (user_id, nome, instituicao, carga_horaria, data_conclusao, arquivo_path),
         )
-        connection.commit()
-        return find_by_id_for_user(cursor.lastrowid, user_id)
+        certificate_id = cursor.lastrowid
+    return find_by_id_for_user(certificate_id, user_id)
 
 
 def list_by_user_id(user_id):
@@ -87,8 +87,7 @@ def update_certificate(
                 user_id,
             ),
         )
-        connection.commit()
-        return find_by_id_for_user(certificate_id, user_id)
+    return find_by_id_for_user(certificate_id, user_id)
 
 
 def delete_certificate(certificate_id, user_id):
@@ -100,5 +99,4 @@ def delete_certificate(certificate_id, user_id):
             """,
             (certificate_id, user_id),
         )
-        connection.commit()
         return cursor.rowcount > 0

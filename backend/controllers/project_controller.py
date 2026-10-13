@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, jsonify, redirect, render_template, request
 
 from controllers.auth_controller import login_required
+from controllers.page_controller import dashboard_section
 from services.project_service import (
     ProjectError,
     create_project,
@@ -17,14 +18,13 @@ project_bp = Blueprint("projects", __name__, url_prefix="/projetos")
 @project_bp.get("/")
 @login_required
 def projects_page(user):
-    projects = list_projects(user.id)
-    return render_template("projetos.html", user=user, projects=projects)
+    return redirect(dashboard_section("projects"))
 
 
 @project_bp.get("/novo")
 @login_required
 def new_project_page(user):
-    return render_template("projeto_form.html", project=None, error=None)
+    return redirect(dashboard_section("projects", "new"))
 
 
 @project_bp.post("/")
@@ -39,7 +39,7 @@ def create_project_action(user):
 
     if _wants_json():
         return jsonify({"project": project.to_dict()}), 201
-    return redirect(url_for("projects.project_detail_page", project_id=project.id))
+    return redirect(dashboard_section("projects"))
 
 
 @project_bp.get("/json")
@@ -53,20 +53,20 @@ def projects_json(user):
 @login_required
 def project_detail_page(user, project_id):
     try:
-        project = get_project(user.id, project_id)
+        get_project(user.id, project_id)
     except ProjectError as error:
         return str(error), 404
-    return render_template("projeto_detalhe.html", project=project)
+    return redirect(dashboard_section("projects"))
 
 
 @project_bp.get("/<int:project_id>/editar")
 @login_required
 def edit_project_page(user, project_id):
     try:
-        project = get_project(user.id, project_id)
+        get_project(user.id, project_id)
     except ProjectError as error:
         return str(error), 404
-    return render_template("projeto_form.html", project=project, error=None)
+    return redirect(dashboard_section("projects", f"edit/{project_id}"))
 
 
 @project_bp.post("/<int:project_id>/editar")
@@ -81,7 +81,7 @@ def update_project_action(user, project_id):
 
     if _wants_json():
         return jsonify({"project": project.to_dict()})
-    return redirect(url_for("projects.project_detail_page", project_id=project.id))
+    return redirect(dashboard_section("projects"))
 
 
 @project_bp.post("/<int:project_id>/excluir")
@@ -96,12 +96,13 @@ def delete_project_action(user, project_id):
 
     if _wants_json():
         return jsonify({"message": "Projeto excluido com sucesso"})
-    return redirect(url_for("projects.projects_page"))
+    return redirect(dashboard_section("projects"))
 
 
 def _request_data():
     if request.is_json:
-        return request.get_json(silent=True) or {}
+        data = request.get_json(silent=True)
+        return data if isinstance(data, dict) else {}
     return request.form
 
 

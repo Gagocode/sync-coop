@@ -169,6 +169,8 @@ Repositories não devem conter regras de negócio.
 
 Controllers devem apenas receber requisições, validar entradas básicas e delegar processamento.
 
+No backend do MVP, consultas não devem gravar estado nem conceder recompensas. Comandos que alteram vários registros devem usar uma transação de serviço; repositórios não devem confirmar transações separadamente. A conclusão de missões segue `tipo_evento` e evidências persistidas. Critérios ainda não definidos nos documentos oficiais devem ser registrados como pendência, sem recompensa presumida.
+
 ---
 
 # RESPONSABILIDADE DO AGENTE
@@ -180,8 +182,3 @@ Ao concluir qualquer tarefa:
 3. Atualizar o arquivo de progresso correspondente.
 4. Informar claramente o que foi alterado.
 5. Evitar gerar débito técnico desnecessário.
-
-```
-
-Eu faria apenas um ajuste adicional: criar também um `.docs/decisions.md` (ou `architecture_decisions.md`) para registrar decisões arquiteturais importantes. Isso evita que agentes futuros tomem decisões diferentes sobre DISC, XP, Missões e Currículo Vivo. Hoje esse é o principal ponto de risco de consistência do projeto.
-```

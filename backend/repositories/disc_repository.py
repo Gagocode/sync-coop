@@ -18,8 +18,7 @@ def save_initial_result(user_id, scores):
                 scores["C"],
             ),
         )
-        connection.commit()
-        return find_initial_result_by_user_id(user_id)
+    return find_initial_result_by_user_id(user_id)
 
 
 def find_initial_result_by_user_id(user_id):
@@ -57,8 +56,7 @@ def upsert_observed_result(user_id, scores):
                 scores["C"],
             ),
         )
-        connection.commit()
-        return find_observed_result_by_user_id(user_id)
+    return find_observed_result_by_user_id(user_id)
 
 
 def find_observed_result_by_user_id(user_id):

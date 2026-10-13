@@ -1,11 +1,16 @@
-from repositories import disc_repository
-from services.achievement_service import evaluate_user_achievements
+from collections.abc import Mapping
+
+from database.connection import transaction
+from repositories import disc_repository, user_repository
 from services.evolution_service import record_disc_completed
-from services.mission_service import complete_user_mission_by_key
-from services.observed_disc_service import update_observed_disc
+from services.mission_service import complete_missions_for_event
 
 
 DISC_DIMENSIONS = ("D", "I", "S", "C")
+CLASS_BY_DIMENSION = {
+    "D": "Executor Estratégico", "I": "Comunicador",
+    "S": "Colaborador", "C": "Analista",
+}
 
 QUESTIONS = [
     {
@@ -140,17 +145,19 @@ def get_questions():
 
 
 def submit_initial_disc(user_id, answers):
-    existing_result = get_initial_disc_result(user_id)
-    if existing_result:
-        raise DiscError("DISC inicial ja realizado")
-
-    scores = calculate_scores(answers)
-    result = disc_repository.save_initial_result(user_id, scores)
-    record_disc_completed(user_id, result.created_at)
-    complete_user_mission_by_key(user_id, "complete_disc_quiz")
-    evaluate_user_achievements(user_id)
-    update_observed_disc(user_id)
-    return build_result_summary(result)
+    with transaction():
+        if get_initial_disc_result(user_id):
+            raise DiscError("DISC inicial ja realizado")
+        scores = calculate_scores(answers)
+        result = disc_repository.save_initial_result(user_id, scores)
+        summary = build_result_summary(result)
+        user_repository.update_profile_class(
+            user_id, calculate_initial_class(summary["predominant_dimension"])
+        )
+        record_disc_completed(user_id, result.created_at)
+        complete_missions_for_event(user_id, "DISC_COMPLETED")
+        complete_missions_for_event(user_id, "PROFILE_COMPLETED")
+        return summary
 
 
 def get_initial_disc_result(user_id):
@@ -158,8 +165,12 @@ def get_initial_disc_result(user_id):
     return build_result_summary(result) if result else None
 
 
+def calculate_initial_class(predominant_dimension):
+    return CLASS_BY_DIMENSION[predominant_dimension]
+
+
 def calculate_scores(answers):
-    if not answers:
+    if not isinstance(answers, Mapping) or not answers:
         raise DiscError("Responda todas as perguntas do quiz")
 
     questions_by_id = {question["id"]: question for question in QUESTIONS}

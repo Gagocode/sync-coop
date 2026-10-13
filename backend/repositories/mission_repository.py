@@ -1,5 +1,5 @@
 from database.connection import get_connection
-from models.mission import Mission, MissionCatalogItem
+from models.mission import Mission
 
 
 def sync_catalog(catalog):
@@ -22,18 +22,6 @@ def sync_catalog(catalog):
                     mission["xp_recompensa"], mission["ordem"], mission["tipo_evento"],
                 ),
             )
-        connection.commit()
-
-
-def list_catalog():
-    with get_connection() as connection:
-        rows = connection.execute(
-            """
-            SELECT id, mission_key, nome, descricao, xp_recompensa, ordem, tipo_evento
-            FROM missions ORDER BY ordem
-            """
-        ).fetchall()
-        return [MissionCatalogItem.from_row(row) for row in rows]
 
 
 def create_user_missions(user_id, missions):
@@ -52,8 +40,7 @@ def create_user_missions(user_id, missions):
                 for mission in missions
             ],
         )
-        connection.commit()
-        return list_by_user_id(user_id)
+    return list_by_user_id(user_id)
 
 
 def list_by_user_id(user_id):
@@ -138,7 +125,6 @@ def complete_mission(mission_id, user_id):
                 "UPDATE users SET xp = xp + ? WHERE id = ?",
                 (mission.xp_recompensa, user_id),
             )
-        connection.commit()
 
     return find_by_id_for_user(mission_id, user_id)
 
@@ -176,5 +162,4 @@ def activate_next_pending_mission(user_id):
             "UPDATE user_missions SET status = 'Pendente' WHERE id = ?",
             (row["id"],),
         )
-        connection.commit()
-        return find_by_id_for_user(row["id"], user_id)
+    return find_by_id_for_user(row["id"], user_id)

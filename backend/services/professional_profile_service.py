@@ -1,8 +1,10 @@
 import os
+from collections.abc import Mapping
 from pathlib import Path
 from urllib.parse import urlsplit
 from uuid import uuid4
 
+from database.connection import transaction
 from repositories import professional_profile_repository as repository
 
 
@@ -27,15 +29,23 @@ def get_professional_profile(user_id):
 
 
 def update_professional_profile(user_id, data, resume=None):
+    if not isinstance(data, Mapping):
+        raise ProfessionalProfileError("Dados invalidos")
     cleaned = {}
     for field, limit in TEXT_LIMITS.items():
-        value = (data.get(field) or "").strip()
+        raw_value = data.get(field)
+        if raw_value is not None and not isinstance(raw_value, str):
+            raise ProfessionalProfileError(f"{field.replace('_', ' ').capitalize()}: valor invalido")
+        value = (raw_value or "").strip()
         if len(value) > limit:
             raise ProfessionalProfileError(f"{field.replace('_', ' ').capitalize()}: máximo de {limit} caracteres")
         cleaned[field] = value or None
 
     for field in URL_FIELDS:
-        value = (data.get(field) or "").strip()
+        raw_value = data.get(field)
+        if raw_value is not None and not isinstance(raw_value, str):
+            raise ProfessionalProfileError(f"Informe uma URL HTTP ou HTTPS válida para {field.capitalize()}")
+        value = (raw_value or "").strip()
         if value:
             try:
                 parts = urlsplit(value)
@@ -53,12 +63,11 @@ def update_professional_profile(user_id, data, resume=None):
         cleaned[field] = value or None
 
     availability = data.get("disponivel_estagio", "")
-    if availability not in ("", "sim", "nao"):
+    if not isinstance(availability, str) or availability not in ("", "sim", "nao"):
         raise ProfessionalProfileError("Disponibilidade para estágio inválida")
     cleaned["disponivel_estagio"] = {"sim": 1, "nao": 0, "": None}[availability]
 
-    current = get_professional_profile(user_id)
-    cleaned["curriculo_path"] = current["curriculo_path"]
+    contents = None
     if resume and resume.filename:
         if not resume.filename.lower().endswith(".pdf"):
             raise ProfessionalProfileError("O currículo deve ser um arquivo PDF")
@@ -67,16 +76,38 @@ def update_professional_profile(user_id, data, resume=None):
             raise ProfessionalProfileError("O currículo deve ter até 5 MB")
         if not contents.startswith(b"%PDF-") or b"%%EOF" not in contents[-1024:]:
             raise ProfessionalProfileError("O arquivo enviado não é um PDF válido")
-        RESUME_DIR.mkdir(parents=True, exist_ok=True)
-        path = RESUME_DIR / f"{user_id}.pdf"
-        temporary = RESUME_DIR / f".{user_id}.{uuid4().hex}.tmp"
-        try:
-            temporary.write_bytes(contents)
-            os.replace(temporary, path)
-        finally:
+
+    path = RESUME_DIR / f"{user_id}.pdf"
+    temporary = None
+    backup = None
+    replaced = False
+    try:
+        with transaction():
+            current = get_professional_profile(user_id)
+            cleaned["curriculo_path"] = current["curriculo_path"]
+            if contents is not None:
+                RESUME_DIR.mkdir(parents=True, exist_ok=True)
+                temporary = RESUME_DIR / f".{user_id}.{uuid4().hex}.tmp"
+                temporary.write_bytes(contents)
+                if path.exists():
+                    backup = RESUME_DIR / f".{user_id}.{uuid4().hex}.bak"
+                    os.replace(path, backup)
+                os.replace(temporary, path)
+                replaced = True
+                cleaned["curriculo_path"] = path.name
+            result = repository.save(user_id, cleaned)
+        return result
+    except Exception:
+        if replaced:
+            path.unlink(missing_ok=True)
+        if backup and backup.exists():
+            os.replace(backup, path)
+        raise
+    finally:
+        if temporary:
             temporary.unlink(missing_ok=True)
-        cleaned["curriculo_path"] = path.name
-    return repository.save(user_id, cleaned)
+        if backup:
+            backup.unlink(missing_ok=True)
 
 
 def get_resume_path(user_id):

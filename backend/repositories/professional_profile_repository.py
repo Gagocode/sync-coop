@@ -27,5 +27,4 @@ def save(user_id, data):
             f"VALUES (?, {placeholders}) ON CONFLICT(user_id) DO UPDATE SET {updates}",
             (user_id, *values),
         )
-        connection.commit()
     return find_by_user_id(user_id)

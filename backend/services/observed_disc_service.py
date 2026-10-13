@@ -12,12 +12,17 @@ ACHIEVEMENT_I_WEIGHT = 5
 
 
 def get_observed_disc_result(user_id):
-    result = update_observed_disc(user_id)
-    return build_observed_summary(result)
+    return build_observed_summary(disc_repository.find_observed_result_by_user_id(user_id), user_id)
 
 
 def update_observed_disc(user_id):
     scores = calculate_observed_scores(user_id)
+    existing = disc_repository.find_observed_result_by_user_id(user_id)
+    if existing and scores == {
+        "D": existing.d_observed, "I": existing.i_observed,
+        "S": existing.s_observed, "C": existing.c_observed,
+    }:
+        return existing
     return disc_repository.upsert_observed_result(user_id, scores)
 
 
@@ -41,13 +46,13 @@ def calculate_observed_scores(user_id):
     }
 
 
-def build_observed_summary(result):
-    scores = {
+def build_observed_summary(result, user_id=None):
+    scores = ({
         "D": result.d_observed,
         "I": result.i_observed,
         "S": result.s_observed,
         "C": result.c_observed,
-    }
+    } if result else {"D": 0, "I": 0, "S": 0, "C": 0})
     total = sum(scores.values())
     percentages = {
         dimension: round((score / total) * 100) if total else 0
@@ -56,12 +61,12 @@ def build_observed_summary(result):
     predominant_dimension = max(scores, key=scores.get) if total else None
 
     return {
-        "user_id": result.user_id,
+        "user_id": result.user_id if result else user_id,
         "scores": scores,
         "total": total,
         "percentages": percentages,
         "predominant_dimension": predominant_dimension,
-        "updated_at": result.updated_at,
+        "updated_at": result.updated_at if result else None,
         "rules": {
             "projects": f"+{PROJECT_D_WEIGHT} D por projeto cadastrado",
             "certificates": f"+{CERTIFICATE_C_WEIGHT} C por certificado cadastrado",

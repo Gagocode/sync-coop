@@ -45,7 +45,7 @@
             <div class="profile-avatar"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#profile"></use></svg></div>
             <div class="profile-summary">
               <div class="section-heading compact"><div><p class="eyebrow">PERFIL</p><h2 id="profile-heading">{{ user.nome }}</h2></div><span id="dashboard-level" class="level-badge"><svg class="sd-icon" aria-hidden="true"><use href="/assets/images/symbols.svg#level"></use></svg>Nivel 1</span></div>
-              <p class="profile-meta">{{ user.curso or "Curso nao informado" }} <span>-</span> {{ user.classe or "Classe aguardando DISC" }}</p>
+              <p id="dashboard-profile-meta" class="profile-meta">{{ user.curso or "Curso nao informado" }} <span>-</span> {{ user.classe or "Classe aguardando DISC" }}</p>
               <div class="progress-track" aria-label="Progresso de XP"><span id="dashboard-progress" style="width: 0%"></span></div>
               <p id="dashboard-progress-caption" class="progress-caption"><strong>{{ user.xp }} XP</strong> para continuar sua jornada</p>
             </div>

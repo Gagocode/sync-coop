@@ -3,10 +3,10 @@ from uuid import uuid4
 
 from werkzeug.utils import secure_filename
 
+from database.connection import transaction
 from repositories import certificate_repository
-from services.achievement_service import evaluate_user_achievements
 from services.evolution_service import record_certificate_created
-from services.mission_service import complete_user_mission_by_key
+from services.mission_service import complete_missions_for_event
 from services.observed_disc_service import update_observed_disc
 
 
@@ -23,29 +23,21 @@ def create_certificate(user_id, data, file_storage=None):
     instituicao = _require_text(data.get("instituicao"), "Instituicao obrigatoria")
     carga_horaria = _parse_carga_horaria(data.get("carga_horaria"))
     data_conclusao = _require_text(data.get("data_conclusao"), "Data de conclusao obrigatoria")
-    arquivo_path = _save_file(file_storage)
-
-    current_certificate_count = certificate_repository.count_by_user_id(user_id)
-    certificate = certificate_repository.create_certificate(
-        user_id=user_id,
-        nome=nome,
-        instituicao=instituicao,
-        carga_horaria=carga_horaria,
-        data_conclusao=data_conclusao,
-        arquivo_path=arquivo_path,
-    )
-    record_certificate_created(user_id, certificate)
-
-    if current_certificate_count == 0:
-        complete_user_mission_by_key(user_id, "first_certificate")
-    elif current_certificate_count == 1:
-        complete_user_mission_by_key(user_id, "second_certificate")
-    elif current_certificate_count == 2:
-        complete_user_mission_by_key(user_id, "third_certificate")
-
-    evaluate_user_achievements(user_id)
-    update_observed_disc(user_id)
-    return certificate
+    arquivo_path = None
+    try:
+        with transaction():
+            arquivo_path = _save_file(file_storage)
+            certificate = certificate_repository.create_certificate(
+                user_id=user_id, nome=nome, instituicao=instituicao,
+                carga_horaria=carga_horaria, data_conclusao=data_conclusao,
+                arquivo_path=arquivo_path,
+            )
+            record_certificate_created(user_id, certificate)
+            complete_missions_for_event(user_id, "CERTIFICATE_CREATED")
+            return certificate
+    except Exception:
+        _remove_new_file(arquivo_path)
+        raise
 
 
 def list_certificates(user_id):
@@ -60,29 +52,33 @@ def get_certificate(user_id, certificate_id):
 
 
 def update_certificate(user_id, certificate_id, data, file_storage=None):
-    certificate = get_certificate(user_id, certificate_id)
     nome = _require_text(data.get("nome"), "Nome obrigatorio")
     instituicao = _require_text(data.get("instituicao"), "Instituicao obrigatoria")
     carga_horaria = _parse_carga_horaria(data.get("carga_horaria"))
     data_conclusao = _require_text(data.get("data_conclusao"), "Data de conclusao obrigatoria")
-    arquivo_path = _save_file(file_storage) or certificate.arquivo_path
-
-    return certificate_repository.update_certificate(
-        certificate_id=certificate_id,
-        user_id=user_id,
-        nome=nome,
-        instituicao=instituicao,
-        carga_horaria=carga_horaria,
-        data_conclusao=data_conclusao,
-        arquivo_path=arquivo_path,
-    )
+    new_file = None
+    try:
+        with transaction():
+            certificate = get_certificate(user_id, certificate_id)
+            new_file = _save_file(file_storage)
+            return certificate_repository.update_certificate(
+                certificate_id=certificate_id, user_id=user_id,
+                nome=nome, instituicao=instituicao,
+                carga_horaria=carga_horaria, data_conclusao=data_conclusao,
+                arquivo_path=new_file or certificate.arquivo_path,
+            )
+    except Exception:
+        _remove_new_file(new_file)
+        raise
 
 
 def delete_certificate(user_id, certificate_id):
-    deleted = certificate_repository.delete_certificate(certificate_id, user_id)
-    if not deleted:
-        raise CertificateError("Certificado nao encontrado")
-    return True
+    with transaction():
+        deleted = certificate_repository.delete_certificate(certificate_id, user_id)
+        if not deleted:
+            raise CertificateError("Certificado nao encontrado")
+        update_observed_disc(user_id)
+        return True
 
 
 def get_certificate_file_path(certificate):
@@ -107,8 +103,17 @@ def _save_file(file_storage):
 
     filename = f"{uuid4().hex}_{original_name}"
     file_path = CERTIFICATE_UPLOAD_DIR / filename
-    file_storage.save(file_path)
+    try:
+        file_storage.save(file_path)
+    except Exception:
+        file_path.unlink(missing_ok=True)
+        raise
     return f"uploads/certificates/{filename}"
+
+
+def _remove_new_file(arquivo_path):
+    if arquivo_path:
+        (UPLOAD_ROOT / Path(arquivo_path).relative_to("uploads")).unlink(missing_ok=True)
 
 
 def _parse_carga_horaria(value):
@@ -123,7 +128,7 @@ def _parse_carga_horaria(value):
 
 
 def _require_text(value, message):
-    value = value.strip() if value else ""
+    value = value.strip() if isinstance(value, str) else ""
     if not value:
         raise CertificateError(message)
     return value
