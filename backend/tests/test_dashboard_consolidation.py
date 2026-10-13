@@ -18,19 +18,8 @@ class DashboardConsolidationTest(unittest.TestCase):
     def setUpClass(cls):
         cls.temp_dir = tempfile.TemporaryDirectory()
         cls.database_path = Path(cls.temp_dir.name) / "test.sqlite3"
-        cls.original_get_connection = database.get_connection
-        cls.original_init_database = database.init_database
-        cls.connections = []
-
-        def test_connection(_path=None):
-            connection = cls.original_get_connection(cls.database_path)
-            cls.connections.append(connection)
-            return connection
-
-        cls.test_connection = test_connection
-        cls.test_init_database = lambda _path: cls.original_init_database(cls.database_path)
-        database.get_connection = cls.test_connection
-        database.init_database = cls.test_init_database
+        cls.original_database_path = database.DATABASE_PATH
+        database.DATABASE_PATH = cls.database_path
         from services import certificate_service, professional_profile_service
 
         cls.certificate_service = certificate_service
@@ -48,18 +37,10 @@ class DashboardConsolidationTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        database.get_connection = cls.original_get_connection
-        database.init_database = cls.original_init_database
-        for module in tuple(sys.modules.values()):
-            if getattr(module, "get_connection", None) is cls.test_connection:
-                module.get_connection = cls.original_get_connection
-            if getattr(module, "init_database", None) is cls.test_init_database:
-                module.init_database = cls.original_init_database
+        database.DATABASE_PATH = cls.original_database_path
         cls.certificate_service.UPLOAD_ROOT = cls.original_upload_root
         cls.certificate_service.CERTIFICATE_UPLOAD_DIR = cls.original_certificate_dir
         cls.professional_profile_service.RESUME_DIR = cls.original_resume_dir
-        for connection in cls.connections:
-            connection.close()
         cls.temp_dir.cleanup()
 
     def test_dashboard_routes_and_persistence(self):

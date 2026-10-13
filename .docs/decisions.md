@@ -41,3 +41,26 @@ Os templates de listagem e detalhe independentes de missões, projetos e certifi
 - As camadas de CSS existentes ainda contêm regras sobrepostas. Uma limpeza exige comparação visual com uma versão de referência para provar equivalência.
 - A revisão de services, transações, XP e consistência de regras de domínio pertence à etapa posterior; esta decisão trata apenas de apresentação e navegação.
 - A validação automatizada cobre contratos HTTP e persistência em banco temporário. Um smoke test em navegador validou abas, modais, formulários, redirecionamentos e operações de criação/edição/exclusão; capturas desktop e mobile foram inspecionadas. Não há captura de referência anterior para uma comparação visual por pixels.
+
+## 2026-10-13 — Consultas puras e comandos transacionais no Sync Disc
+
+### Problemas corrigidos
+
+- `get_profile` concluía missão, concedia XP e persistia classe durante uma leitura. Consultas de perfil público, missões, conquistas, evolução e DISC Observado também podiam gravar estado. Essas gravações foram retiradas das consultas.
+- Criação de projeto/certificado e envio do DISC combinavam registros, XP, conquistas, histórico e DISC Observado em commits independentes. Falhas intermediárias podiam deixar dados parciais.
+- Projetos e certificados escolhiam missões por chaves fixas e contagem em serviços separados, sem despachar pela coluna `tipo_evento`.
+
+### Decisões
+
+- O envio do DISC grava resultado e classe inicial, registra o evento e conclui missões `DISC_COMPLETED` e `PROFILE_COMPLETED`. Cadastro cria as missões iniciais. Criação de projeto/certificado registra a evidência e despacha `PROJECT_CREATED`/`CERTIFICATE_CREATED`. O serviço de missões valida a evidência persistida e a ordem da missão no mesmo tipo de evento; o repositório faz atualização condicional de status e XP na mesma conexão. Conquistas e DISC Observado são atualizados no comando.
+- A transação pertence ao serviço de entrada. Repositórios compartilham a conexão ativa sem commit próprio; a fronteira externa confirma ou desfaz todo o comando. O upload novo de certificado é removido em caso de rollback. A substituição de currículo restaura o arquivo anterior se a gravação falhar.
+- `reconcile_existing_progress` roda após inicializar o esquema, antes de atender requisições. Reconcilia classe, missões documentadas, conquistas, histórico e DISC Observado de dados anteriores de forma idempotente. Não é acionado por consultas. A inicialização pode demorar proporcionalmente ao número de usuários; uma migração operacional explícita poderá substituí-la se houver escala maior.
+- Não houve migração de esquema, mudança de rotas, formatos JSON ou alteração da stack. Os limiares de nível, pesos do DISC Observado e recompensas do catálogo foram mantidos. Exclusão de projeto/certificado recalcula o DISC Observado; XP e conquistas já concedidos permanecem, como no comportamento anterior.
+
+### Pendências de domínio e limites
+
+- `CONTINUE_EVOLUTION` não possui limiar documentado; permanece sem conclusão automática. Penalidades, atributos secundários e novas regras de XP também não têm definição implementável no domínio atual. Não foram inventados critérios.
+- Arquivos antigos de certificados substituídos ou excluídos continuam no armazenamento local, para preservar o comportamento atual. Uma política de retenção/limpeza requer decisão própria.
+- Repetir a conclusão de uma missão ou o processamento do mesmo estado não repete XP nem conquistas. POSTs de criação de projeto/certificado continuam criando um novo registro a cada requisição; o contrato atual não possui chave de idempotência para distinguir retry de uma segunda criação legítima. Definir esse contrato exige decisão de produto e atualização coordenada dos consumidores.
+- A reconciliação atual é sequencial e executada em toda inicialização. Ela evita duplicar recompensas e histórico, mas pode ser transformada em migração única quando necessário.
+- Testes automatizados cobrem leituras repetidas, contratos HTTP, condições de missão, XP, nível, conquistas, DISC Observado, posse de registros, idempotência e rollback de falhas injetadas. Não foi executada validação visual em navegador nesta etapa, pois o frontend não foi alterado.

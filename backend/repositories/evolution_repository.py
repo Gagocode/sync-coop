@@ -12,7 +12,6 @@ def create_event(user_id, event_key, event_type, titulo, descricao, created_at=N
             """,
             (user_id, event_key, event_type, titulo, descricao, created_at),
         )
-        connection.commit()
     return find_by_key_for_user(user_id, event_key)
 
 

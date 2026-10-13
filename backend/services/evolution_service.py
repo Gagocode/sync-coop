@@ -34,14 +34,6 @@ def get_user_evolution(user_id, user=None, projects=None, certificates=None, ach
         mission for mission in missions if mission.status == "Concluida"
     ]
 
-    _ensure_history_for_current_state(
-        user_id=user_id,
-        projects=projects,
-        certificates=certificates,
-        completed_missions=completed_missions,
-        unlocked_achievements=unlocked_achievements,
-    )
-
     return {
         "level": calculate_level(user.xp),
         "indicators": {
@@ -147,7 +139,7 @@ def record_achievement_unlocked(user_id, achievement):
     )
 
 
-def _ensure_history_for_current_state(
+def backfill_history_for_current_state(
     user_id,
     projects,
     certificates,

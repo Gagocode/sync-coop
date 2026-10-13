@@ -19,7 +19,6 @@ def sync_catalog(catalog):
                     achievement["descricao"],
                 ),
             )
-        connection.commit()
 
 
 def unlock_for_user(user_id, achievement_key):
@@ -37,7 +36,6 @@ def unlock_for_user_with_status(user_id, achievement_key):
             (user_id, achievement_key),
         )
         created = cursor.rowcount == 1
-        connection.commit()
     return find_for_user(user_id, achievement_key), created
 
 

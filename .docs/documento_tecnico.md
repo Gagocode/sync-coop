@@ -188,3 +188,9 @@ Caso a resposta para alguma dessas perguntas seja negativa, a solução deverá 
 ## 22. Implementação atual da interface autenticada (2026-10-13)
 
 O Sync Disc usa Flask, templates Jinja, CSS e JavaScript convencional. `/dashboard` é o caminho canônico para perfil privado, missões, projetos, certificados, conquistas e evolução, organizados em abas. Fragmentos de URL identificam a aba e, quando aplicável, a abertura dos modais existentes. URLs HTML antigas dessas áreas redirecionam ao dashboard; os endpoints JSON e POSTs existentes permanecem como contratos de dados. Autenticação, quiz e resultado DISC, downloads e perfil público conservam rotas próprias. A tabela de decisões e o mapa detalhado estão em `.docs/decisions.md`.
+
+## 23. Persistência e comandos do MVP (2026-10-13)
+
+As consultas de perfil, dashboard, missões, conquistas, evolução e DISC Observado apenas leem dados. Cadastro, envio do DISC, criação de projeto ou certificado, conclusão de missão e reconciliação de dados anteriores são comandos explícitos. Os serviços coordenam as regras de negócio; os repositórios executam SQL sem decidir recompensas. A conexão SQLite é compartilhada dentro do comando por `database.connection.transaction()`, com commit ou rollback na fronteira externa. Os repositórios não fazem commit independente.
+
+O serviço de missões seleciona a regra pelo `tipo_evento` do catálogo e verifica a evidência persistida antes de conceder XP. A reconciliação idempotente de dados legados roda na inicialização da aplicação, antes de atender requisições, e não durante consultas. Não houve alteração de esquema ou dos contratos HTTP/JSON.

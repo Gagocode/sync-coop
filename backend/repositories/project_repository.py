@@ -11,8 +11,8 @@ def create_project(user_id, titulo, descricao, tecnologias, link=None):
             """,
             (user_id, titulo, descricao, tecnologias, link),
         )
-        connection.commit()
-        return find_by_id_for_user(cursor.lastrowid, user_id)
+        project_id = cursor.lastrowid
+    return find_by_id_for_user(project_id, user_id)
 
 
 def list_by_user_id(user_id):
@@ -67,8 +67,7 @@ def update_project(project_id, user_id, titulo, descricao, tecnologias, link=Non
             """,
             (titulo, descricao, tecnologias, link, project_id, user_id),
         )
-        connection.commit()
-        return find_by_id_for_user(project_id, user_id)
+    return find_by_id_for_user(project_id, user_id)
 
 
 def delete_project(project_id, user_id):
@@ -80,5 +79,4 @@ def delete_project(project_id, user_id):
             """,
             (project_id, user_id),
         )
-        connection.commit()
         return cursor.rowcount > 0

@@ -4,13 +4,11 @@ from repositories import certificate_repository
 from repositories import disc_repository
 from repositories import project_repository
 from repositories import user_repository
-from services.achievement_service import evaluate_user_achievements
 from services.auth_service import register_user
 from services.certificate_service import create_certificate
 from services.disc_service import submit_initial_disc
-from services.mission_service import complete_user_mission_by_key, create_initial_missions_for_user
-from services.observed_disc_service import update_observed_disc
-from services.profile_service import get_profile
+from services.mission_service import create_initial_missions_for_user
+from services.progress_reconciliation_service import reconcile_user_progress
 from services.project_service import create_project
 
 
@@ -116,9 +114,7 @@ def seed_demo_data():
         _ensure_disc(user.id, demo_user["answers"])
         _ensure_projects(user.id, demo_user["projects"])
         _ensure_certificates(user.id, demo_user["certificates"])
-        get_profile(user.id)
-        evaluate_user_achievements(user.id)
-        update_observed_disc(user.id)
+        reconcile_user_progress(user.id)
         seeded_users.append(user)
     return seeded_users
 
@@ -164,5 +160,4 @@ def _ensure_certificates(user_id, certificates):
 if __name__ == "__main__":
     users = seed_demo_data()
     for user in users:
-        complete_user_mission_by_key(user.id, "continue_evolution")
         print(f"Demo pronto: {user.email} / {DEMO_PASSWORD}")

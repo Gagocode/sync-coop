@@ -220,3 +220,20 @@ As rotas HTML antigas de perfil privado, missões, projetos e certificados redir
 
 ### Impacto
 O dashboard passa a ser a entrada canônica dos fluxos autenticados sem mudar services, regras de negócio ou dados existentes.
+
+## 2026-10-13
+
+### Funcionalidade
+Consistência das regras de negócio e transações do Sync Disc
+
+### Arquivos alterados
+`backend/app.py`, `backend/database/connection.py`, repositórios de usuário, DISC, missão, projeto, certificado, conquista, evolução e perfil profissional; serviços de cadastro, DISC, perfil, perfil público, missão, projeto, certificado, conquista, evolução, DISC Observado e perfil profissional; novo `backend/services/progress_reconciliation_service.py`; `backend/seed_demo.py`; `backend/tests/test_dashboard_consolidation.py`; novo `backend/tests/test_business_rules.py`.
+
+### Resumo
+Consultas deixaram de completar missões, conceder XP, persistir classe, criar conquistas ou sincronizar dados. Os comandos do cadastro, DISC, projeto, certificado e missão concentram os efeitos relacionados em transações SQLite. A conclusão usa `tipo_evento` e evidência persistida; status/XP só mudam uma vez. O DISC Observado é recalculado nos comandos, inclusive exclusões. Dados legados são reconciliados explicitamente na inicialização, de modo idempotente. Falhas de upload e substituição de currículo têm compensação para arquivos locais. Sem mudança de esquema, contratos HTTP/JSON ou stack.
+
+### Impacto
+Abrir perfil ou dashboard repetidamente não gera recompensas. Falhas intermediárias desfazem as alterações relacionadas. Projetos e certificados continuam produzindo missão, XP, histórico, conquista e DISC Observado. Os testes existentes e novos passaram: `python -m unittest discover -s backend/tests -v` (11 testes). A missão `CONTINUE_EVOLUTION` segue sem critério formal de conclusão; regras de penalidade e atributos secundários continuam pendentes de definição oficial. Arquivos antigos de certificados substituídos ou excluídos continuam armazenados.
+
+### Pendente para próxima etapa
+O contrato de criação não inclui chave de idempotência: um retry de POST de projeto/certificado é interpretado como nova criação. Decidir a semântica do retry antes de alterar esse contrato.

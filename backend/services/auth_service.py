@@ -1,5 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from database.connection import transaction
 from repositories import user_repository
 from services.mission_service import create_initial_missions_for_user
 
@@ -18,9 +19,10 @@ def register_user(nome, email, senha, curso=None):
         raise AuthError("Email ja cadastrado")
 
     senha_hash = generate_password_hash(senha)
-    user = user_repository.create_user(nome, email, senha_hash, curso)
-    create_initial_missions_for_user(user.id)
-    return user
+    with transaction():
+        user = user_repository.create_user(nome, email, senha_hash, curso)
+        create_initial_missions_for_user(user.id)
+        return user
 
 
 def authenticate_user(email, senha):

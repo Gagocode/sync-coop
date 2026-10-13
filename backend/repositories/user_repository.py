@@ -11,8 +11,8 @@ def create_user(nome, email, senha_hash, curso=None):
             """,
             (nome, email, senha_hash, curso),
         )
-        connection.commit()
-        return find_by_id(cursor.lastrowid)
+        user_id = cursor.lastrowid
+    return find_by_id(user_id)
 
 
 def find_by_email(email):
@@ -39,6 +39,11 @@ def find_by_id(user_id):
             (user_id,),
         ).fetchone()
         return User.from_row(row) if row else None
+
+
+def list_user_ids():
+    with get_connection() as connection:
+        return [row[0] for row in connection.execute("SELECT id FROM users ORDER BY id")]
 
 
 def find_public_by_id(user_id):
@@ -70,8 +75,7 @@ def update_profile_class(user_id, classe):
             """,
             (classe, user_id),
         )
-        connection.commit()
-        return find_by_id(user_id)
+    return find_by_id(user_id)
 
 
 def update_password_hash(user_id, senha_hash):
@@ -84,8 +88,7 @@ def update_password_hash(user_id, senha_hash):
             """,
             (senha_hash, user_id),
         )
-        connection.commit()
-        return find_by_id(user_id)
+    return find_by_id(user_id)
 
 
 def add_xp(user_id, xp_amount):
@@ -98,5 +101,4 @@ def add_xp(user_id, xp_amount):
             """,
             (xp_amount, user_id),
         )
-        connection.commit()
-        return find_by_id(user_id)
+    return find_by_id(user_id)

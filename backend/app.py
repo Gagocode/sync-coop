@@ -14,10 +14,10 @@ from controllers.public_profile_controller import (
     public_profile_bp,
     public_profile_name_bp,
 )
-from database.connection import init_database
+from database import connection as database
+from services.progress_reconciliation_service import reconcile_existing_progress
 
 BASE_DIR = Path(__file__).resolve().parent
-DATABASE_PATH = BASE_DIR / "database" / "sync_disc.sqlite3"
 UPLOAD_FOLDER = BASE_DIR / "uploads"
 FRONTEND_DIR = BASE_DIR.parent / "frontend"
 
@@ -29,11 +29,12 @@ def create_app():
         static_url_path="/assets",
         template_folder=str(FRONTEND_DIR / "pages"),
     )
-    app.config["DATABASE_PATH"] = DATABASE_PATH
+    app.config["DATABASE_PATH"] = database.DATABASE_PATH
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "sync-disc-dev-secret")
 
-    init_database(DATABASE_PATH)
+    database.init_database(database.DATABASE_PATH)
+    reconcile_existing_progress()
     app.register_blueprint(auth_bp)
     app.register_blueprint(certificate_bp)
     app.register_blueprint(disc_bp)
