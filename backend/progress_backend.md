@@ -1,3 +1,7 @@
+# Registro histórico de backend — Sync-Disc
+
+**Aviso em 2026-10-13:** as entradas abaixo documentam a implementação do protótipo Sync-Disc e não comprovam funcionalidades do Sync-Coop. A documentação ativa do novo produto está em .docs/documento_mestre.md, .docs/documento_dominio.md e .docs/documento_tecnico.md. A migração documental não alterou backend, banco, dependências ou testes. Organizações, papéis, isolamento e relatórios corporativos permanecem não implementados.
+
 ## 2026-09-23
 
 ### Funcionalidade

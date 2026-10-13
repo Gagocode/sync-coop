@@ -1,187 +1,51 @@
-# Sync Disc
+# Sync-Coop
 
-Sync Disc e uma plataforma gamificada de desenvolvimento profissional para universitarios. O projeto transforma o curriculo tradicional em um perfil vivo, evolutivo e compartilhavel, combinando informacoes curriculares, missoes, XP, conquistas e indicadores comportamentais baseados no modelo DISC.
+O Sync-Coop é a direção oficial do produto: uma plataforma corporativa SaaS de desenvolvimento de colaboradores, missões, gamificação, acompanhamento de equipes e indicadores para gestores e profissionais autorizados. O uso de dados organizacionais poderá apoiar análise humana de fatores de risco psicossociais relacionados ao trabalho, com limites claros de interpretação. O DISC permanece parte do produto.
 
-## Visao geral
+**Estado do repositório:** o código executável ainda é o protótipo Sync-Disc, voltado a usuários individuais. Esta migração atualizou somente a documentação; organizações, equipes, papéis, dashboards gerenciais, missões com prazos, indicadores corporativos e recursos de apoio à NR-1 ainda não foram implementados. A presença de um requisito nos documentos não significa que o aplicativo o entregue.
 
-A proposta do sistema e permitir que estudantes construam uma jornada profissional continua. Em vez de manter apenas um curriculo estatico em PDF, o usuario evolui seu perfil por meio de atividades como quiz narrativo, conclusao de missoes, registro de projetos, certificacoes, experiencias e outras evidencias praticas.
+## O que funciona hoje
 
-O DISC e tratado como um conjunto de atributos dinamicos:
+- Cadastro, login/logout e questionário DISC inicial de uma aplicação.
+- Dashboard individual em /dashboard com perfil, projetos, certificados, missões, conquistas e evolução.
+- Missões de catálogo, XP, níveis, DISC observado e histórico de evolução.
+- Perfil público e currículo do domínio anterior, ainda presentes no código e sujeitos a revisão de privacidade antes de qualquer adoção corporativa.
+- Backend Flask em camadas, templates Jinja, CSS/JavaScript convencional e SQLite.
 
-- **D - Dominancia:** lideranca, iniciativa, decisao e acao.
-- **I - Influencia:** comunicacao, interacao social, apresentacoes e networking.
-- **S - Estabilidade:** consistencia, colaboracao, comprometimento e continuidade.
-- **C - Conformidade:** organizacao, planejamento, analise e documentacao.
+O código atual não possui isolamento entre organizações nem controle de acesso por papel corporativo. Portanto, **não deve ser apresentado como SaaS multiempresa pronto**.
 
-O sistema trabalha com um **DISC inicial**, obtido pelo quiz narrativo, e um **DISC observado**, atualizado ao longo do tempo a partir das acoes do usuario.
+## Executar o protótipo local
 
-## Objetivo do produto
+Instale as dependências listadas em backend/requirements.txt e execute:
 
-O objetivo do Sync Disc e ajudar universitarios a:
+    python backend/app.py
 
-- desenvolver sua carreira;
-- construir evidencias de experiencia;
-- acompanhar sua evolucao profissional;
-- visualizar atributos comportamentais e tecnicos;
-- aumentar empregabilidade;
-- compartilhar um perfil publico mais completo que um curriculo tradicional.
+O SQLite local é criado em backend/database/ e os uploads ficam em backend/uploads/. Use dados de desenvolvimento. Para testar com ambiente temporário:
 
-## Publico-alvo
+    python -m unittest discover -s backend/tests -v
 
-O publico principal sao universitarios de diferentes cursos, como Sistemas de Informacao, Ciencia da Computacao, Engenharia, Administracao, Arquitetura, Design e areas relacionadas.
+O teste de interface opcional é python backend/tests/browser_smoke.py; requer Playwright e Chromium instalados. Esta migração documental não executou esses testes nem modificou a aplicação.
 
-Tambem fazem parte do publico secundario recrutadores, empresas, professores e instituicoes de ensino.
+## Documentação ativa
 
-## Fluxo principal
+| Documento | Função |
+|---|---|
+| [.docs/documento_mestre.md](.docs/documento_mestre.md) | Produto, objetivos e requisitos confirmados |
+| [.docs/documento_dominio.md](.docs/documento_dominio.md) | Conceitos, regras legadas, regras propostas e limites de acesso |
+| [.docs/documento_tecnico.md](.docs/documento_tecnico.md) | Arquitetura real e requisitos técnicos futuros |
+| [.docs/analise_escopo_e_features.md](.docs/analise_escopo_e_features.md) | Diferenças Sync-Disc → Sync-Coop e estado das capacidades |
+| [.docs/decisions.md](.docs/decisions.md) | Decisões atuais, pendências e histórico dos Prompts 1–3 |
+| [.docs/design-system.md](.docs/design-system.md) | Diretrizes de interface, sem marca visual nova aprovada |
+| [.docs/agent.md](.docs/agent.md) | Instruções para agentes e hierarquia documental |
 
-1. Cadastro do usuario.
-2. Login.
-3. Quiz Narrativo DISC.
-4. Geracao do perfil inicial.
-5. Recebimento de missoes.
-6. Execucao de atividades.
-7. Ganho de XP e evolucao.
-8. Atualizacao de atributos e DISC observado.
-9. Construcao do curriculo vivo.
-10. Compartilhamento do perfil publico.
+Os arquivos backend/progress_backend.md e frontend/progress_frontend.md são registros históricos de implementação do Sync-Disc. Não equivalem a um cronograma ou status de entrega do Sync-Coop.
 
-## MVP original e estado atual
+Os originais dos documentos substituídos podem ser recuperados no Git pelo commit 746a6ddff3e415b1132892dae4e733b6752f01ec, por exemplo com git show 746a6dd:.docs/documento_mestre.md. Eles são históricos, não especificação vigente.
 
-O escopo minimo previsto para apresentacao inclui:
+## Limites do produto
 
-- cadastro;
-- login e logout;
-- quiz narrativo;
-- resultado DISC;
-- perfil do usuario;
-- missoes;
-- XP.
+Resultados DISC, acesso, baixo XP ou pouca participação não constituem diagnóstico clínico nem prova de risco psicossocial ou desempenho profissional. Indicadores exigem contexto, finalidade, permissão e revisão humana. O Sync-Coop não garante conformidade com a NR-1 por si só; requisitos regulatórios específicos precisam de validação com profissionais competentes e [fontes oficiais do MTE](https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/nr-1).
 
-O recorte original do MVP deixava de fora:
+## Licença
 
-- projetos;
-- certificados;
-- perfil publico;
-- empresas;
-- busca avancada;
-- recomendacao automatica;
-- inteligencia artificial;
-- chat;
-- integracoes externas.
-
-O sistema implementado hoje inclui projetos, certificados, perfil publico, conquistas, evolucao, DISC observado, historico e formulario profissional. Isso amplia o MVP original; nao significa que os demais requisitos do Documento Mestre estejam implementados. Experiencias profissionais como entidade propria, missoes adaptativas, atributos secundarios, curtidas e regras de penalidade ainda nao existem. Os pesos atuais de gamificacao pertencem ao catalogo do prototipo; o Documento de Dominio ainda aponta criterios futuros em aberto.
-
-## Pilares do dominio
-
-O sistema e orientado por cinco pilares:
-
-- **Perfil:** elemento central da plataforma e consolidacao da evolucao profissional.
-- **DISC:** atributos comportamentais iniciais e observados.
-- **Missoes:** objetivos propostos ao usuario para estimular desenvolvimento.
-- **Evolucao:** XP, niveis, historico, indicadores e progresso.
-- **Curriculo vivo:** representacao dinamica da trajetoria do usuario.
-
-## Arquitetura
-
-O projeto deve seguir arquitetura em camadas, separando responsabilidades entre interface, controladores, servicos, persistencia e banco de dados.
-
-Fluxo conceitual:
-
-```text
-Interface -> Controladores -> Servicos -> Persistencia -> Banco de Dados
-```
-
-No backend, a diretriz principal e:
-
-```text
-Controllers
--> Services
--> Repositories
--> Database
-```
-
-Regras de negocio devem permanecer na camada de servicos. Controladores devem receber requisicoes, validar entradas basicas e delegar processamento. Repositories devem cuidar da persistencia sem conter regras de negocio.
-
-## Estrutura do repositorio
-
-```text
-.
-+-- .docs/
-|   +-- agent.md
-|   +-- documento_dominio.md
-|   +-- documento_mestre.md
-|   +-- documento_tecnico.md
-|   +-- decisions.md
-+-- backend/
-|   +-- app.py
-|   +-- controllers/ services/ repositories/ models/ database/
-|   +-- tests/
-|   +-- progress_backend.md
-+-- frontend/
-|   +-- pages/ assets/css/ assets/js/
-|   +-- progress_frontend.md
-+-- .editorconfig
-+-- .gitattributes
-+-- .gitignore
-+-- README.md
-```
-
-## Documentacao oficial
-
-Antes de qualquer implementacao, alteracao, correcao ou refatoracao, leia obrigatoriamente:
-
-1. `.docs/documento_mestre.md`
-2. `.docs/documento_tecnico.md`
-3. `.docs/documento_dominio.md`
-
-Esses documentos sao a fonte oficial de verdade do projeto.
-
-Em caso de conflito entre documentos, a prioridade e:
-
-1. Documento Mestre
-2. Documento Tecnico
-3. Documento de Dominio
-
-## Registro de progresso
-
-Toda alteracao em `backend/` deve ser registrada em:
-
-```text
-backend/progress_backend.md
-```
-
-Toda alteracao em `frontend/` deve ser registrada em:
-
-```text
-frontend/progress_frontend.md
-```
-
-O registro deve conter data, funcionalidade, resumo e impacto esperado.
-
-## Diretrizes de desenvolvimento
-
-- Manter simplicidade e clareza.
-- Evitar complexidade prematura.
-- Preservar baixo acoplamento e alta coesao.
-- Nao criar microservicos ou arquitetura distribuida no escopo atual.
-- Nao introduzir dependencias sem necessidade comprovada.
-- Nao alterar regras de negocio sem atualizar previamente a documentacao.
-- Manter a gamificacao, o DISC evolutivo e o curriculo vivo como elementos centrais.
-
-## Status
-
-O Sync Disc funciona localmente com Flask, Jinja, CSS, JavaScript convencional e SQLite. Cadastro e login levam ao quiz DISC inicial; o envio gera classe, missoes e XP. `/dashboard` e a interface autenticada principal para perfil privado, projetos, certificados, missoes, conquistas e evolucao. URLs HTML antigas dessas areas redirecionam para as abas; POSTs, JSON, downloads e formularios HTML de erro permanecem para compatibilidade. O perfil publico e o resultado DISC mantem paginas proprias.
-
-Consultas de perfil e dashboard nao gravam dados. Comandos relacionados usam transacoes SQLite e a reconciliacao de dados antigos acontece na inicializacao. As decisoes atuais e as limitacoes estao em `.docs/decisions.md`; os registros de implementacao estao em `backend/progress_backend.md` e `frontend/progress_frontend.md`.
-
-### Execucao e validacao local
-
-Instale `backend/requirements.txt` e execute `python backend/app.py`. O banco SQLite local e criado em `backend/database/`; uploads ficam em `backend/uploads/`.
-
-Execute os testes automatizados com `python -m unittest discover -s backend/tests -v`. O teste pratico opcional `python backend/tests/browser_smoke.py` usa Chromium via Playwright, um banco temporario e um servidor local. Playwright e seu navegador nao fazem parte dos requisitos de execucao da aplicacao. As fontes do Google exigem acesso externo; na ausencia de rede, o navegador usa fontes alternativas do sistema.
-
-Permanecem pendentes: criterio formal de conclusao da missao `CONTINUE_EVOLUTION`, semantica de retry dos POSTs de criacao, politica de limpeza para arquivos antigos de certificados e eventual migracao unica no lugar da reconciliacao a cada inicializacao.
-
-## Licenca
-
-Licenca ainda nao definida. Antes de publicar ou distribuir o projeto, escolha uma licenca adequada e adicione um arquivo `LICENSE` na raiz do repositorio.
+Ainda não definida.

@@ -1,82 +1,9 @@
-AGENTE: Sync Disc Product Experience Architect
-MISSÃO:
+# Orientação de produto para agentes — Sync-Coop
 
-Você é o responsável por garantir que o Sync Disc pareça uma plataforma de evolução profissional e não um CRUD gamificado.
+Use documento_mestre.md para escopo, documento_dominio.md para regras, decisions.md para pendências e documento_tecnico.md para estado real. Leia agent.md antes de propor mudanças. A missão do Sync-Coop é desenvolvimento corporativo com acompanhamento humano e privacidade, preservando DISC e gamificação onde compatíveis.
 
-Você NÃO programa inicialmente.
+Ao analisar uma funcionalidade, identifique organização, ator, finalidade, dado acessado, evento observável, efeito de negócio e permissão. Distinguir colaborador, gestor, administrador e profissional autorizado é obrigatório; nenhum painel gerencial herda acesso irrestrito. Diferencie requisito confirmado de comportamento implementado e proposta. Não anuncie como pronta uma capacidade existente apenas na documentação.
 
-Você NÃO gera código inicialmente.
+Antes de definir fórmula de indicador, janela de inatividade, recompensa, estado de missão, visibilidade de DISC, ranking, penalidade ou requisito regulatório, verifique decisions.md. Se pendente, registre a decisão necessária e o impacto. Sinais de baixo engajamento não são diagnóstico ou motivo automático para punição. Recursos relacionados à NR-1 apoiam análise humana; validar requisitos específicos com fontes oficiais e profissionais competentes.
 
-Você NÃO cria componentes inicialmente.
-
-Sua primeira responsabilidade é analisar a experiência do usuário.
-
-Objetivos
-
-Garantir que toda funcionalidade fortaleça pelo menos um dos pilares:
-
-Perfil
-DISC
-Missões
-Evolução
-Currículo Vivo
-Regras
-
-Antes de qualquer implementação, responda:
-
-1. O problema
-
-Qual problema de experiência está sendo resolvido?
-
-2. O impacto
-
-Como isso melhora o produto?
-
-3. O risco
-
-Existe risco de:
-
-parecer dashboard genérico?
-parecer CRUD?
-parecer template IA?
-4. A proposta
-
-Descreva a solução.
-
-5. Wireframe textual
-
-Mostre a estrutura da tela.
-
-6. Prompt para implementação
-
-Somente depois gere o prompt para Luna.
-
-Restrições
-
-Evitar:
-
-visual SaaS genérico
-excesso de cards
-excesso de branco
-roxo predominante
-telas administrativas
-menus desnecessários
-navegação complexa
-
-Priorizar:
-
-sensação de evolução
-progressão
-narrativa
-gamificação profissional
-clareza
-mobile first
-Perguntas Obrigatórias
-
-Antes de aprovar qualquer frontend:
-
-Isso parece o Sync Disc?
-Isso parece uma plataforma de evolução profissional?
-Isso reforça o Currículo Vivo?
-O usuário sente progresso?
-Existe uma forma mais simple
+Estudantes, disponibilidade para estágio, currículo público de contratação e recrutadores pertencem ao produto anterior. O DISC, as missões, a evolução e o dashboard individual são conceitos reutilizáveis, sujeitos a adaptação.
