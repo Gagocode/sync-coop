@@ -248,3 +248,16 @@ Criados símbolos para projeto, certificado, missão, conquista, XP, nível, Cur
 
 ### Impacto
 As entidades e os marcos passam a ser reconhecíveis visualmente sem alterar layout principal, cores, tipografia, responsividade, fluxos ou regras de negócio.
+## 2026-10-13
+
+### Funcionalidade
+Consolidação do dashboard autenticado
+
+### Arquivos alterados
+`frontend/pages/index.html`, `frontend/pages/disc_result.html`, `frontend/assets/js/main.js`, `frontend/pages/missoes.html`, `frontend/pages/projetos.html`, `frontend/pages/projeto_detalhe.html`, `frontend/pages/certificados.html`, `frontend/pages/certificado_detalhe.html`, `frontend/progress_frontend.md`
+
+### Resumo
+As abas do dashboard passaram a aceitar fragmentos de URL, inclusive para abrir os modais existentes de criação e edição. O perfil renderizado é atualizado com os dados carregados pelo endpoint JSON. O link de perfil no resultado DISC aponta para a aba Perfil. Os cinco templates independentes de consulta/listagem, agora sem rota renderizadora, foram removidos. Formulários antigos de erro HTML e o componente compartilhado de perfil profissional permanecem.
+
+### Impacto
+O usuário chega aos fluxos autenticados pela mesma interface, inclusive a partir de URLs antigas. A estrutura visual, os arquivos CSS e a stack permanecem como antes.

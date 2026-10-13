@@ -207,3 +207,16 @@ Criada a organizacao base em camadas com controllers, services, repositories, mo
 
 ### Impacto
 O backend passa a ter uma base organizada para desenvolvimento futuro, preservando separacao de responsabilidades e sem implementar regras de negocio.
+## 2026-10-13
+
+### Funcionalidade
+Rotas canônicas do dashboard
+
+### Arquivos alterados
+`backend/controllers/auth_controller.py`, `backend/controllers/certificate_controller.py`, `backend/controllers/mission_controller.py`, `backend/controllers/page_controller.py`, `backend/controllers/profile_controller.py`, `backend/controllers/project_controller.py`, `backend/tests/test_dashboard_consolidation.py`, `backend/progress_backend.md`
+
+### Resumo
+As rotas HTML antigas de perfil privado, missões, projetos e certificados redirecionam para a aba adequada do dashboard. As rotas de criação e edição abrem os modais por fragmento de URL. Os POSTs HTML válidos redirecionam ao dashboard; os contratos JSON, downloads e respostas de erro HTML foram preservados. Adicionada validação de contratos HTTP e persistência com SQLite temporário.
+
+### Impacto
+O dashboard passa a ser a entrada canônica dos fluxos autenticados sem mudar services, regras de negócio ou dados existentes.

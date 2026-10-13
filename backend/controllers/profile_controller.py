@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, redirect, render_template, request, send_file, url_for
+from flask import Blueprint, jsonify, redirect, render_template, request, send_file
 
 from controllers.auth_controller import login_required
+from controllers.page_controller import dashboard_section
 from services.profile_service import get_profile
 from services.professional_profile_service import (
     ProfessionalProfileError,
@@ -16,8 +17,7 @@ profile_bp = Blueprint("profile", __name__, url_prefix="/perfil")
 @profile_bp.get("/")
 @login_required
 def profile_page(user):
-    profile = get_profile(user.id)
-    return _render_profile(profile, get_professional_profile(user.id))
+    return redirect(dashboard_section("profile"))
 
 
 def _render_profile(profile, professional_profile, error=None):
@@ -52,7 +52,7 @@ def update_professional_profile_action(user):
         return _render_profile(get_profile(user.id), draft, str(error)), 400
     if _wants_json():
         return jsonify({"professional_profile": professional_profile})
-    return redirect(url_for("profile.profile_page", saved=1))
+    return redirect(dashboard_section("profile"))
 
 
 def _wants_json():

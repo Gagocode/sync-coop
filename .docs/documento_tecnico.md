@@ -184,3 +184,7 @@ Toda decisão técnica futura deverá responder às seguintes perguntas:
 5. Esta implementação contribui para a construção do currículo vivo?
 
 Caso a resposta para alguma dessas perguntas seja negativa, a solução deverá ser reavaliada antes de sua implementação.
+
+## 22. Implementação atual da interface autenticada (2026-10-13)
+
+O Sync Disc usa Flask, templates Jinja, CSS e JavaScript convencional. `/dashboard` é o caminho canônico para perfil privado, missões, projetos, certificados, conquistas e evolução, organizados em abas. Fragmentos de URL identificam a aba e, quando aplicável, a abertura dos modais existentes. URLs HTML antigas dessas áreas redirecionam ao dashboard; os endpoints JSON e POSTs existentes permanecem como contratos de dados. Autenticação, quiz e resultado DISC, downloads e perfil público conservam rotas próprias. A tabela de decisões e o mapa detalhado estão em `.docs/decisions.md`.

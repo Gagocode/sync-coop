@@ -4,18 +4,18 @@ const achievementSymbols = { primeiro_passo: "disc", construtor: "project", dese
 
 const appShell = document.querySelector(".app-shell");
 if (appShell) {
-  const pathname = window.location.pathname;
   const items = [
-    ["/dashboard", "Jornada"], ["/perfil/", "Perfil"], ["/missoes/", "Missões"],
-    ["/projetos/", "Projetos"], ["/certificados/", "Certificados"]
+    ["/dashboard", "Jornada"], ["/dashboard#profile", "Perfil"], ["/dashboard#missions", "Missões"],
+    ["/dashboard#projects", "Projetos"], ["/dashboard#certificates", "Certificados"]
   ];
   const navigation = document.createElement("header");
   navigation.className = "app-header";
-  navigation.innerHTML = `<a class="app-brand" href="/dashboard"><img class="brand-mark" src="/assets/images/logo.png" alt="" width="40" height="40"><span>Sync Disc</span></a><nav aria-label="Navegação principal">${items.map(([url, label]) => `<a href="${url}" ${pathname === url || (url !== "/dashboard" && pathname.startsWith(url)) ? 'aria-current="page"' : ""}>${label}</a>`).join("")}</nav>`;
+  navigation.innerHTML = `<a class="app-brand" href="/dashboard"><img class="brand-mark" src="/assets/images/logo.png" alt="" width="40" height="40"><span>Sync Disc</span></a><nav aria-label="Navegação principal">${items.map(([url, label]) => `<a href="${url}">${label}</a>`).join("")}</nav>`;
   appShell.prepend(navigation);
 }
 
-const setTab = (name) => {
+const setTab = (name, updateLocation = true) => {
+  if (!document.querySelector(`[data-tab="${name}"]`)) return;
   document.querySelectorAll(".workspace-tab").forEach((tab) => {
     const selected = tab.dataset.tab === name;
     tab.classList.toggle("is-active", selected);
@@ -27,6 +27,7 @@ const setTab = (name) => {
     panel.classList.toggle("is-active", selected);
     panel.hidden = !selected;
   });
+  if (updateLocation && window.location.hash !== `#${name}`) window.location.hash = name;
 };
 
 const showFeedback = (message, isError = false) => {
@@ -192,6 +193,9 @@ const loadDashboard = async () => {
   const missions = (await missionsResponse.json()).missions || [];
   window.dashboardProfile = profile;
   const { user, disc_result: disc, projects = [], certificates = [], achievements, evolution } = profile;
+  document.querySelector("#dashboard-profile-meta").textContent = `${user.curso || "Curso nao informado"} - ${user.classe || "Classe aguardando DISC"}`;
+  document.querySelector("#profile-course").textContent = user.curso || "Curso nao informado";
+  document.querySelector("#profile-class").textContent = user.classe || "Classe aguardando DISC";
   document.querySelector("#profile-email").textContent = user.email || "-";
   document.querySelector("#profile-created").textContent = formatDate(user.created_at);
   renderDisc(disc);
@@ -213,7 +217,26 @@ const openDialog = (type, record = null) => {
     const input = form.elements.namedItem(key);
     if (input && input.type !== "file" && value != null) input.value = value;
   });
-  dialog.showModal();
+  if (!dialog.open) dialog.showModal();
+};
+
+const applyDashboardLocation = () => {
+  const [, section, action, id] = window.location.hash.match(/^#(dashboard|profile|projects|certificates|missions|achievements|evolution)(?:\/(new|edit)(?:\/(\d+))?)?$/) || [];
+  if (!section) return;
+  setTab(section, false);
+  const activeDialog = action && ["projects", "certificates"].includes(section)
+    ? `${section === "projects" ? "project" : "certificate"}-dialog` : null;
+  document.querySelectorAll(".workspace-dialog").forEach((dialog) => {
+    if (dialog.open && dialog.id !== activeDialog) dialog.close();
+  });
+  if (!window.dashboardProfile || !["projects", "certificates"].includes(section)) return;
+  const type = section === "projects" ? "project" : "certificate";
+  if (action === "new") openDialog(type);
+  if (action === "edit" && id) {
+    const records = section === "projects" ? window.dashboardProfile.projects : window.dashboardProfile.certificates;
+    const record = records.find((item) => String(item.id) === id);
+    if (record) openDialog(type, record);
+  }
 };
 
 const submitRecord = async (event, type) => {
@@ -258,6 +281,7 @@ const removeRecord = async (type, recordId) => {
 };
 
 if (document.body.classList.contains("dashboard-page")) {
+  window.addEventListener("hashchange", applyDashboardLocation);
   document.querySelectorAll(".workspace-tab").forEach((tab) => tab.addEventListener("click", () => setTab(tab.dataset.tab)));
   document.querySelectorAll("[data-open-tab]").forEach((button) => button.addEventListener("click", () => {
     setTab(button.dataset.openTab);
@@ -288,5 +312,10 @@ if (document.body.classList.contains("dashboard-page")) {
   });
   document.querySelector("#project-form").addEventListener("submit", (event) => submitRecord(event, "project"));
   document.querySelector("#certificate-form").addEventListener("submit", (event) => submitRecord(event, "certificate"));
-  loadDashboard().catch(() => document.querySelectorAll(".loading-state").forEach((element) => { element.textContent = "Nao foi possivel carregar os dados agora."; }));
+  document.querySelectorAll(".workspace-dialog").forEach((dialog) => dialog.addEventListener("close", () => {
+    const section = dialog.id === "project-dialog" ? "projects" : "certificates";
+    if (window.location.hash.startsWith(`#${section}/`)) window.location.hash = section;
+  }));
+  applyDashboardLocation();
+  loadDashboard().then(applyDashboardLocation).catch(() => document.querySelectorAll(".loading-state").forEach((element) => { element.textContent = "Nao foi possivel carregar os dados agora."; }));
 }

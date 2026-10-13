@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, redirect, render_template, request, send_file, url_for
+from flask import Blueprint, jsonify, redirect, render_template, request, send_file
 
 from controllers.auth_controller import login_required
+from controllers.page_controller import dashboard_section
 from services.certificate_service import (
     CertificateError,
     create_certificate,
@@ -18,14 +19,13 @@ certificate_bp = Blueprint("certificates", __name__, url_prefix="/certificados")
 @certificate_bp.get("/")
 @login_required
 def certificates_page(user):
-    certificates = list_certificates(user.id)
-    return render_template("certificados.html", user=user, certificates=certificates)
+    return redirect(dashboard_section("certificates"))
 
 
 @certificate_bp.get("/novo")
 @login_required
 def new_certificate_page(user):
-    return render_template("certificado_form.html", certificate=None, error=None)
+    return redirect(dashboard_section("certificates", "new"))
 
 
 @certificate_bp.post("/")
@@ -40,7 +40,7 @@ def create_certificate_action(user):
 
     if _wants_json():
         return jsonify({"certificate": certificate.to_dict()}), 201
-    return redirect(url_for("certificates.certificate_detail_page", certificate_id=certificate.id))
+    return redirect(dashboard_section("certificates"))
 
 
 @certificate_bp.get("/json")
@@ -54,10 +54,10 @@ def certificates_json(user):
 @login_required
 def certificate_detail_page(user, certificate_id):
     try:
-        certificate = get_certificate(user.id, certificate_id)
+        get_certificate(user.id, certificate_id)
     except CertificateError as error:
         return str(error), 404
-    return render_template("certificado_detalhe.html", certificate=certificate)
+    return redirect(dashboard_section("certificates"))
 
 
 @certificate_bp.get("/<int:certificate_id>/arquivo")
@@ -75,10 +75,10 @@ def certificate_file(user, certificate_id):
 @login_required
 def edit_certificate_page(user, certificate_id):
     try:
-        certificate = get_certificate(user.id, certificate_id)
+        get_certificate(user.id, certificate_id)
     except CertificateError as error:
         return str(error), 404
-    return render_template("certificado_form.html", certificate=certificate, error=None)
+    return redirect(dashboard_section("certificates", f"edit/{certificate_id}"))
 
 
 @certificate_bp.post("/<int:certificate_id>/editar")
@@ -98,7 +98,7 @@ def update_certificate_action(user, certificate_id):
 
     if _wants_json():
         return jsonify({"certificate": certificate.to_dict()})
-    return redirect(url_for("certificates.certificate_detail_page", certificate_id=certificate.id))
+    return redirect(dashboard_section("certificates"))
 
 
 @certificate_bp.post("/<int:certificate_id>/excluir")
@@ -113,7 +113,7 @@ def delete_certificate_action(user, certificate_id):
 
     if _wants_json():
         return jsonify({"message": "Certificado excluido com sucesso"})
-    return redirect(url_for("certificates.certificates_page"))
+    return redirect(dashboard_section("certificates"))
 
 
 def _request_data():

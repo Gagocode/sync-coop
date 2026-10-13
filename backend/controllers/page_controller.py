@@ -1,10 +1,15 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, url_for
 
 from controllers.auth_controller import login_required
 from services.professional_profile_service import get_professional_profile
 
 
 page_bp = Blueprint("pages", __name__)
+
+
+def dashboard_section(section, action=None):
+    fragment = section if action is None else f"{section}/{action}"
+    return f"{url_for('pages.dashboard_page')}#{fragment}"
 
 
 @page_bp.get("/login")
