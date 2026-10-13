@@ -237,3 +237,17 @@ Abrir perfil ou dashboard repetidamente não gera recompensas. Falhas intermedi�
 
 ### Pendente para próxima etapa
 O contrato de criação não inclui chave de idempotência: um retry de POST de projeto/certificado é interpretado como nova criação. Decidir a semântica do retry antes de alterar esse contrato.
+
+## 2026-10-13
+
+### Funcionalidade
+Limpeza conservadora e validação integrada final
+
+### Arquivos alterados
+`backend/controllers/auth_controller.py`, `backend/controllers/project_controller.py`, `backend/controllers/certificate_controller.py`, `backend/controllers/disc_controller.py`, `backend/controllers/profile_controller.py`; `backend/services/auth_service.py`, `backend/services/project_service.py`, `backend/services/certificate_service.py`, `backend/services/disc_service.py`, `backend/services/professional_profile_service.py`; `backend/repositories/user_repository.py`, `backend/repositories/achievement_repository.py`, `backend/repositories/mission_repository.py`, `backend/models/mission.py`; `backend/tests/test_business_rules.py`, novo `backend/tests/browser_smoke.py`.
+
+### Resumo
+Entradas JSON com tipos inesperados deixaram de gerar erro 500 e retornam erro 400 sem escrita. Testada a ordem de ativação das missões. Removidos três helpers internos sem referências e o modelo usado apenas por um deles; rotas, templates de erro e estilos foram preservados após verificar seus consumidores ou a falta de prova para remoção. Criado roteiro opcional de navegador com SQLite e uploads temporários. README, decisões e orientações do agente foram alinhados ao estado implementado.
+
+### Impacto
+Suíte de 13 testes passou; `compileall` e `git diff --check` passaram. Smoke test Chromium passou em desktop e mobile para cadastro, DISC, dashboard, projetos, certificados, perfil, perfil público e autenticação, sem erro HTTP local ou JavaScript. O carregamento externo de Google Fonts foi bloqueado pelo ambiente de rede, usando fontes de reserva. Permanecem as pendências de domínio e operação registradas em `.docs/decisions.md`.

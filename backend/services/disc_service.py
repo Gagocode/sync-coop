@@ -1,3 +1,5 @@
+from collections.abc import Mapping
+
 from database.connection import transaction
 from repositories import disc_repository, user_repository
 from services.evolution_service import record_disc_completed
@@ -168,7 +170,7 @@ def calculate_initial_class(predominant_dimension):
 
 
 def calculate_scores(answers):
-    if not answers:
+    if not isinstance(answers, Mapping) or not answers:
         raise DiscError("Responda todas as perguntas do quiz")
 
     questions_by_id = {question["id"]: question for question in QUESTIONS}

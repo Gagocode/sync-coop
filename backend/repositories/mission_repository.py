@@ -1,5 +1,5 @@
 from database.connection import get_connection
-from models.mission import Mission, MissionCatalogItem
+from models.mission import Mission
 
 
 def sync_catalog(catalog):
@@ -22,17 +22,6 @@ def sync_catalog(catalog):
                     mission["xp_recompensa"], mission["ordem"], mission["tipo_evento"],
                 ),
             )
-
-
-def list_catalog():
-    with get_connection() as connection:
-        rows = connection.execute(
-            """
-            SELECT id, mission_key, nome, descricao, xp_recompensa, ordem, tipo_evento
-            FROM missions ORDER BY ordem
-            """
-        ).fetchall()
-        return [MissionCatalogItem.from_row(row) for row in rows]
 
 
 def create_user_missions(user_id, missions):

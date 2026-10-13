@@ -21,11 +21,6 @@ def sync_catalog(catalog):
             )
 
 
-def unlock_for_user(user_id, achievement_key):
-    achievement, _created = unlock_for_user_with_status(user_id, achievement_key)
-    return achievement
-
-
 def unlock_for_user_with_status(user_id, achievement_key):
     with get_connection() as connection:
         cursor = connection.execute(

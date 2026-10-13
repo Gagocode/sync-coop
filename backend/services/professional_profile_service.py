@@ -1,4 +1,5 @@
 import os
+from collections.abc import Mapping
 from pathlib import Path
 from urllib.parse import urlsplit
 from uuid import uuid4
@@ -28,15 +29,23 @@ def get_professional_profile(user_id):
 
 
 def update_professional_profile(user_id, data, resume=None):
+    if not isinstance(data, Mapping):
+        raise ProfessionalProfileError("Dados invalidos")
     cleaned = {}
     for field, limit in TEXT_LIMITS.items():
-        value = (data.get(field) or "").strip()
+        raw_value = data.get(field)
+        if raw_value is not None and not isinstance(raw_value, str):
+            raise ProfessionalProfileError(f"{field.replace('_', ' ').capitalize()}: valor invalido")
+        value = (raw_value or "").strip()
         if len(value) > limit:
             raise ProfessionalProfileError(f"{field.replace('_', ' ').capitalize()}: máximo de {limit} caracteres")
         cleaned[field] = value or None
 
     for field in URL_FIELDS:
-        value = (data.get(field) or "").strip()
+        raw_value = data.get(field)
+        if raw_value is not None and not isinstance(raw_value, str):
+            raise ProfessionalProfileError(f"Informe uma URL HTTP ou HTTPS válida para {field.capitalize()}")
+        value = (raw_value or "").strip()
         if value:
             try:
                 parts = urlsplit(value)
@@ -54,7 +63,7 @@ def update_professional_profile(user_id, data, resume=None):
         cleaned[field] = value or None
 
     availability = data.get("disponivel_estagio", "")
-    if availability not in ("", "sim", "nao"):
+    if not isinstance(availability, str) or availability not in ("", "sim", "nao"):
         raise ProfessionalProfileError("Disponibilidade para estágio inválida")
     cleaned["disponivel_estagio"] = {"sim": 1, "nao": 0, "": None}[availability]
 

@@ -157,6 +157,23 @@ class BusinessRulesTest(unittest.TestCase):
                          {"D": 20, "I": 25, "S": 40, "C": 20})
         self.assertEqual(after["achievements"]["unlocked_count"], 5)
 
+    def test_available_mission_advances_after_each_matching_action(self):
+        def available():
+            return [mission.mission_key for mission in mission_service.get_user_missions(self.user.id)
+                    if mission.status == "Pendente"]
+
+        self.assertEqual(available(), ["complete_disc_quiz"])
+        self.complete_disc()
+        self.assertEqual(available(), ["first_project"])
+        for number, expected in ((1, "second_project"), (2, "third_project"),
+                                 (3, "first_certificate")):
+            self.add_project(number)
+            self.assertEqual(available(), [expected])
+        for number, expected in ((1, "second_certificate"),
+                                 (2, "third_certificate"), (3, "continue_evolution")):
+            self.add_certificate(number)
+            self.assertEqual(available(), [expected])
+
     def test_project_failure_rolls_back_all_records(self):
         self.complete_disc()
         before = self.snapshot()
@@ -248,6 +265,40 @@ class BusinessRulesTest(unittest.TestCase):
         self.assertIsNotNone(user_repository.find_by_id(self.user.id).classe)
         progress_reconciliation_service.reconcile_user_progress(self.user.id)
         self.assertEqual(after, self.snapshot())
+
+    def test_invalid_json_fields_return_400_without_writing(self):
+        from app import create_app
+        app = create_app()
+        app.testing = True
+        client = app.test_client()
+        with client.session_transaction() as session:
+            session["user_id"] = self.user.id
+        before = self.snapshot()
+        cases = (
+            ("/auth/register", {"nome": 42, "email": "new@example.com", "senha": "segredo"}),
+            ("/auth/register", {"nome": "Outra", "email": "new@example.com",
+                                "senha": "segredo", "curso": ["Design"]}),
+            ("/auth/register", ["Outra"]),
+            ("/projetos/", {"titulo": 42, "descricao": "Descricao", "tecnologias": "Python"}),
+            ("/projetos/", {"titulo": "Projeto", "descricao": "Descricao",
+                             "tecnologias": "Python", "link": ["https://example.com"]}),
+            ("/projetos/", ["Projeto"]),
+            ("/certificados/", {"nome": ["Curso"], "instituicao": "Instituicao",
+                               "carga_horaria": "8", "data_conclusao": "2026-10-01"}),
+            ("/certificados/", {"nome": "Curso", "instituicao": "Instituicao",
+                               "carga_horaria": [8], "data_conclusao": "2026-10-01"}),
+            ("/certificados/", ["Curso"]),
+            ("/perfil/profissional", {"biografia": ["Texto"]}),
+            ("/perfil/profissional", {"disponivel_estagio": ["sim"]}),
+            ("/perfil/profissional", ["Texto"]),
+            ("/disc/", ["D"]),
+        )
+        for path, body in cases:
+            with self.subTest(path=path):
+                response = client.post(path, json=body)
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("error", response.json)
+                self.assertEqual(before, self.snapshot())
 
 
 if __name__ == "__main__":

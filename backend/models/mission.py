@@ -2,29 +2,6 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class MissionCatalogItem:
-    id: int
-    mission_key: str
-    nome: str
-    descricao: str
-    xp_recompensa: int
-    ordem: int
-    tipo_evento: str
-
-    @classmethod
-    def from_row(cls, row):
-        return cls(
-            id=row["id"],
-            mission_key=row["mission_key"],
-            nome=row["nome"],
-            descricao=row["descricao"],
-            xp_recompensa=row["xp_recompensa"],
-            ordem=row["ordem"],
-            tipo_evento=row["tipo_evento"],
-        )
-
-
-@dataclass(frozen=True)
 class Mission:
     id: int
     user_id: int

@@ -62,12 +62,14 @@ def delete_project(user_id, project_id):
 
 
 def _require_text(value, message):
-    value = value.strip() if value else ""
+    value = value.strip() if isinstance(value, str) else ""
     if not value:
         raise ProjectError(message)
     return value
 
 
 def _optional_text(value):
+    if value is not None and not isinstance(value, str):
+        raise ProjectError("Link invalido")
     value = value.strip() if value else ""
     return value or None

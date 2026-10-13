@@ -182,8 +182,3 @@ Ao concluir qualquer tarefa:
 3. Atualizar o arquivo de progresso correspondente.
 4. Informar claramente o que foi alterado.
 5. Evitar gerar débito técnico desnecessário.
-
-```
-
-Eu faria apenas um ajuste adicional: criar também um `.docs/decisions.md` (ou `architecture_decisions.md`) para registrar decisões arquiteturais importantes. Isso evita que agentes futuros tomem decisões diferentes sobre DISC, XP, Missões e Currículo Vivo. Hoje esse é o principal ponto de risco de consistência do projeto.
-```

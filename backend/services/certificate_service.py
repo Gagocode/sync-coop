@@ -128,7 +128,7 @@ def _parse_carga_horaria(value):
 
 
 def _require_text(value, message):
-    value = value.strip() if value else ""
+    value = value.strip() if isinstance(value, str) else ""
     if not value:
         raise CertificateError(message)
     return value

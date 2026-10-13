@@ -45,7 +45,7 @@ Tambem fazem parte do publico secundario recrutadores, empresas, professores e i
 9. Construcao do curriculo vivo.
 10. Compartilhamento do perfil publico.
 
-## MVP
+## MVP original e estado atual
 
 O escopo minimo previsto para apresentacao inclui:
 
@@ -57,7 +57,7 @@ O escopo minimo previsto para apresentacao inclui:
 - missoes;
 - XP.
 
-Ficam fora do MVP inicial:
+O recorte original do MVP deixava de fora:
 
 - projetos;
 - certificados;
@@ -68,6 +68,8 @@ Ficam fora do MVP inicial:
 - inteligencia artificial;
 - chat;
 - integracoes externas.
+
+O sistema implementado hoje inclui projetos, certificados, perfil publico, conquistas, evolucao, DISC observado, historico e formulario profissional. Isso amplia o MVP original; nao significa que os demais requisitos do Documento Mestre estejam implementados. Experiencias profissionais como entidade propria, missoes adaptativas, atributos secundarios, curtidas e regras de penalidade ainda nao existem. Os pesos atuais de gamificacao pertencem ao catalogo do prototipo; o Documento de Dominio ainda aponta criterios futuros em aberto.
 
 ## Pilares do dominio
 
@@ -109,9 +111,14 @@ Regras de negocio devem permanecer na camada de servicos. Controladores devem re
 |   +-- documento_dominio.md
 |   +-- documento_mestre.md
 |   +-- documento_tecnico.md
+|   +-- decisions.md
 +-- backend/
+|   +-- app.py
+|   +-- controllers/ services/ repositories/ models/ database/
+|   +-- tests/
 |   +-- progress_backend.md
 +-- frontend/
+|   +-- pages/ assets/css/ assets/js/
 |   +-- progress_frontend.md
 +-- .editorconfig
 +-- .gitattributes
@@ -163,7 +170,17 @@ O registro deve conter data, funcionalidade, resumo e impacto esperado.
 
 ## Status
 
-Projeto em fase inicial de documentacao e estruturacao para implementacao futura.
+O Sync Disc funciona localmente com Flask, Jinja, CSS, JavaScript convencional e SQLite. Cadastro e login levam ao quiz DISC inicial; o envio gera classe, missoes e XP. `/dashboard` e a interface autenticada principal para perfil privado, projetos, certificados, missoes, conquistas e evolucao. URLs HTML antigas dessas areas redirecionam para as abas; POSTs, JSON, downloads e formularios HTML de erro permanecem para compatibilidade. O perfil publico e o resultado DISC mantem paginas proprias.
+
+Consultas de perfil e dashboard nao gravam dados. Comandos relacionados usam transacoes SQLite e a reconciliacao de dados antigos acontece na inicializacao. As decisoes atuais e as limitacoes estao em `.docs/decisions.md`; os registros de implementacao estao em `backend/progress_backend.md` e `frontend/progress_frontend.md`.
+
+### Execucao e validacao local
+
+Instale `backend/requirements.txt` e execute `python backend/app.py`. O banco SQLite local e criado em `backend/database/`; uploads ficam em `backend/uploads/`.
+
+Execute os testes automatizados com `python -m unittest discover -s backend/tests -v`. O teste pratico opcional `python backend/tests/browser_smoke.py` usa Chromium via Playwright, um banco temporario e um servidor local. Playwright e seu navegador nao fazem parte dos requisitos de execucao da aplicacao. As fontes do Google exigem acesso externo; na ausencia de rede, o navegador usa fontes alternativas do sistema.
+
+Permanecem pendentes: criterio formal de conclusao da missao `CONTINUE_EVOLUTION`, semantica de retry dos POSTs de criacao, politica de limpeza para arquivos antigos de certificados e eventual migracao unica no lugar da reconciliacao a cada inicializacao.
 
 ## Licenca
 

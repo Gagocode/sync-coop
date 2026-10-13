@@ -39,6 +39,8 @@ def _render_profile(profile, professional_profile, error=None):
 @login_required
 def update_professional_profile_action(user):
     data = request.get_json(silent=True) if request.is_json else request.form
+    if request.is_json and not isinstance(data, dict):
+        return jsonify({"error": "Dados invalidos"}), 400
     data = data or {}
     try:
         professional_profile = update_professional_profile(

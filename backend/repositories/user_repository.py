@@ -89,16 +89,3 @@ def update_password_hash(user_id, senha_hash):
             (senha_hash, user_id),
         )
     return find_by_id(user_id)
-
-
-def add_xp(user_id, xp_amount):
-    with get_connection() as connection:
-        connection.execute(
-            """
-            UPDATE users
-            SET xp = xp + ?
-            WHERE id = ?
-            """,
-            (xp_amount, user_id),
-        )
-    return find_by_id(user_id)

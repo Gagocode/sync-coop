@@ -67,7 +67,8 @@ def me(user):
 
 def _request_data():
     if request.is_json:
-        return request.get_json(silent=True) or {}
+        data = request.get_json(silent=True)
+        return data if isinstance(data, dict) else {}
     return request.form
 
 
